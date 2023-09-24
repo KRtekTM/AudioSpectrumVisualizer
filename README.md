@@ -22,7 +22,8 @@ If display with 1280x400 pixels is connected and detected on application start, 
 ## Touch gestures:
 - swipe left - volume down
 - swipe right - volume up
-- triple touch - in normal view switches to fullscreen, in fullscreen closes application
+- tap, release, tap and swipe - toggle mute
+- four taps - in normal view switches to fullscreen, in fullscreen closes application
 
 ## Font dependencies
 - Parsi (can't provide link due to license)
