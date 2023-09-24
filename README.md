@@ -14,6 +14,8 @@ Run the project, select your audio device, and this tool will listen to the devi
 
 Currently made for 1280x400 pixels: <a href="https://www.waveshare.com/7.9inch-hdmi-lcd.htm">https://www.waveshare.com/7.9inch-hdmi-lcd.htm</a>
 
+If display with 1280x400 pixels is connected and detected on application start, it automatically switches to fullscreen on this display.
+
 ## Key bindings:
 - F11 - toggle fullscreen
   
