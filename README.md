@@ -1,4 +1,4 @@
-# Windows Audio Session (WASAPI) BASS.Net sample
+# Audio Spectrum Visualizer for Windows
 
 A sample of usage of Windows Audio Session WASAPI using BASS.NET - WPF C# .NET Framework 4.8
 
