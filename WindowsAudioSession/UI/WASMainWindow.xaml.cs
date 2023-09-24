@@ -7,6 +7,9 @@ using System.Windows.Threading;
 using WindowsAudioSession.UI.FFT;
 using AudioSwitcher.AudioApi.CoreAudio;
 using Microsoft.Win32;
+using System.Threading.Tasks;
+using System.IO;
+using AudioSwitcher.AudioApi;
 
 namespace WindowsAudioSession.UI
 {
@@ -33,6 +36,9 @@ namespace WindowsAudioSession.UI
 
             soundWaveControl.Width = Panel_SoundWave.Width;
 
+            ButtonStart.Click += ButtonStart_Click;
+            ButtonStop.Click += ButtonStop_Click;
+
             // Vytvoření a inicializace DispatcherTimeru
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(200);
@@ -54,6 +60,37 @@ namespace WindowsAudioSession.UI
                     App.Current.Shutdown();
                 }
             };
+
+            string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
+            highVolumeThreshold = File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
+            // Vytvořte instanci FileSystemWatcher
+            FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(highVolumeThresholdFilePath));
+            // Nastavte filtrování na konkrétní soubor
+            watcher.Filter = Path.GetFileName(highVolumeThresholdFilePath);
+            // Přidejte obslužnou metodu pro událost Changed
+            watcher.Changed += (sender, e) =>
+            {
+                if (e.FullPath == highVolumeThresholdFilePath)
+                {
+                    // Soubor _configVolumeModifier.txt byl změněn
+                    highVolumeThreshold = File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
+
+                    // Zde můžete provést další akce s highVolumeThreshold
+                }
+            };
+            // Zapněte sledování změn
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            TextVolume.Text = "---";
+            TextAudioOut.Text = "NONE";
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault().Replace("C", "G");
         }
 
         private WindowStyle _windowStyle;
@@ -62,12 +99,13 @@ namespace WindowsAudioSession.UI
         private DispatcherTimer timer;
         private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
         private double touchValue = 0; // Aktuální hodnota
-        private Point lastTouchPosition; // Poslední pozice dotyku
+        private Point lastTouchPosition, startingTouchPosition; // Poslední pozice dotyku
         private DateTime touchStartTime;
         private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
         private int touchCount = 0;
         private int _highVolumeThreshold = 70;
-        private bool _isTouching = false;
+        private bool _isTouching, _isMuting, _isTouchMoving = false;
+        private int highVolumeThreshold;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -137,9 +175,9 @@ namespace WindowsAudioSession.UI
             string FlashingText;
 
             // Aktualizace obsahu TextBlocku s aktuálním časem
-            if (WindowStyle == WindowStyle.None)
+            if (WindowStyle == WindowStyle.None && ButtonStop.IsEnabled)
             {
-                if (Panel_StartStop.Visibility == Visibility.Visible && ButtonStop.IsEnabled)
+                if (Panel_StartStop.Visibility == Visibility.Visible)
                 {
                     GoFullScreen();
                 }
@@ -152,27 +190,39 @@ namespace WindowsAudioSession.UI
             TextClock.Text = FlashingText;
 
             TextStereo.Foreground = (ButtonStop.IsEnabled) ? Brushes.Red : Brushes.DarkRed;
-            TextPlay.Foreground = (ButtonStop.IsEnabled && App.AppComponents.AudioPluginEngine.GetLevel() > 0) ? Brushes.White : Brushes.Gray;
+            bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
+            TextPlay.Foreground = (ButtonStop.IsEnabled && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
             TextPlay.Text = "PLAY ";
-            if (ButtonStop.IsEnabled && App.AppComponents.AudioPluginEngine.GetLevel() > 0) {
+            if (ButtonStop.IsEnabled && levelMoreThenZero)
+            {
                 if ((DateTime.Now.Second % 4) == 0) TextPlay.Text = "PLAY ";
                 if ((DateTime.Now.Second % 4) == 1) TextPlay.Text = "PLAY ▶";
                 if ((DateTime.Now.Second % 4) == 2) TextPlay.Text = "PLAY ▶▶";
                 if ((DateTime.Now.Second % 4) == 3) TextPlay.Text = "PLAY ▶▶▶";
             }
-            
-            if(ButtonStop.IsEnabled)
+
+            if (ButtonStop.IsEnabled)
             {
                 int currentVolume = (int)Math.Round(audioController.Volume);
-                TextVolume.Text = (audioController.IsMuted) ? (_isTouching ? $"MUT {currentVolume:D2}%" : "MUTED") : $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
-                string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
-                int highVolumeThreshold = System.IO.File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(System.IO.File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
-                TextVolume.Foreground = (currentVolume >= highVolumeThreshold || (audioController.IsMuted && !_isTouching)) ? CustomBrushes.VolumePeakTopBrush : (_isTouching ? CustomBrushes.LabelChanging : CustomBrushes.Labels);
-                TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault().Replace("C", "G");
-            }
-            else
-            {
-                TextVolume.Text = "---";
+                TextVolume.Text = (audioController.IsMuted) ? (_isTouching && !_isMuting ? $"MUT {currentVolume:D2}%" : "MUTED") : $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
+
+                if (currentVolume >= highVolumeThreshold || (audioController.IsMuted && (!_isTouching || _isMuting)) || TextVolume.Text == "MUTED")
+                {
+                    TextVolume.Foreground = CustomBrushes.VolumePeakTopBrush;
+                }
+                else if (_isTouching)
+                {
+                    TextVolume.Foreground = CustomBrushes.LabelChanging;
+                }
+                else
+                {
+                    TextVolume.Foreground = CustomBrushes.Labels;
+                }
+
+                if (!_isTouching && touchCount == 1 && _isMuting)
+                {
+                    _isMuting = false;
+                }
             }
         }
 
@@ -199,7 +249,8 @@ namespace WindowsAudioSession.UI
 
             // Nastavte počáteční pozici dotyku
             e.TouchDevice.Capture(this);
-            lastTouchPosition = e.GetTouchPoint(this).Position;
+            startingTouchPosition = e.GetTouchPoint(this).Position;
+            lastTouchPosition = startingTouchPosition;
             e.Handled = true;
         }
 
@@ -212,24 +263,45 @@ namespace WindowsAudioSession.UI
                 var currentTouchPosition = touchPoint.Position;
 
                 // Výpočet změny hodnoty podle pohybu
-                double delta = currentTouchPosition.X - lastTouchPosition.X;
+                //double delta = (currentTouchPosition.X - lastTouchPosition.X);
+                double delta = (currentTouchPosition.X - lastTouchPosition.X);
+
+                if (delta != 0)
+                {
+                    _isTouchMoving = true;
+                }
 
                 // Aktualizace hodnoty
-                touchValue += delta / 10; // Pravděpodobně budete potřebovat jiný koeficient, abyste dosáhli žádaného rozsahu
+                touchValue += Math.Round(delta / 10); // Pravděpodobně budete potřebovat jiný koeficient, abyste dosáhli žádaného rozsahu
                 touchValue = Math.Max(0, Math.Min(100, touchValue)); // Omezení hodnoty na rozsah 0-100
 
                 // Aktualizace zobrazení hodnoty
                 //TextVolume.Text = touchValue.ToString("F1"); // "F1" formátuje hodnotu s jedním desetinným místem
 
-                if(audioController.Volume != touchValue && audioController.IsMuted)
+                if (delta != 0 && audioController.IsMuted && touchCount == 0)
                 {
                     audioController.ToggleMute();
                 }
 
                 // Nastavení hodnoty hlasitosti (předpokládáme, že audioController umožňuje nastavení hlasitosti)
-                audioController.Volume = touchValue;
+                if (delta != 0)
+                {
+                    switch (touchCount)
+                    {
+                        case 0:
+                            audioController.Volume = (touchValue % 2 == 0) ? touchValue : audioController.Volume;
+                            break;
+                        case 1:
+                            if(!_isMuting && delta != 0)
+                            {
+                                audioController.ToggleMute();
+                            }
+                            _isMuting = true;
+                            break;
+                    }
 
-                lastTouchPosition = currentTouchPosition; // Uložení aktuální pozice pro příští krok
+                    lastTouchPosition = currentTouchPosition; // Uložení aktuální pozice pro příští krok
+                }
             }
 
             e.Handled = true;
@@ -238,25 +310,24 @@ namespace WindowsAudioSession.UI
         private void WASMainWindow_TouchUp(object sender, TouchEventArgs e)
         {
             TimeSpan touchDuration = DateTime.Now - touchStartTime;
-            if (touchDuration <= requiredTouchDuration && touchCount == 2)
+            if (touchDuration <= requiredTouchDuration && touchCount == 3)
             {
                 if (WindowStyle != WindowStyle.None)
                 {
                     GoFullScreen();
                     touchStartTime = DateTime.Now;
                 }
-                else if (ButtonStop.IsEnabled)
+                else
                 {
-                    App.Current.Shutdown();
+                    if (!_isTouchMoving && !_isMuting)
+                    {
+                        App.Current.Shutdown();
+                    }
                 }
             }
 
-            if (ButtonStop.IsEnabled)
-            {
-                TextVolume.Foreground = CustomBrushes.Labels;
-            }
-
             _isTouching = false;
+            _isTouchMoving = false;
 
             e.Handled = true;
         }

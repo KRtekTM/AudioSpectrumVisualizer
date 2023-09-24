@@ -8,8 +8,7 @@
         xmlns:commands="clr-namespace:WindowsAudioSession.Commands"
         xmlns:fftControls="clr-namespace:WindowsAudioSession.UI.FFT"
         xmlns:soundWaveControls="clr-namespace:WindowsAudioSession.UI.SoundWave"
-        xmlns:soundLevelControls="clr-namespace:WindowsAudioSession.UI.SoundLevel"
-        d:DataContext="{d:DesignInstance Type=local:WASMainViewModel}"
+        xmlns:soundLevelControls="clr-namespace:WindowsAudioSession.UI.SoundLevel" d:DataContext="{d:DesignInstance Type=local:WASMainViewModel}"
         Topmost="True"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
@@ -46,7 +45,7 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8,0,8,6" Height="28">
 
-                    <Button Grid.Column="1" Margin="0,0,8,0" Content="Start" Command="{x:Static commands:Commands.Start}" Width="58"/>
+                    <Button Name="ButtonStart" Grid.Column="1" Margin="0,0,8,0" Content="Start" Command="{x:Static commands:Commands.Start}" Width="58"/>
 
                     <Button Name="ButtonStop" Content="Stop" Margin="0,0,0,0" Command="{x:Static commands:Commands.Stop}" HorizontalAlignment="Left" Width="58" />
 
@@ -81,7 +80,7 @@
                 <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
                 Background="{x:Static local:CustomBrushes.Background}"
                 Name="TextClock"
-                Width="{Binding LabelWidth,FallbackValue=*}" 
+                Width="auto" 
                 Text="{Binding Label,FallbackValue=XX:XX:XX}"
                 Margin="8,0,4,1"
                 Padding="8,22,8,8"
@@ -90,7 +89,7 @@
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Name="TextClockLabel"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
+                   Width="auto" 
                    Text="{Binding Label,FallbackValue='WORLD CLOCK'}"
                    Margin="8,8,4,0" 
                    Grid.Column="3"
@@ -105,21 +104,21 @@
 
                     <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                        Name="TextVolumePeak"
-                       Width="{Binding LabelWidth,FallbackValue=*}" 
+                       Width="auto" 
                        Text="PEAK LEVEL METER"
                        Margin="8,8,4,0" 
                        Grid.Column="3"
                        TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10" />
                     <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}" 
                        Name="TextPlay"
-                       Width="{Binding LabelWidth,FallbackValue=*}" 
+                       Width="auto" 
                        Text="PLAY"
                        Margin="6,4,2,0" 
                        Grid.Row="0"
                        HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Parsi" FontSize="10"/>
                     <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                        Name="TextStereo"
-                       Width="{Binding LabelWidth,FallbackValue=*}" 
+                       Width="auto" 
                        Text="{Binding Label,FallbackValue=🖭 DOLBY STEREO}"
                        Margin="6,4,8,0" 
                        Grid.Row="0"
