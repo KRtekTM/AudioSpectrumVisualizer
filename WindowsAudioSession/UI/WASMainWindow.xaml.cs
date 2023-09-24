@@ -67,6 +67,7 @@ namespace WindowsAudioSession.UI
         private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(5);
         private int touchCount = 0;
         private int _highVolumeThreshold = 70;
+        private bool _isTouching = false;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -159,7 +160,7 @@ namespace WindowsAudioSession.UI
                 TextVolume.Text = $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
                 string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
                 int highVolumeThreshold = System.IO.File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(System.IO.File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
-                TextVolume.Foreground = (currentVolume >= highVolumeThreshold) ? CustomBrushes.VolumePeakTopBrush : CustomBrushes.Labels;
+                TextVolume.Foreground = (currentVolume >= highVolumeThreshold) ? CustomBrushes.VolumePeakTopBrush : (_isTouching ? CustomBrushes.LabelChanging : CustomBrushes.Labels);
                 TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
             }
             else
@@ -170,6 +171,8 @@ namespace WindowsAudioSession.UI
 
         private void WASMainWindow_TouchDown(object sender, TouchEventArgs e)
         {
+            _isTouching = true;
+
             if (ButtonStop.IsEnabled)
             {
                 touchValue = audioController.Volume;
@@ -240,6 +243,8 @@ namespace WindowsAudioSession.UI
             {
                 TextVolume.Foreground = CustomBrushes.Labels;
             }
+
+            _isTouching = false;
 
             e.Handled = true;
         }
