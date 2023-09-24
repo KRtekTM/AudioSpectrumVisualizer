@@ -103,11 +103,14 @@ namespace WindowsAudioSession.UI
             WindowState = WindowState.Maximized;
             ResizeMode = ResizeMode.NoResize;
 
-            Panel_LengthSampleFrq.Visibility = Visibility.Collapsed;
-            Panel_ListBoxSoundCards.Visibility = Visibility.Collapsed;
-            Panel_StartStop.Visibility = Visibility.Collapsed;
+            if (ButtonStop.IsEnabled)
+            {
+                Panel_LengthSampleFrq.Visibility = Visibility.Collapsed;
+                Panel_ListBoxSoundCards.Visibility = Visibility.Collapsed;
+                Panel_StartStop.Visibility = Visibility.Collapsed;
 
-            fftControl1.Panel_StackPanelBars.Visibility = Visibility.Collapsed;
+                fftControl1.Panel_StackPanelBars.Visibility = Visibility.Collapsed;
+            }
         }
 
         private bool _inStateChange;
@@ -136,6 +139,10 @@ namespace WindowsAudioSession.UI
             // Aktualizace obsahu TextBlocku s aktuálním časem
             if (WindowStyle == WindowStyle.None)
             {
+                if (Panel_StartStop.Visibility == Visibility.Visible && ButtonStop.IsEnabled)
+                {
+                    GoFullScreen();
+                }
                 FlashingText = DateTime.Now.ToString("HH:mm:ss - ddd MM/dd/yyyy");
             }
             else
@@ -252,6 +259,31 @@ namespace WindowsAudioSession.UI
             _isTouching = false;
 
             e.Handled = true;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Požadované rozlišení
+            int requiredWidth = 1280;
+            int requiredHeight = 400;
+
+            // Získání seznamu všech monitorů
+            var screens = System.Windows.Forms.Screen.AllScreens;
+
+            // Najdeme monitor s požadovaným rozlišením
+            var targetScreen = screens.FirstOrDefault(screen => screen.Bounds.Width == requiredWidth && screen.Bounds.Height == requiredHeight);
+
+            if (targetScreen != null)
+            {
+                // Nastavení okna na požadované rozlišení
+                this.Left = targetScreen.Bounds.Left;
+                this.Top = targetScreen.Bounds.Top;
+                this.Width = targetScreen.Bounds.Width;
+                this.Height = targetScreen.Bounds.Height;
+
+                // Nastavení režimu fullscreen
+                GoFullScreen();
+            }
         }
     }
 }

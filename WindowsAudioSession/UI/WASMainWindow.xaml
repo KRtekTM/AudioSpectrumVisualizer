@@ -16,7 +16,7 @@
         Title="Audio Spectrum Visualizer" 
 		Height="400" 
 		Width="1280" Background="#FF1D1D1D"	        
-        KeyDown="Window_KeyDown"
+        KeyDown="Window_KeyDown" Loaded="Window_Loaded"
 		>
 
 
