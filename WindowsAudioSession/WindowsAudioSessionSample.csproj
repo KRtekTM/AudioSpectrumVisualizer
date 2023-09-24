@@ -55,8 +55,14 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bass.Net, Version=2.4.12.3, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WASApiBassNet\bin\Debug\Bass.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,6 +71,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WASApiBassNet, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WASApiBassNet\bin\Debug\WASApiBassNet.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -80,6 +90,7 @@
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="IAppComponents.cs" />
+    <Compile Include="UI\CustomBrushes.cs" />
     <Compile Include="UI\FFT\BarsCountInAllowableRangeAttribute.cs" />
     <Compile Include="UI\FFT\FFTControl.xaml.cs">
       <DependentUpon>FFTControl.xaml</DependentUpon>
@@ -163,6 +174,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="_configVolumeModifier.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -209,16 +223,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WASApiBassNet\WASApiBassNet.csproj">
-      <Project>{501babf3-a832-4a3b-9d81-45afb9153e9f}</Project>
-      <Name>WASApiBassNet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFUtilities\WPFUtilities.csproj">
       <Project>{c9664583-0898-4fed-a1a3-d6beb7f61036}</Project>
       <Name>WPFUtilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio">
+      <Version>3.0.3</Version>
+    </PackageReference>
     <PackageReference Include="System.ComponentModel.Annotations">
       <Version>5.0.0</Version>
     </PackageReference>

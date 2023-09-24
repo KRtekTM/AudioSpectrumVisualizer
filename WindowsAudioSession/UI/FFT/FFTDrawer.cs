@@ -31,7 +31,7 @@ namespace WindowsAudioSession.UI.FFT
         Rectangle[] _bars;
 
         /// <inheritdoc/>
-        public Brush BarBrush { get; set; } = SpectrumBrush.Create();
+        public Brush BarBrush { get; set; } = CustomBrushes.CurveBrushWhite;//SpectrumBrush.Create();
 
         /// <inheritdoc/>
         public bool IsStarted { get; protected set; }

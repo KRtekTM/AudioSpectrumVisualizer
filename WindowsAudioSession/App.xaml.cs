@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows;
 
@@ -12,6 +13,7 @@ namespace WindowsAudioSession
     /// </summary>
     public partial class App : Application
     {
+
         /// <summary>
         /// main window view
         /// </summary>
@@ -60,5 +62,6 @@ namespace WindowsAudioSession
                 Environment.Exit(1);
             }
         }
+
     }
 }

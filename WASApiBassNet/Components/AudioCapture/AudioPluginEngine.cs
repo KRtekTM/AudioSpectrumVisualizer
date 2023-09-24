@@ -133,5 +133,10 @@ namespace WASApiBassNet.Components.AudioCapture
                 Stop();
             _soundCaptureHandlers.Clear();
         }
+
+        public int GetLevel()
+        {
+            return BassWasapi.BASS_WASAPI_GetLevel();
+        }
     }
 }

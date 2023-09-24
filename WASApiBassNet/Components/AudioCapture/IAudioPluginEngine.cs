@@ -44,5 +44,7 @@ namespace WASApiBassNet.Components.AudioCapture
         /// stops the audio interactor
         /// </summary>
         void Stop();
+
+        int GetLevel();
     }
 }

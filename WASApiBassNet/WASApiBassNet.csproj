@@ -57,6 +57,9 @@
     <ApplicationIcon>Resources\Codicons-SymbolClass.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio">
+      <Version>3.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Bass.NetWrapper">
       <Version>2.4.12.5</Version>
     </PackageReference>

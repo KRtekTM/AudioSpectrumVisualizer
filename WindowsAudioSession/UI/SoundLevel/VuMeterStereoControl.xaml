@@ -4,22 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:soundLevelControls="clr-namespace:WindowsAudioSession.UI.SoundLevel"
-             xmlns:local="clr-namespace:WindowsAudioSession.UI.SoundLevel" 
+             xmlns:local="clr-namespace:WindowsAudioSession.UI.SoundLevel"
              d:DataContext="{d:DesignInstance Type=local:VuMeterStereoViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="48" d:DesignWidth="200" Background="Black">
+             d:DesignHeight="70" d:DesignWidth="200" Background="Black">
 
-    <Grid Margin="8">
+    <Grid Margin="4,0">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="4"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <soundLevelControls:VuMeterControl DataContext="{Binding VuMeterLeftViewModel}"/>
+        <soundLevelControls:VuMeterControl DataContext="{Binding VuMeterLeftViewModel}" x:Name="VuMeterLeft" Grid.Row="1" />
 
-        <soundLevelControls:VuMeterControl Grid.Row="2" DataContext="{Binding VuMeterRightViewModel}"/>
+        <soundLevelControls:VuMeterControl Grid.Row="3" DataContext="{Binding VuMeterRightViewModel}" x:Name="VuMeterRight" />
 
     </Grid>
     

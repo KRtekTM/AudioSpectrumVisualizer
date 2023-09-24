@@ -20,8 +20,8 @@
 
         <Grid>
 
-            <StackPanel Margin="16" Orientation="Vertical"
-                        HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel Margin="16,32" Orientation="Vertical"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="Panel_StackPanelBars">
 
                 <StackPanel.Resources>
                     <Style TargetType="Label">
@@ -46,7 +46,7 @@
                         Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}" 
                              VerticalAlignment="Center"
-                             IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}">
+                             IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}" Background="#FF1D1D1D">
                         <Validation.ErrorTemplate>
                             <ControlTemplate>
                                 <StackPanel>

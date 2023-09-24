@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WindowsAudioSession.UI.SoundLevel
 {
@@ -25,6 +27,15 @@ namespace WindowsAudioSession.UI.SoundLevel
         public VuMeterStereoControl()
         {
             InitializeComponent();
+        }
+
+        internal void ChangeBrush(Brush vuMeterBrush)
+        {
+            this.VuMeterLeft.VolumeVisual0.Fill = vuMeterBrush;
+            this.VuMeterLeft.VolumeVisual1.Fill = vuMeterBrush;
+
+            this.VuMeterRight.VolumeVisual0.Fill = vuMeterBrush;
+            this.VuMeterRight.VolumeVisual0.Fill = vuMeterBrush;
         }
     }
 }

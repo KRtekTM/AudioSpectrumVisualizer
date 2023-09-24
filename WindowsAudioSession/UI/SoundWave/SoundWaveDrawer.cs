@@ -26,7 +26,7 @@ namespace WindowsAudioSession.UI.SoundWave
         public double Resolution { get; set; } = 2;
 
         /// <inheritdoc/>
-        public Brush LineBrush { get; set; } = Brushes.White;
+        public Brush LineBrush { get; set; } = CustomBrushes.SoundWaveBrush;
 
         /// <inheritdoc/>
         public double ScaleFactor { get; set; } = 1.8d;
@@ -99,8 +99,8 @@ namespace WindowsAudioSession.UI.SoundWave
 
             var x = x0;
             double j = 0;
-            var scaleFactor = drawHeight / ScaleFactor;
-            var centery = y0 + drawHeight / 2d;
+            var scaleFactor = drawHeight * 4; //drawHeight / ScaleFactor;
+            var centery = (y0 + drawHeight / 2d) + 6;
 
             for (var i = 0; i < linesCount - 1; i++)
             {

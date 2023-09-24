@@ -1,4 +1,5 @@
-﻿using WASApiBassNet.Components.AudioCapture;
+﻿using System.Windows.Media;
+using WASApiBassNet.Components.AudioCapture;
 
 using WindowsAudioSession.UI;
 
@@ -19,5 +20,7 @@ namespace WindowsAudioSession
         /// audio plugin engine interactor
         /// </summary>
         IAudioPluginEngine AudioPluginEngine { get; }
+
+        void ChangeBrush(Brush brush);
     }
 }
