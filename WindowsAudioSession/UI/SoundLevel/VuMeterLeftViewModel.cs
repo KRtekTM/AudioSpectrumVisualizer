@@ -20,6 +20,9 @@ namespace WindowsAudioSession.UI.SoundLevel
 
         /// <inheritdoc/>
         public override void HandleTick()
-            => Level = SoundLevelCapture.LevelLeft * LevelScaleFactor;
+        {
+            Level = SoundLevelCapture.LevelLeft * LevelScaleFactor;
+        }
+
     }
 }

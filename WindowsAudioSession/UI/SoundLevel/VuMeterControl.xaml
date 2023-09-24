@@ -81,8 +81,8 @@
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Name="VolRectSpace" Width="5*"/>
+                <ColumnDefinition Name="VolRectDraw" Width="auto"/>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="5*"/>

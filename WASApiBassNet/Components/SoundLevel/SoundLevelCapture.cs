@@ -49,11 +49,20 @@ namespace WASApiBassNet.Components.SoundLevel
 
         int MapPercentToNumber(int percent)
         {
-            if (percent <= 100 && percent > 26) return 1;
-            else if (percent > 10 && percent <= 26)
+            string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
+            int highVolumeThreshold = System.IO.File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(System.IO.File.ReadAllText(highVolumeThresholdFilePath)) : 26;
+
+            if (percent <= 100 && percent > highVolumeThreshold) return 1;
+            else if (percent > 10 && percent <= highVolumeThreshold)
             {
-                // Procenta mezi 10% a 26% se mapují plynule z 10 na 1
-                return 10 - (int)((percent - 10) * 0.5);
+                // Procenta mezi 10% a highVolumeThreshold se mapují plynule z 10 na 1
+                double x1 = 10; // počáteční procento
+                double y1 = 10; // počáteční násobič
+                double x2 = highVolumeThreshold; // koncové procento
+                double y2 = 2; // koncový násobič
+
+                double newValue = (percent - x1) * (y2 - y1) / (x2 - x1) + y1;
+                return (int)newValue;
             }
             else if (percent <= 10 && percent > 0) return 10;
             else return 0;

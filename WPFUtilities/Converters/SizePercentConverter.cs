@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 using WPFUtilities.ComponentModel;
@@ -22,7 +23,40 @@ namespace WPFUtilities.Converters
         /// <param name="culture">culture</param>
         /// <returns>the size mul the ratio</returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-            => Math.Max(0, System.Convert.ToDouble(values[0]) * System.Convert.ToDouble(values[1]));
+        {
+            var res0 = System.Convert.ToDouble(values[0]);
+            var res1 = System.Convert.ToDouble(values[1]);
+            double resultFinal;
+
+            // Vypočet polohy posledního pixelu obdélníku vzhledem k celkové šířce
+            var polohaObdelniku = res0 * res1;
+
+            // Pokud je aplikace ve FullScreen, použij tuto logiku:
+            // Tímto se bude volume meter pohybovat po celých obdélnících
+            if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
+            {
+                // Délka sloupečku a mezery
+                var sloupecDelka = 26.200000000000045;
+                var mezera = 4.0;
+
+                // Celková šířka plochy pro vykreslovaný obdélník
+                var celkovaSirka = (sloupecDelka + mezera);
+
+                // Vypočet, kolik sloupečků zabere plocha obdélníku
+                var sloupceZabraneObdelnikem = polohaObdelniku / celkovaSirka;
+
+                // Zaokrouhlení na nejbližší celé číslo
+                var pocetSloupcuZabranych = (int)Math.Ceiling(sloupceZabraneObdelnikem);
+
+                resultFinal = pocetSloupcuZabranych * celkovaSirka;
+            }
+            else
+            {
+                resultFinal = Math.Max(0, polohaObdelniku);
+            }
+
+            return resultFinal;
+        }
 
         /// <summary>
         /// convert back

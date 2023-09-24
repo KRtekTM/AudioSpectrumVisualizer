@@ -64,7 +64,7 @@ namespace WindowsAudioSession.UI
         private double touchValue = 0; // Aktuální hodnota
         private Point lastTouchPosition; // Poslední pozice dotyku
         private DateTime touchStartTime;
-        private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(5);
+        private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
         private int touchCount = 0;
         private int _highVolumeThreshold = 70;
         private bool _isTouching = false;

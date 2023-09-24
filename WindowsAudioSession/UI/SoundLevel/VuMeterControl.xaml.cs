@@ -23,5 +23,6 @@ namespace WindowsAudioSession.UI.SoundLevel
         {
             InitializeComponent();
         }
+
     }
 }
