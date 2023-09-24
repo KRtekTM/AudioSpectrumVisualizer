@@ -12,6 +12,21 @@ A sample of usage of Windows Audio Session WASAPI using BASS.NET - WPF C# .NET F
 
 Run the project, select your audio device, and this tool will listen to the device internal output and animates some of the sound properties. The library BASS.NET is used to interface C# with the WASAPI Windows library.
 
+Currently made for 1280x400 pixels: <a href="https://www.waveshare.com/7.9inch-hdmi-lcd.htm">https://www.waveshare.com/7.9inch-hdmi-lcd.htm</a>
+
+## Key bindings:
+- F11 - toggle fullscreen
+  
+## Touch gestures:
+- swipe left - volume down
+- swipe right - volume up
+- triple touch - in normal view switches to fullscreen, in fullscreen closes application
+
+## Font dependencies
+- Parsi (can't provide link due to license)
+- VFD Display (can't provide link due to license)
+
+## Original text from franck-gaspoz
 Clean architecture approach: complete discoupling between data,data providers,data transformers,ui controls,drawers,view models,application logic. 
 Relying on the patterns MVVM, Command, Chain of responsability, Dependency injection, Mediator.
 
