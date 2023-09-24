@@ -157,11 +157,11 @@ namespace WindowsAudioSession.UI
             if(ButtonStop.IsEnabled)
             {
                 int currentVolume = (int)Math.Round(audioController.Volume);
-                TextVolume.Text = $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
+                TextVolume.Text = (audioController.IsMuted) ? (_isTouching ? $"MUT {currentVolume:D2}%" : "MUTED") : $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
                 string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
                 int highVolumeThreshold = System.IO.File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(System.IO.File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
-                TextVolume.Foreground = (currentVolume >= highVolumeThreshold) ? CustomBrushes.VolumePeakTopBrush : (_isTouching ? CustomBrushes.LabelChanging : CustomBrushes.Labels);
-                TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
+                TextVolume.Foreground = (currentVolume >= highVolumeThreshold || (audioController.IsMuted && !_isTouching)) ? CustomBrushes.VolumePeakTopBrush : (_isTouching ? CustomBrushes.LabelChanging : CustomBrushes.Labels);
+                TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault().Replace("C", "G");
             }
             else
             {
@@ -213,6 +213,11 @@ namespace WindowsAudioSession.UI
 
                 // Aktualizace zobrazení hodnoty
                 //TextVolume.Text = touchValue.ToString("F1"); // "F1" formátuje hodnotu s jedním desetinným místem
+
+                if(audioController.Volume != touchValue && audioController.IsMuted)
+                {
+                    audioController.ToggleMute();
+                }
 
                 // Nastavení hodnoty hlasitosti (předpokládáme, že audioController umožňuje nastavení hlasitosti)
                 audioController.Volume = touchValue;
