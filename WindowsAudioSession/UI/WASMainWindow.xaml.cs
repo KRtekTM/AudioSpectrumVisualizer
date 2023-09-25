@@ -106,6 +106,7 @@ namespace WindowsAudioSession.UI
         private int _highVolumeThreshold = 70;
         private bool _isTouching, _isMuting, _isTouchMoving = false;
         private int highVolumeThreshold;
+        private int _lastCheckedHour = -1;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -172,6 +173,8 @@ namespace WindowsAudioSession.UI
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            var ActualTime = DateTime.Now;
+
             // Aktualizace obsahu TextBlocku s aktuálním časem
             string FlashingText;
             if (WindowStyle == WindowStyle.None && ButtonStop.IsEnabled)
@@ -180,11 +183,11 @@ namespace WindowsAudioSession.UI
                 {
                     GoFullScreen();
                 }
-                FlashingText = DateTime.Now.ToString("HH:mm:ss - ddd MM/dd/yyyy");
+                FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
             }
             else
             {
-                FlashingText = DateTime.Now.ToString("HH:mm:ss");
+                FlashingText = ActualTime.ToString("HH:mm:ss");
             }
             TextClock.Text = FlashingText;
 
@@ -194,10 +197,10 @@ namespace WindowsAudioSession.UI
             TextPlay.Text = "PLAY ";
             if (ButtonStop.IsEnabled && levelMoreThenZero)
             {
-                if ((DateTime.Now.Second % 4) == 0) TextPlay.Text = "PLAY ";
-                if ((DateTime.Now.Second % 4) == 1) TextPlay.Text = "PLAY ▶";
-                if ((DateTime.Now.Second % 4) == 2) TextPlay.Text = "PLAY ▶▶";
-                if ((DateTime.Now.Second % 4) == 3) TextPlay.Text = "PLAY ▶▶▶";
+                if ((ActualTime.Second % 4) == 0) TextPlay.Text = "PLAY ";
+                if ((ActualTime.Second % 4) == 1) TextPlay.Text = "PLAY ▶";
+                if ((ActualTime.Second % 4) == 2) TextPlay.Text = "PLAY ▶▶";
+                if ((ActualTime.Second % 4) == 3) TextPlay.Text = "PLAY ▶▶▶";
             }
 
             // Aktualizace bloku s hlasitostí
@@ -223,6 +226,18 @@ namespace WindowsAudioSession.UI
                 {
                     _isMuting = false;
                 }
+            }
+
+            // Check for updates
+            if(_lastCheckedHour < ActualTime.Hour && _lastCheckedHour != -1)
+            {
+                CheckForUpdates();
+                _lastCheckedHour = ActualTime.Hour;
+            }
+            else if(_lastCheckedHour != -1)
+            {
+                // Handle check on app start, add 1 hour to be sure that it wont be triggered immediately after the initial update check
+                _lastCheckedHour = ActualTime.Hour + 1;
             }
         }
 
@@ -353,11 +368,16 @@ namespace WindowsAudioSession.UI
                 GoFullScreen();
             }
 
+            CheckForUpdates();
+        }
+
+        private void CheckForUpdates()
+        {
             // Check for updates
             KeyValuePair<bool, Version> checkedVersion = NetworkHelper.CheckUpdate();
             if (checkedVersion.Key)
             {
-                if(System.Windows.Forms.MessageBox.Show($"There is new version available.{Environment.NewLine}Current version: {NetworkHelper.CurrentVersion}{Environment.NewLine}New version: {checkedVersion.Value}{Environment.NewLine}{Environment.NewLine}Do you want to open download website?", "Update available", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                if (System.Windows.Forms.MessageBox.Show($"There is new version available.{Environment.NewLine}Current version: {NetworkHelper.CurrentVersion}{Environment.NewLine}New version: {checkedVersion.Value}{Environment.NewLine}{Environment.NewLine}Do you want to open download website?", "Update available", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                 {
                     System.Diagnostics.Process.Start(NetworkHelper.DownloadUrl);
                 }
