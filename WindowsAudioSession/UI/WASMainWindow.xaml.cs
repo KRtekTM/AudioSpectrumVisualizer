@@ -1,15 +1,14 @@
-﻿using System;
+﻿using AudioSwitcher.AudioApi.CoreAudio;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using WindowsAudioSession.UI.FFT;
-using AudioSwitcher.AudioApi.CoreAudio;
-using Microsoft.Win32;
-using System.Threading.Tasks;
-using System.IO;
-using AudioSwitcher.AudioApi;
+using WindowsAudioSession.Helpers;
 
 namespace WindowsAudioSession.UI
 {
@@ -352,6 +351,16 @@ namespace WindowsAudioSession.UI
 
                 // Nastavení režimu fullscreen
                 GoFullScreen();
+            }
+
+            // Check for updates
+            KeyValuePair<bool, Version> checkedVersion = NetworkHelper.CheckUpdate();
+            if (checkedVersion.Key)
+            {
+                if(System.Windows.Forms.MessageBox.Show($"There is new version available.{Environment.NewLine}Current version: {NetworkHelper.CurrentVersion}{Environment.NewLine}New version: {checkedVersion.Value}{Environment.NewLine}{Environment.NewLine}Do you want to open download website?", "Update available", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(NetworkHelper.DownloadUrl);
+                }
             }
         }
     }
