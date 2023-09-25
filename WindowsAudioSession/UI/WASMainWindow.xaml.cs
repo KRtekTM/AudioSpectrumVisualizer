@@ -28,6 +28,7 @@ namespace WindowsAudioSession.UI
             this.Height = 400;
             this.Width = 1280;
             this.ResizeMode = ResizeMode.NoResize;
+            this.Title = $"{this.Title} {NetworkHelper.CurrentVersion}";
 
             _windowStyle = this.WindowStyle;
             _windowState = this.WindowState;
