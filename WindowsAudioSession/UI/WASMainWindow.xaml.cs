@@ -86,11 +86,13 @@ namespace WindowsAudioSession.UI
         {
             TextVolume.Text = "---";
             TextAudioOut.Text = "NONE";
+            TextStereo.Foreground = CustomBrushes.VolumePeakTopBrush;
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault().Replace("C", "G");
+            TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
+            TextStereo.Foreground = CustomBrushes.VolumePeakBrush;
         }
 
         private WindowStyle _windowStyle;
@@ -98,7 +100,6 @@ namespace WindowsAudioSession.UI
         private ResizeMode _resizeMode;
         private DispatcherTimer timer;
         private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
-        private double touchValue = 0; // Aktuální hodnota
         private Point lastTouchPosition, startingTouchPosition; // Poslední pozice dotyku
         private DateTime touchStartTime;
         private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
@@ -172,9 +173,8 @@ namespace WindowsAudioSession.UI
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            string FlashingText;
-
             // Aktualizace obsahu TextBlocku s aktuálním časem
+            string FlashingText;
             if (WindowStyle == WindowStyle.None && ButtonStop.IsEnabled)
             {
                 if (Panel_StartStop.Visibility == Visibility.Visible)
@@ -189,7 +189,7 @@ namespace WindowsAudioSession.UI
             }
             TextClock.Text = FlashingText;
 
-            TextStereo.Foreground = (ButtonStop.IsEnabled) ? Brushes.Red : Brushes.DarkRed;
+            // Aktualizace animovaného bloku "PLAY"
             bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
             TextPlay.Foreground = (ButtonStop.IsEnabled && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
             TextPlay.Text = "PLAY ";
@@ -201,6 +201,7 @@ namespace WindowsAudioSession.UI
                 if ((DateTime.Now.Second % 4) == 3) TextPlay.Text = "PLAY ▶▶▶";
             }
 
+            // Aktualizace bloku s hlasitostí
             if (ButtonStop.IsEnabled)
             {
                 int currentVolume = (int)Math.Round(audioController.Volume);
@@ -232,7 +233,6 @@ namespace WindowsAudioSession.UI
 
             if (ButtonStop.IsEnabled)
             {
-                touchValue = audioController.Volume;
                 TextVolume.Foreground = CustomBrushes.LabelChanging;
             }
 
@@ -271,28 +271,24 @@ namespace WindowsAudioSession.UI
                     _isTouchMoving = true;
                 }
 
-                // Aktualizace hodnoty
-                touchValue += Math.Round(delta / 10); // Pravděpodobně budete potřebovat jiný koeficient, abyste dosáhli žádaného rozsahu
-                touchValue = Math.Max(0, Math.Min(100, touchValue)); // Omezení hodnoty na rozsah 0-100
-
-                // Aktualizace zobrazení hodnoty
-                //TextVolume.Text = touchValue.ToString("F1"); // "F1" formátuje hodnotu s jedním desetinným místem
-
-                if (delta != 0 && audioController.IsMuted && touchCount == 0)
-                {
-                    audioController.ToggleMute();
-                }
-
                 // Nastavení hodnoty hlasitosti (předpokládáme, že audioController umožňuje nastavení hlasitosti)
-                if (delta != 0)
+                if (delta != 0 && Math.Abs(delta) > 15)
                 {
                     switch (touchCount)
                     {
                         case 0:
-                            audioController.Volume = (touchValue % 2 == 0) ? touchValue : audioController.Volume;
+                            // Pokud je ztlumeno, při pohybu zruš ztlumení
+                            if (audioController.IsMuted)
+                            {
+                                audioController.ToggleMute();
+                            }
+
+                            // Sniž/zvyš hlasitost o 2 procenta
+                            audioController.Volume = (delta > 0) ? audioController.Volume + 2 : audioController.Volume - 2;
                             break;
                         case 1:
-                            if(!_isMuting && delta != 0)
+                            // Handle tap and swipe gesture
+                            if(!_isMuting)
                             {
                                 audioController.ToggleMute();
                             }
@@ -310,6 +306,8 @@ namespace WindowsAudioSession.UI
         private void WASMainWindow_TouchUp(object sender, TouchEventArgs e)
         {
             TimeSpan touchDuration = DateTime.Now - touchStartTime;
+
+            // Handle four taps gestures
             if (touchDuration <= requiredTouchDuration && touchCount == 3)
             {
                 if (WindowStyle != WindowStyle.None)

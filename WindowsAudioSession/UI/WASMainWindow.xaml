@@ -39,7 +39,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-                <ListBox ItemsSource="{Binding ListenableDevices}" SelectedItem="{Binding SelectedDevice,Mode=TwoWay}" Background="{x:Static local:CustomBrushes.Borders}" Name="Panel_ListBoxSoundCards" Width="200" />
+                <ListBox ItemsSource="{Binding ListenableDevices}" SelectedItem="{Binding SelectedDevice,Mode=TwoWay}" Background="White" Foreground="Black" Name="Panel_ListBoxSoundCards" Width="200" />
 
             <StackPanel Orientation="Vertical" Grid.Column="1" Name="Panel_StartStop" >
 
