@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using WindowsAudioSession.Commands;
 using WindowsAudioSession.Helpers;
 
 namespace WindowsAudioSession.UI
@@ -75,9 +76,21 @@ namespace WindowsAudioSession.UI
             // Tato událost se zavolá, když dojde ke změně nastavení monitoru
             SystemEvents.DisplaySettingsChanged += (sender, e) =>
             {
-                if(ButtonStop.IsEnabled)
+                
+                if(App.WASMainViewModel.IsStarted)
                 {
-                    App.Current.Shutdown();
+                    ButtonStop.Command.Execute(sender);
+                    Commands.Commands.Stop.Execute(sender);
+                    ButtonStop_Click(sender, null);
+
+                    Panel_LengthSampleFrq.Visibility = Visibility.Visible;
+                    Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
+                    Panel_StartStop.Visibility = Visibility.Visible;
+
+                    fftControl1.Panel_StackPanelBars.Visibility = Visibility.Visible;
+
+                    App.WASMainViewModel.IsStarted = false;
+                    App.WASMainViewModel.CanStart = true;
                 }
             };
 
@@ -149,7 +162,7 @@ namespace WindowsAudioSession.UI
             WindowState = WindowState.Maximized;
             ResizeMode = ResizeMode.NoResize;
 
-            if (ButtonStop.IsEnabled)
+            if (App.WASMainViewModel.IsStarted)
             {
                 Panel_LengthSampleFrq.Visibility = Visibility.Collapsed;
                 Panel_ListBoxSoundCards.Visibility = Visibility.Collapsed;
@@ -184,7 +197,7 @@ namespace WindowsAudioSession.UI
 
             // Aktualizace obsahu TextBlocku s aktuálním časem
             string FlashingText;
-            if (WindowStyle == WindowStyle.None && ButtonStop.IsEnabled)
+            if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
                 if (Panel_StartStop.Visibility == Visibility.Visible)
                 {
@@ -200,9 +213,9 @@ namespace WindowsAudioSession.UI
 
             // Aktualizace animovaného bloku "PLAY"
             bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
-            TextPlay.Foreground = (ButtonStop.IsEnabled && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
+            TextPlay.Foreground = (App.WASMainViewModel.IsStarted && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
             TextPlay.Text = "PLAY ";
-            if (ButtonStop.IsEnabled && levelMoreThenZero)
+            if (App.WASMainViewModel.IsStarted && levelMoreThenZero)
             {
                 if ((ActualTime.Second % 4) == 0) TextPlay.Text = "PLAY ";
                 if ((ActualTime.Second % 4) == 1) TextPlay.Text = "PLAY ▶";
@@ -211,7 +224,7 @@ namespace WindowsAudioSession.UI
             }
 
             // Aktualizace bloku s hlasitostí
-            if (ButtonStop.IsEnabled)
+            if (App.WASMainViewModel.IsStarted)
             {
                 int currentVolume = (int)Math.Round(audioController.Volume);
                 TextVolume.Text = (audioController.IsMuted) ? (_isTouching && !_isMuting ? $"MUT {currentVolume:D2}%" : "MUTED") : $"{currentVolume:D2}%"; //format current volume with leading zero for 0-9%
@@ -253,7 +266,7 @@ namespace WindowsAudioSession.UI
         {
             _isTouching = true;
 
-            if (ButtonStop.IsEnabled)
+            if (App.WASMainViewModel.IsStarted)
             {
                 TextVolume.Foreground = CustomBrushes.LabelChanging;
             }
@@ -278,7 +291,7 @@ namespace WindowsAudioSession.UI
 
         private void WASMainWindow_TouchMove(object sender, TouchEventArgs e)
         {
-            if (ButtonStop.IsEnabled)
+            if (App.WASMainViewModel.IsStarted)
             {
                 // Získání aktuální pozice dotyku
                 var touchPoint = e.GetTouchPoint(this);
