@@ -172,7 +172,6 @@
             </Border>
             <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Name="TextPeakLevelMeter"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="{Binding Label,FallbackValue=FREQUENCY PEAK METER}"
                    Margin="0,8,4,0"
                    Grid.Row="0"
@@ -201,82 +200,66 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="0"
                    Grid.Column="0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="10"
                    Grid.Column="1"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="18"
                    Grid.Column="2"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="24"
                    Grid.Column="3"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="32"
                    Grid.Column="4"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="48"
                    Grid.Column="5"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="76"
                    Grid.Column="6"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="120"
                    Grid.Column="7"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="200"
                    Grid.Column="8"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="300"
                    Grid.Column="9"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="400"
                    Grid.Column="10"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="800"
                    Grid.Column="11"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="1,2k"
                    Grid.Column="12"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="1,8k"
                    Grid.Column="13"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="2,7k"
                    Grid.Column="14"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="4k"
                    Grid.Column="15"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
@@ -289,7 +272,6 @@
 
             <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                        Name="TextSpectrumAnalyserLabel"
-                       Width="{Binding LabelWidth,FallbackValue=*}" 
                        Text="{Binding Label,FallbackValue=SOUND WAVE SPECTRUM ANALYSER}"
                        Padding="8"
                        Margin="240,0,16,0"
@@ -299,34 +281,38 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.RowSpan="3" Name="Panel_Knob" Width="232" HorizontalAlignment="Left" Background="Black" Margin="8,0,0,8">
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="VOLUME CONTROL"
                    Margin="0,8,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
                     Name="TextVolume"
-                    Width="{Binding LabelWidth,FallbackValue=*}" 
                     Text="XX%"
                     Margin="8,8,8,1"
                     Padding="0"
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="30"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
                    Text="AUDIO OUTPUT"
                    Margin="0,16,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
                     Name="TextAudioOut"
-                    Width="{Binding LabelWidth,FallbackValue=*}" 
                     Text="NONE"
                     Margin="8,8,8,1"
                     Padding="0"
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
 
-
+                <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
+                   Text="VERSION:"
+                   Name="TextVersion"
+                   Margin="0,55,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
+                <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
+                   Text="Contributors: Ondřej Kotas, Franck Gaspoz"
+                   Margin="0,4,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
         </Grid>
 

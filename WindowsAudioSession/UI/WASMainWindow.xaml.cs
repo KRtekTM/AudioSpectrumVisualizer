@@ -17,6 +17,25 @@ namespace WindowsAudioSession.UI
     /// </summary>
     public partial class WASMainWindow : Window
     {
+
+        private WindowStyle _windowStyle;
+        private WindowState _windowState;
+        private ResizeMode _resizeMode;
+        private DispatcherTimer timer;
+        private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
+        private Point lastTouchPosition, startingTouchPosition;
+        private DateTime touchStartTime;
+        private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
+        private int touchCount = 0;
+        private int _highVolumeThreshold = 70;
+        private bool _isTouching, _isMuting, _isTouchMoving = false;
+        private int highVolumeThreshold;
+        private DateTime _lastUpdateCheck;
+        private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
+        private KeyValuePair<bool, Version> checkedVersion;
+
+
+
         /// <summary>
         /// creates a new instance
         /// </summary>
@@ -29,6 +48,7 @@ namespace WindowsAudioSession.UI
             this.Width = 1280;
             this.ResizeMode = ResizeMode.NoResize;
             this.Title = $"{this.Title} {NetworkHelper.CurrentVersion}";
+            TextVersion.Text = $"VERSION: {NetworkHelper.CurrentVersion}";
 
             _windowStyle = this.WindowStyle;
             _windowState = this.WindowState;
@@ -94,20 +114,6 @@ namespace WindowsAudioSession.UI
             TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
             TextStereo.Foreground = CustomBrushes.VolumePeakBrush;
         }
-
-        private WindowStyle _windowStyle;
-        private WindowState _windowState;
-        private ResizeMode _resizeMode;
-        private DispatcherTimer timer;
-        private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
-        private Point lastTouchPosition, startingTouchPosition; // Poslední pozice dotyku
-        private DateTime touchStartTime;
-        private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
-        private int touchCount = 0;
-        private int _highVolumeThreshold = 70;
-        private bool _isTouching, _isMuting, _isTouchMoving = false;
-        private int highVolumeThreshold;
-        private int _lastCheckedHour = -1;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -230,15 +236,16 @@ namespace WindowsAudioSession.UI
             }
 
             // Check for updates
-            if(_lastCheckedHour < ActualTime.Hour && _lastCheckedHour != -1)
+            TimeSpan updCheckTimeSpan = ActualTime - _lastUpdateCheck;
+            // Handle four taps gestures
+            if (updCheckTimeSpan >= durationBetweenUpdateCheck)
             {
                 CheckForUpdates();
-                _lastCheckedHour = ActualTime.Hour;
             }
-            else if(_lastCheckedHour != -1)
+            // If there is no new update change "up to date :)" text back to version
+            if (updCheckTimeSpan > TimeSpan.FromSeconds(5) && !checkedVersion.Key)
             {
-                // Handle check on app start, add 1 hour to be sure that it wont be triggered immediately after the initial update check
-                _lastCheckedHour = ActualTime.Hour + 1;
+                TextVersion.Text = $"VERSION: {NetworkHelper.CurrentVersion}";
             }
         }
 
@@ -374,14 +381,23 @@ namespace WindowsAudioSession.UI
 
         private void CheckForUpdates()
         {
+            _lastUpdateCheck = DateTime.Now;
+            TextVersion.Text = $"VERSION: checking...";
+
             // Check for updates
-            KeyValuePair<bool, Version> checkedVersion = NetworkHelper.CheckUpdate();
+            checkedVersion = NetworkHelper.CheckUpdate();
             if (checkedVersion.Key)
             {
+                TextVersion.Text = $"VERSION: new update!";
+
                 if (System.Windows.Forms.MessageBox.Show($"There is new version available.{Environment.NewLine}Current version: {NetworkHelper.CurrentVersion}{Environment.NewLine}New version: {checkedVersion.Value}{Environment.NewLine}{Environment.NewLine}Do you want to open download website?", "Update available", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                 {
                     System.Diagnostics.Process.Start(NetworkHelper.DownloadUrl);
                 }
+            }
+            else
+            {
+                TextVersion.Text = $"VERSION: up to date :)";
             }
         }
     }
