@@ -5,7 +5,7 @@ A sample of usage of Windows Audio Session WASAPI using BASS.NET - WPF C# .NET F
 - colored bars (vu-meters) showing captured device sound FFT , Sound Level and sound wave
 
 <p align="center">
-<img src="https://github.com/KRtekTM/WindowsAudioSessionSample/blob/main/Doc/softronics.gif?raw=true" align="center" alt="a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level">
+<img src="https://github.com/KRtekTM/WindowsAudioSessionSample/blob/master/Doc/softronics.gif?raw=true" align="center" alt="a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level">
 <br>
 <i>a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level + sound wave</i>
 </p>
