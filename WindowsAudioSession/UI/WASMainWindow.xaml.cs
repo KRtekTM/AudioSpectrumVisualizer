@@ -23,9 +23,6 @@ namespace WindowsAudioSession.UI
 
         private const int requiredWidth = 1280;
         private const int requiredHeight = 400;
-        private WindowStyle _windowStyle;
-        private WindowState _windowState;
-        private ResizeMode _resizeMode;
         private DispatcherTimer timer;
         private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
         private Point lastTouchPosition, startingTouchPosition;
@@ -48,23 +45,24 @@ namespace WindowsAudioSession.UI
         {
             InitializeComponent();
 
-            if(targetScreen != null)
+            if(Settings.Default.SizeAsWorkingArea)
             {
-                this.Width = targetScreen.WorkingArea.Width;
-                this.Height = targetScreen.WorkingArea.Height;
-                this.MaxWidth = this.Width;
-                this.MaxHeight = this.Height;
-                this.ResizeMode = ResizeMode.NoResize;
-                WindowStyle = WindowStyle.None;
+                this.MaxHeight = targetScreen.WorkingArea.Height;
+                this.MaxWidth = targetScreen.WorkingArea.Width;
+            }
+            else
+            {
+                this.MaxHeight = targetScreen.Bounds.Height;
+                this.MaxWidth = targetScreen.Bounds.Width;
+            }
 
+            if (targetScreen != null)
+            {
+                GoFullScreen();
             }
 
             this.Title = $"{this.Title} {NetworkHelper.CurrentVersion}";
             TextVersion.Text = $"VERSION: {NetworkHelper.CurrentVersion}";
-
-            _windowStyle = this.WindowStyle;
-            _windowState = this.WindowState;
-            _resizeMode = this.ResizeMode;
 
             soundWaveControl.Width = Panel_SoundWave.Width;
 
@@ -145,15 +143,11 @@ namespace WindowsAudioSession.UI
         {
             if (e.Key == Key.F11)
             {
-                if (WindowState == _windowState)
+                if (WindowStyle == WindowStyle.None)
                 {
-                    GoFullScreen();
-                }
-                else
-                {
-                    WindowState = _windowState;
-                    WindowStyle = _windowStyle;
-                    ResizeMode = _resizeMode;
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    ResizeMode = ResizeMode.CanMinimize;
 
                     Panel_LengthSampleFrq.Visibility = Visibility.Visible;
                     Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
@@ -166,12 +160,49 @@ namespace WindowsAudioSession.UI
                     Panel_FTTControl2.Visibility = Visibility.Visible;
                     Panel_SoundWave.Visibility = Visibility.Visible;
                 }
+                else
+                {
+                    GoFullScreen();
+                }
+            }
+            if(e.Key == Key.F9 && WindowStyle == WindowStyle.None)
+            {
+                if (this.Height == targetScreen.WorkingArea.Height)
+                {
+                    Settings.Default.SizeAsWorkingArea = false;
+                    
+                }
+                else
+                {
+                    Settings.Default.SizeAsWorkingArea = true;
+                }
+                Settings.Default.Save();
+
+                // Restart app
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
             }
         }
 
         private void GoFullScreen()
         {
+            if (Settings.Default.SizeAsWorkingArea)
+            {
+                this.Width = targetScreen.WorkingArea.Width;
+                this.Height = targetScreen.WorkingArea.Height;
+            }
+            else
+            {
+                this.Width = targetScreen.Bounds.Width;
+                this.Height = targetScreen.Bounds.Height;
+            }
+
+            WindowState = WindowState.Normal;
+            WindowStyle = WindowStyle.None;
             WindowState = WindowState.Maximized;
+            ResizeMode = ResizeMode.NoResize;
+
+            soundWaveControl.Width = Panel_SoundWave.Width;
 
             if (App.WASMainViewModel.IsStarted)
             {
@@ -181,25 +212,6 @@ namespace WindowsAudioSession.UI
 
                 fftControl1.Panel_StackPanelBars.Visibility = Visibility.Collapsed;
             }
-        }
-
-        private bool _inStateChange;
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            if (WindowStyle == WindowStyle.None && !_inStateChange)
-            {
-                _inStateChange = true;
-                WindowState = WindowState.Normal;
-                WindowStyle = WindowStyle.None;
-                WindowState = WindowState.Maximized;
-                ResizeMode = ResizeMode.NoResize;
-
-                soundWaveControl.Width = Panel_SoundWave.Width;
-                _inStateChange = false;
-            }
-
-            base.OnStateChanged(e);
         }
 
         private void Timer_Tick(object sender, EventArgs e)

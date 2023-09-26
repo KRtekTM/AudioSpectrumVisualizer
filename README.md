@@ -18,6 +18,7 @@ If display with 1280x400 pixels is connected and detected on application start, 
 
 ## Key bindings:
 - F11 - toggle fullscreen
+- F9 - change between working area and monitor bounds (it restarts application automatically between change)
   
 ## Touch gestures:
 - swipe left - volume down

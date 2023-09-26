@@ -34,5 +34,17 @@ namespace WindowsAudioSession.Properties {
                 this["LastAudioOut"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SizeAsWorkingArea {
+            get {
+                return ((bool)(this["SizeAsWorkingArea"]));
+            }
+            set {
+                this["SizeAsWorkingArea"] = value;
+            }
+        }
     }
 }

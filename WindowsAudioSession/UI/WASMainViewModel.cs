@@ -65,7 +65,7 @@ namespace WindowsAudioSession.UI
             }
         }
 
-        bool _isTopmost = true;
+        bool _isTopmost = false;
         /// <summary>
         /// main window is topmost
         /// </summary>
