@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using WASApiBassNet;
 using WindowsAudioSession.Commands;
 using WindowsAudioSession.Helpers;
 using WindowsAudioSession.Properties;
@@ -115,7 +116,7 @@ namespace WindowsAudioSession.UI
                 if (e.FullPath == highVolumeThresholdFilePath)
                 {
                     // Soubor _configVolumeModifier.txt byl změněn
-                    highVolumeThreshold = File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
+                    highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
 
                     // Zde můžete provést další akce s highVolumeThreshold
                 }

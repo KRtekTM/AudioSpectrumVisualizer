@@ -49,8 +49,7 @@ namespace WASApiBassNet.Components.SoundLevel
 
         int MapPercentToNumber(int percent)
         {
-            string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
-            int highVolumeThreshold = System.IO.File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(System.IO.File.ReadAllText(highVolumeThresholdFilePath)) : 26;
+            int highVolumeThreshold = AppHelper.GetHighVolumeThreshold(26);
 
             if (percent <= 100 && percent > highVolumeThreshold) return 1;
             else if (percent > 10 && percent <= highVolumeThreshold)
