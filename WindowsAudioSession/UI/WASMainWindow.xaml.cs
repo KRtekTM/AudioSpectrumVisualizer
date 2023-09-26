@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using WindowsAudioSession.Commands;
 using WindowsAudioSession.Helpers;
+using WindowsAudioSession.Properties;
 
 namespace WindowsAudioSession.UI
 {
@@ -19,6 +21,8 @@ namespace WindowsAudioSession.UI
     public partial class WASMainWindow : Window
     {
 
+        private const int requiredWidth = 1280;
+        private const int requiredHeight = 400;
         private WindowStyle _windowStyle;
         private WindowState _windowState;
         private ResizeMode _resizeMode;
@@ -34,7 +38,7 @@ namespace WindowsAudioSession.UI
         private DateTime _lastUpdateCheck;
         private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
         private KeyValuePair<bool, Version> checkedVersion;
-
+        private System.Windows.Forms.Screen targetScreen = GetRequiredDisplay();
 
 
         /// <summary>
@@ -43,11 +47,18 @@ namespace WindowsAudioSession.UI
         public WASMainWindow()
         {
             InitializeComponent();
-            this.MaxHeight = 400;
-            this.MinWidth = 1280;
-            this.Height = 400;
-            this.Width = 1280;
-            this.ResizeMode = ResizeMode.NoResize;
+
+            if(targetScreen != null)
+            {
+                this.Width = targetScreen.WorkingArea.Width;
+                this.Height = targetScreen.WorkingArea.Height;
+                this.MaxWidth = this.Width;
+                this.MaxHeight = this.Height;
+                this.ResizeMode = ResizeMode.NoResize;
+                WindowStyle = WindowStyle.None;
+
+            }
+
             this.Title = $"{this.Title} {NetworkHelper.CurrentVersion}";
             TextVersion.Text = $"VERSION: {NetworkHelper.CurrentVersion}";
 
@@ -124,8 +135,10 @@ namespace WindowsAudioSession.UI
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            Settings.Default.LastAudioOut = Panel_ListBoxSoundCards.SelectedItem.ToString();
+            Settings.Default.Save();
             TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
-            TextStereo.Foreground = CustomBrushes.VolumePeakBrush;
+            TextStereo.Foreground = CustomBrushes.VolumePeakBrush; 
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -158,9 +171,7 @@ namespace WindowsAudioSession.UI
 
         private void GoFullScreen()
         {
-            WindowStyle = WindowStyle.None;
             WindowState = WindowState.Maximized;
-            ResizeMode = ResizeMode.NoResize;
 
             if (App.WASMainViewModel.IsStarted)
             {
@@ -367,29 +378,43 @@ namespace WindowsAudioSession.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Požadované rozlišení
-            int requiredWidth = 1280;
-            int requiredHeight = 400;
-
-            // Získání seznamu všech monitorů
-            var screens = System.Windows.Forms.Screen.AllScreens;
-
-            // Najdeme monitor s požadovaným rozlišením
-            var targetScreen = screens.FirstOrDefault(screen => screen.Bounds.Width == requiredWidth && screen.Bounds.Height == requiredHeight);
-
             if (targetScreen != null)
             {
-                // Nastavení okna na požadované rozlišení
-                this.Left = targetScreen.Bounds.Left;
-                this.Top = targetScreen.Bounds.Top;
-                this.Width = targetScreen.Bounds.Width;
-                this.Height = targetScreen.Bounds.Height;
-
-                // Nastavení režimu fullscreen
+                this.Left = targetScreen.WorkingArea.Left;
+                this.Top = targetScreen.WorkingArea.Top;
                 GoFullScreen();
             }
 
             CheckForUpdates();
+
+
+            if (Settings.Default.LastAudioOut != null)
+            {
+                int indexPolozky = -1;
+
+                // Najděte index položky s hledaným textem
+                for (int i = 0; i < Panel_ListBoxSoundCards.Items.Count; i++)
+                {
+                    string item = $"{Panel_ListBoxSoundCards.Items[i]}";
+                    if (item == Settings.Default.LastAudioOut)
+                    {
+                        indexPolozky = i;
+                    }
+                }
+
+                if (indexPolozky != -1)
+                {
+                    // Nastavte vybraný index, aby označil položku
+                    Panel_ListBoxSoundCards.SelectedIndex = indexPolozky;
+
+                    App.WASMainViewModel.IsStarted = true;
+                    App.WASMainViewModel.CanStart = false;
+                    ButtonStart.Command.Execute(sender);
+                    Commands.Commands.Start.Execute(sender);
+                    ButtonStart_Click(sender, null);
+                }
+            }
+                
         }
 
         private void CheckForUpdates()
@@ -412,6 +437,12 @@ namespace WindowsAudioSession.UI
             {
                 TextVersion.Text = $"VERSION: up to date :)";
             }
+        }
+
+        private static System.Windows.Forms.Screen GetRequiredDisplay()
+        {
+            var screens = System.Windows.Forms.Screen.AllScreens;
+            return screens.FirstOrDefault(screen => screen.Bounds.Width == requiredWidth && screen.Bounds.Height == requiredHeight);
         }
     }
 }

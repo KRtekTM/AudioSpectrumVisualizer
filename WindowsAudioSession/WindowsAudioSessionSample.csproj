@@ -91,6 +91,7 @@
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="IAppComponents.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="UI\CustomBrushes.cs" />
     <Compile Include="UI\FFT\BarsCountInAllowableRangeAttribute.cs" />
     <Compile Include="UI\FFT\FFTControl.xaml.cs">

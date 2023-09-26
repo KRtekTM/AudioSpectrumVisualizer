@@ -308,7 +308,7 @@
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="VERSION:"
                    Name="TextVersion"
-                   Margin="0,55,0,0"
+                   Margin="0,38,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="Contributors: Ondřej Kotas, Franck Gaspoz"
