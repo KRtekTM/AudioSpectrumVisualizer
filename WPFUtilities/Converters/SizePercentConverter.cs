@@ -33,7 +33,8 @@ namespace WPFUtilities.Converters
 
             // Pokud je aplikace ve FullScreen, použij tuto logiku:
             // Tímto se bude volume meter pohybovat po celých obdélnících
-            if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
+            // Pouze pro rozlišení 1280*400 px
+            if (res0 == 620)//(Application.Current.MainWindow.WindowStyle == WindowStyle.None)
             {
                 // Délka sloupečku a mezery
                 var sloupecDelka = 26.200000000000045;
