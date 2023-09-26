@@ -25,6 +25,16 @@ namespace WindowsAudioSession.UI.FFT
             }
         }
 
+        int _showingBarCount = 512;
+        public int ShowingBarCount
+        {
+            get => _showingBarCount;
+            set
+            {
+                _showingBarCount = value;
+            }
+        }
+
         int _barWidthPercent = 100;
 
         /// <summary>

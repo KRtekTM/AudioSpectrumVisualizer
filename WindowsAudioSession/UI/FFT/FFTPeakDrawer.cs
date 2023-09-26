@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -47,13 +48,16 @@ namespace WindowsAudioSession.UI.FFT
         {
             var canvas = Drawable.GetDrawingSurface();
             var barCount = barSizes.Length;
-            var barMaxWidth = (width - (2d * Margin)) / barCount;
+            var showingBarCount = FFTPeakAnalyser.ShowingBarsCount;
+            showingBarCount = (showingBarCount > 0 && (showingBarCount % 2) == 0) ? showingBarCount : barCount;
+            var showingBarRatio = (showingBarCount > 0) ? barCount / showingBarCount : 1;
+            var barMaxWidth = (width - (2d * Margin)) / showingBarCount;
             var barWidth = barMaxWidth * WidthPercent / 100d;
 
             if (_bars == null)
             {
-                _bars = new Rectangle[barCount];
-                for (var i = 0; i < barCount; i++)
+                _bars = new Rectangle[showingBarCount];
+                for (var i = 0; i < showingBarCount; i++)
                 {
                     var bar = new Rectangle();
                     _bars[i] = bar;
@@ -64,10 +68,24 @@ namespace WindowsAudioSession.UI.FFT
 
             var x = x0;
 
-            for (var i = 0; i < barCount; i++)
+            for (var i = 0; i < showingBarCount; i++)
             {
-                var barHeight = Math.Max(0, barSizes[i] * (height - 2 * Margin) / 255d);
-                var y_top = y0 + height - 2 * Margin - barHeight;
+                double maxValue;
+
+                if (showingBarRatio > 1)
+                {
+                    int startIndex = i * showingBarRatio;
+                    int endIndex = (i + 1) * showingBarRatio;
+
+                    maxValue = barSizes.Skip(startIndex).Take(endIndex - startIndex).Max();
+                }
+                else
+                {
+                    maxValue = barSizes[i];
+                }
+
+                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d);
+                var y_top = (y0 + height - 2 * Margin - barHeight);
 
                 var bar = _bars[i];
 

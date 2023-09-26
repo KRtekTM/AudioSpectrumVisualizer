@@ -86,6 +86,19 @@ namespace WindowsAudioSession.UI.FFT
         public static readonly DependencyProperty BarCountProperty =
             DependencyProperty.Register("BarCount", typeof(int), typeof(FFTControl), new PropertyMetadata(512));
 
+        public int ShowingBarCount
+        {
+            get => (int)GetValue(ShowingBarCountProperty);
+            set
+            {
+                SetValue(ShowingBarCountProperty, value);
+                ViewModel.ShowingBarCount = value;
+            }
+        }
+
+        public static readonly DependencyProperty ShowingBarCountProperty =
+            DependencyProperty.Register("ShowingBarCount", typeof(int), typeof(FFTControl), new PropertyMetadata(512));
+
         /// <inheritdoc/>
         public int BarWidthPercent
         {

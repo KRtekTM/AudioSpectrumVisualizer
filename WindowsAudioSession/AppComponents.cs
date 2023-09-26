@@ -1,4 +1,4 @@
-﻿
+
 using System.Windows.Media;
 
 using WASApiBassNet.Components.AudioCapture;
@@ -142,15 +142,18 @@ namespace WindowsAudioSession
             // FFT component #2
 
             App.WASMainWindow.fftControl2.ViewModel = FFTViewModel2;
+            FFTViewModel2.ShowingBarCount = App.WASMainWindow.fftControl2.ShowingBarCount;
             FFTAnalyser2.FFTProvider = FFTProvider;
             FFTAnalyser2.BarsCount = FFTViewModel2.BarCount;
             FFTDrawer2.BarBrush = HatchRawBrush.Create(Brushes.LightGreen, 4, 3);
+            FFTAnalyser2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
             FFTDrawer2.BarWidthPercent = FFTViewModel2.BarWidthPercent;
             FFTDrawer2.Drawable = App.WASMainWindow.fftControl2;
             FFTDrawer2.FFTAnalyser = FFTAnalyser2;
-
+            
             FFTPeakAnalyser2.FFTAnalyzer = FFTAnalyser2;
             FFTPeakAnalyser2.BarsCount = FFTViewModel2.BarCount;
+            FFTPeakAnalyser2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
             FFTPeakDrawer.WidthPercent = 80d;
             FFTPeakDrawer.Drawable = App.WASMainWindow.fftControl2;
             FFTPeakDrawer.FFTPeakAnalyser = FFTPeakAnalyser2;
