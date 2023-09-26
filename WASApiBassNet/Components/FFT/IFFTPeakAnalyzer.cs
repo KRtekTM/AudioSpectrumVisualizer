@@ -26,5 +26,6 @@ namespace WASApiBassNet.Components.FFT
         /// bars count
         /// </summary>
         int BarsCount { get; set; }
+        int ShowingBarsCount { get; set; }
     }
 }

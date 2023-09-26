@@ -161,7 +161,8 @@
                     Name="Panel_FTTControl2"
                     Margin="-1,0,0,0">
                 <fftControls:FFTControl 
-                        BarCount="16"
+                        BarCount="512"
+                        ShowingBarCount="16"
                         BarWidthPercent="80"
                         FFTDrawMargin="0"
                         Background="{x:Static local:CustomBrushes.Background}"
@@ -200,67 +201,67 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="0"
+                   Text="20"
                    Grid.Column="0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="10"
+                   Text="30"
                    Grid.Column="1"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="18"
+                   Text="50"
                    Grid.Column="2"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="24"
+                   Text="70"
                    Grid.Column="3"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="32"
+                   Text="100"
                    Grid.Column="4"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="48"
+                   Text="200"
                    Grid.Column="5"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="76"
+                   Text="300"
                    Grid.Column="6"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="120"
+                   Text="500"
                    Grid.Column="7"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="200"
+                   Text="700"
                    Grid.Column="8"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="300"
+                   Text="1k"
                    Grid.Column="9"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="400"
+                   Text="2k"
                    Grid.Column="10"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="800"
+                   Text="3k"
                    Grid.Column="11"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="1,2k"
+                   Text="5k"
                    Grid.Column="12"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="1,8k"
+                   Text="7k"
                    Grid.Column="13"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="2,7k"
+                   Text="10k"
                    Grid.Column="14"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
-                   Text="4k"
+                   Text="20k"
                    Grid.Column="15"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </Grid>

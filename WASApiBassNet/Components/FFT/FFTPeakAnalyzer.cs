@@ -21,6 +21,16 @@ namespace WASApiBassNet.Components.FFT
             }
         }
 
+        int _showingBarsCount;
+        public int ShowingBarsCount
+        {
+            get => _showingBarsCount;
+            set
+            {
+                _showingBarsCount = value;
+            }
+        }
+
         /// <inheritdoc/>
         public IFFTAnalyzer FFTAnalyzer { get; set; }
 

@@ -21,6 +21,8 @@ namespace WASApiBassNet.Components.FFT
             }
         }
 
+        public int ShowingBarsCount { get; set; }
+
         /// <inheritdoc/>
         public IFFTProvider FFTProvider { get; set; }
 

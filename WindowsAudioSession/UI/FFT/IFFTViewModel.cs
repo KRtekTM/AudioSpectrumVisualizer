@@ -14,6 +14,7 @@ namespace WindowsAudioSession.UI.FFT
         /// bar count
         /// </summary>
         int BarCount { get; set; }
+        int ShowingBarCount { get; set; }
 
         /// <summary>
         /// bar width percent
