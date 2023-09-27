@@ -6,32 +6,6 @@ namespace WindowsAudioSession.UI
 {
     public static class CustomBrushes
     {
-        //public static LinearGradientBrush VuMeterBrush
-        //{
-        //    get
-        //    {
-        //        LinearGradientBrush brush = new LinearGradientBrush();
-        //        brush.StartPoint = new Point(0, 0);
-        //        brush.EndPoint = new Point(0, 1);
-
-        //        brush.GradientStops.Add(new GradientStop(Colors.Red, 0));
-        //        brush.GradientStops.Add(new GradientStop(Colors.Orange, 0.1));
-        //        brush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.60));
-        //        brush.GradientStops.Add(new GradientStop(Colors.LightGreen, 0.7));
-        //        brush.GradientStops.Add(new GradientStop(Colors.Green, 0.9));
-
-        //        return brush;
-        //    }
-        //}
-
-        //public static Brush SpectrumBrush
-        //{
-        //    get
-        //    {
-        //        return WPFUtilities.CustomBrushes.SpectrumBrush.Create();
-        //    }
-        //}
-
         public static Brush VolumePeakBrush
         {
             get

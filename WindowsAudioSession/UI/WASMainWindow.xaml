@@ -90,7 +90,7 @@
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Name="TextClockLabel"
                    Width="auto" 
-                   Text="{Binding Label,FallbackValue='WORLD CLOCK'}"
+                   Text="WORLD CLOCK"
                    Margin="8,8,4,0" 
                    Grid.Column="3"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10" />
@@ -105,7 +105,7 @@
                     <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                        Name="TextVolumePeak"
                        Width="auto" 
-                       Text="PEAK LEVEL METER"
+                       Text="VOLUME LEVEL METER"
                        Margin="8,8,4,0" 
                        Grid.Column="3"
                        TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10" />
@@ -273,7 +273,7 @@
 
             <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                        Name="TextSpectrumAnalyserLabel"
-                       Text="{Binding Label,FallbackValue=SOUND WAVE SPECTRUM ANALYSER}"
+                       Text="AUDIO SPECTRUM ANALYSER"
                        Padding="8"
                        Margin="240,0,16,0"
                        Grid.Row="2"

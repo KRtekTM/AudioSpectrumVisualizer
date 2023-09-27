@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using WASApiBassNet;
-using WindowsAudioSession.Commands;
 using WindowsAudioSession.Helpers;
 using WindowsAudioSession.Properties;
 
@@ -37,7 +36,13 @@ namespace WindowsAudioSession.UI
         private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
         private KeyValuePair<bool, Version> checkedVersion;
         private System.Windows.Forms.Screen targetScreen = GetRequiredDisplay();
-
+        private bool showAudioSourceText = false;
+        private KeyValuePair<string, string> audioSource;
+        private string audioSourceText = ""; // Přidáme proměnnou pro uchování audioSourceText
+        private int audioSourceTextStartChar = 0;
+        private DateTime lastAudioSourceChangeTime, displayedValueShownSince = DateTime.MinValue; // Pro sledování změn audioSource.Value
+        private AudioSourceHelper _audioSourceHelper;
+        private int showEachSecondsCount = 20;
 
         /// <summary>
         /// creates a new instance
@@ -104,25 +109,31 @@ namespace WindowsAudioSession.UI
                 }
             };
 
+            // Subscribe on changes made in volume modifier config file (so the user can change it while the app is running)
             string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
             highVolumeThreshold = File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
-            // Vytvořte instanci FileSystemWatcher
             FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(highVolumeThresholdFilePath));
-            // Nastavte filtrování na konkrétní soubor
             watcher.Filter = Path.GetFileName(highVolumeThresholdFilePath);
-            // Přidejte obslužnou metodu pro událost Changed
             watcher.Changed += (sender, e) =>
             {
                 if (e.FullPath == highVolumeThresholdFilePath)
                 {
-                    // Soubor _configVolumeModifier.txt byl změněn
                     highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
-
-                    // Zde můžete provést další akce s highVolumeThreshold
                 }
             };
-            // Zapněte sledování změn
             watcher.EnableRaisingEvents = true;
+
+            // Subscribe on changes of Audio source (meaning song or program as shown in Windows volume popup)
+            _audioSourceHelper = new AudioSourceHelper();
+            Task.Run(_audioSourceHelper.RunManagerAsync);
+            _audioSourceHelper.AudioSourceChanged += AudioSourceChangedHandler;
+        }
+
+        private void AudioSourceChangedHandler(object sender, KeyValuePair<string, string> e)
+        {
+            audioSource = e;
+            audioSourceTextStartChar = 0;
+            showAudioSourceText = true;
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
@@ -217,26 +228,22 @@ namespace WindowsAudioSession.UI
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            var ActualTime = DateTime.Now;
-
-            // Aktualizace obsahu TextBlocku s aktuálním časem
-            string FlashingText;
+            // Fix for fullscreen setting
             if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
                 if (Panel_StartStop.Visibility == Visibility.Visible)
                 {
                     GoFullScreen();
                 }
-                FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
             }
-            else
-            {
-                FlashingText = ActualTime.ToString("HH:mm:ss");
-            }
-            TextClock.Text = FlashingText;
+
+            // Values used through TICK
+            var ActualTime = DateTime.Now;
+            bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
+
+            UpdateTextToDisplay(ActualTime, levelMoreThenZero);
 
             // Aktualizace animovaného bloku "PLAY"
-            bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
             TextPlay.Foreground = (App.WASMainViewModel.IsStarted && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
             TextPlay.Text = "PLAY ";
             if (App.WASMainViewModel.IsStarted && levelMoreThenZero)
@@ -456,6 +463,81 @@ namespace WindowsAudioSession.UI
         {
             var screens = System.Windows.Forms.Screen.AllScreens;
             return screens.FirstOrDefault(screen => screen.Bounds.Width == requiredWidth && screen.Bounds.Height == requiredHeight);
+        }
+
+        private void UpdateTextToDisplay(DateTime ActualTime, bool levelMoreThenZero)
+        {
+            string FlashingText;
+            
+            if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
+            {
+                // Show again each spcified interval in seconds
+                bool isMoreThenSet = (Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % showEachSecondsCount) == 0;
+                if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
+                {
+                    audioSourceTextStartChar = 0;
+                    showAudioSourceText = true;
+                }
+                // If audio source changed, display it
+                if (audioSource.Value != "" && audioSourceText != TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value))
+                {
+                    audioSourceText = TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value);
+                    audioSourceTextStartChar = 0;
+                    showAudioSourceText = true;
+                    lastAudioSourceChangeTime = ActualTime;
+                }
+
+
+                if (levelMoreThenZero && showAudioSourceText)
+                {
+                    if ((ActualTime - lastAudioSourceChangeTime) < TimeSpan.FromSeconds(1))
+                    {
+                        // Don't update anything if less than 1 seconds (TICK is running more often)
+                        return;
+                    }
+
+                    int maxCharsInText = 30;
+
+                    // Get substring which we are able to show on display
+                    string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
+                    FlashingText = displayedText;
+
+                    // Until we reach the end of text, increment the trim
+                    if (audioSourceTextStartChar + maxCharsInText >= audioSourceText.Length)
+                    {
+                        if(displayedValueShownSince == DateTime.MinValue)
+                        {
+                            displayedValueShownSince = ActualTime;
+                        }
+
+                        if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(2))
+                        {
+                            showAudioSourceText = false;
+                            displayedValueShownSince = DateTime.MinValue;
+                        }
+                        
+                    }
+                    else
+                    {
+                        audioSourceTextStartChar++;
+                    }
+
+                    TextClockLabel.Text = audioSource.Key;
+                }
+                else
+                {
+                    audioSourceTextStartChar = 0;
+                    showAudioSourceText = false;
+                    FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
+                }
+            }
+            else
+            {
+                FlashingText = ActualTime.ToString("HH:mm:ss");
+            }
+
+            TextClockLabel.Text = levelMoreThenZero ? audioSource.Key : "WORLD CLOCK";
+            TextClock.Text = FlashingText;
         }
     }
 }
