@@ -42,7 +42,7 @@ namespace WindowsAudioSession.UI
         private int audioSourceTextStartChar = 0;
         private DateTime lastAudioSourceChangeTime, displayedValueShownSince = DateTime.MinValue; // Pro sledování změn audioSource.Value
         private AudioSourceHelper _audioSourceHelper;
-        private int showEachSecondsCount = 20;
+        private int showEachSecondsCount = 25;
 
         /// <summary>
         /// creates a new instance
@@ -468,16 +468,10 @@ namespace WindowsAudioSession.UI
         private void UpdateTextToDisplay(DateTime ActualTime, bool levelMoreThenZero)
         {
             string FlashingText;
-            
+            int maxCharsInText = 30;
+
             if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
-                // Show again each spcified interval in seconds
-                bool isMoreThenSet = (Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % showEachSecondsCount) == 0;
-                if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
-                {
-                    audioSourceTextStartChar = 0;
-                    showAudioSourceText = true;
-                }
                 // If audio source changed, display it
                 if (audioSource.Value != "" && audioSourceText != TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value))
                 {
@@ -485,6 +479,18 @@ namespace WindowsAudioSession.UI
                     audioSourceTextStartChar = 0;
                     showAudioSourceText = true;
                     lastAudioSourceChangeTime = ActualTime;
+                }
+                else
+                {
+                    // Show again each spcified interval in seconds
+                    int secondsToShowWholeText = (audioSourceText.Length - maxCharsInText);
+                    int secondsOver = (secondsToShowWholeText > 28) ? secondsToShowWholeText - 28 : 0;
+                    bool isMoreThenSet = Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % (showEachSecondsCount + secondsOver) == 0;
+                    if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
+                    {
+                        audioSourceTextStartChar = 0;
+                        showAudioSourceText = true;
+                    }
                 }
 
 
@@ -495,8 +501,6 @@ namespace WindowsAudioSession.UI
                         // Don't update anything if less than 1 seconds (TICK is running more often)
                         return;
                     }
-
-                    int maxCharsInText = 30;
 
                     // Get substring which we are able to show on display
                     string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
