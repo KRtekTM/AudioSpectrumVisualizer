@@ -508,7 +508,7 @@ namespace WindowsAudioSession.UI
                             displayedValueShownSince = ActualTime;
                         }
 
-                        if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(2))
+                        if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(audioSourceText.Length > 28 ? 2 : 4))
                         {
                             showAudioSourceText = false;
                             displayedValueShownSince = DateTime.MinValue;
@@ -533,7 +533,7 @@ namespace WindowsAudioSession.UI
                 FlashingText = ActualTime.ToString("HH:mm:ss");
             }
 
-            TextClockLabel.Text = levelMoreThenZero ? audioSource.Key : "WORLD CLOCK";
+            TextClockLabel.Text = levelMoreThenZero ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
         }
     }
