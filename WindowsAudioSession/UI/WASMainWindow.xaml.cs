@@ -496,12 +496,6 @@ namespace WindowsAudioSession.UI
 
                 if (levelMoreThenZero && showAudioSourceText)
                 {
-                    if ((ActualTime - lastAudioSourceChangeTime) < TimeSpan.FromSeconds(1))
-                    {
-                        // Don't update anything if less than 1 seconds (TICK is running more often)
-                        return;
-                    }
-
                     // Get substring which we are able to show on display
                     string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
                     FlashingText = displayedText;
@@ -519,7 +513,6 @@ namespace WindowsAudioSession.UI
                             showAudioSourceText = false;
                             displayedValueShownSince = DateTime.MinValue;
                         }
-                        
                     }
                     else
                     {
