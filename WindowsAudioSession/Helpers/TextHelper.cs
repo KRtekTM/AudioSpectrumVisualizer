@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WindowsAudioSession.Helpers
@@ -28,16 +29,13 @@ namespace WindowsAudioSession.Helpers
                 }
             }
 
-            string result;
-            if(stringBuilder.Length > 28)
-            {
-                result = $" {stringBuilder} ";
-            }
-            else
-            {
-                result = stringBuilder.ToString();
-            }
 
+            string result;
+            result = TryTrimNotesInSongTitle(stringBuilder.ToString());
+            if (stringBuilder.Length > 28)
+            {
+                result = $" {result} ";
+            }
             return result;
         }
 
@@ -54,6 +52,15 @@ namespace WindowsAudioSession.Helpers
                 // Pokud se nepodaří převést znak na ASCII, vrátíme prázdný řetězec
                 return string.Empty;
             }
+        }
+
+        public static string TryTrimNotesInSongTitle(string inputText)
+        {
+            // Regulární výraz pro hledání a odstranění podřetězců v závorkách s ignorováním velikosti písmen
+            // REGEX which matches all things like (Official video) [REMASTERED 4k] etc.
+            string pattern = @"\s*\[[^\]]*(?:video|official|remastered|remaster|hd|original)[^\]]*\]|\s*\([^)]*(?:video|official|remastered|remaster|hd|original)[^)]*\)";
+            
+            return Regex.Replace(inputText, pattern, "", RegexOptions.IgnoreCase);
         }
     }
 }
