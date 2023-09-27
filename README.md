@@ -1,4 +1,5 @@
 # Audio Spectrum Visualizer for Windows
+[![GH-release](https://img.shields.io/github/v/release/KRtekTM/AudioSpectrumVisualizer.svg)](https://github.com/KRtekTM/AudioSpectrumVisualizer/releases)
 
 A sample of usage of Windows Audio Session WASAPI using BASS.NET - WPF C# .NET Framework 4.8
 
