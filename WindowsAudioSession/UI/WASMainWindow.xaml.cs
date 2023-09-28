@@ -51,21 +51,21 @@ namespace WindowsAudioSession.UI
         {
             InitializeComponent();
 
-            if(Settings.Default.SizeAsWorkingArea)
-            {
-                this.MaxHeight = targetScreen.WorkingArea.Height;
-                this.MaxWidth = targetScreen.WorkingArea.Width;
-                TextVersion.Margin = new Thickness(0, 44, 0, 0);
-            }
-            else
-            {
-                this.MaxHeight = targetScreen.Bounds.Height;
-                this.MaxWidth = targetScreen.Bounds.Width;
-                TextVersion.Margin = new Thickness(0, 38, 0, 0);
-            }
-
             if (targetScreen != null)
             {
+                if (Settings.Default.SizeAsWorkingArea)
+                {
+                    this.MaxHeight = targetScreen.WorkingArea.Height;
+                    this.MaxWidth = targetScreen.WorkingArea.Width;
+                    TextVersion.Margin = new Thickness(0, 44, 0, 0);
+                }
+                else
+                {
+                    this.MaxHeight = targetScreen.Bounds.Height;
+                    this.MaxWidth = targetScreen.Bounds.Width;
+                    TextVersion.Margin = new Thickness(0, 38, 0, 0);
+                }
+
                 GoFullScreen();
             }
 
