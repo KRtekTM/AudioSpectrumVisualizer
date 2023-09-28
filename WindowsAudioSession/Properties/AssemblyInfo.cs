@@ -9,7 +9,7 @@ using System.Windows;
 [assembly: AssemblyTitle("Audio Spectrum Visualizer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ondřej Kotas, KRtkovo.eu")]
+[assembly: AssemblyCompany("Ondřej Kotas, Franck Gaspoz")]
 [assembly: AssemblyProduct("Audio Spectrum Visualizer")]
 [assembly: AssemblyCopyright("MIT License, 2023")]
 [assembly: AssemblyTrademark("")]
@@ -50,6 +50,6 @@ using System.Windows;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.7.2")]
-[assembly: AssemblyFileVersion("0.1.7.2")]
+[assembly: AssemblyVersion("0.1.8.0")]
+[assembly: AssemblyFileVersion("0.1.8.0")]
 [assembly: NeutralResourcesLanguage("en")]

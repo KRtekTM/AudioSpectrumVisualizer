@@ -455,8 +455,9 @@ namespace WindowsAudioSession.UI
                 }
             }
                 
-            LoadingScreen.Visibility = Visibility.Collapsed;
+            LoadingScreen.Visibility = Visibility.Hidden;
         }
+
 
         private void CheckForUpdates()
         {
@@ -588,6 +589,10 @@ namespace WindowsAudioSession.UI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             LoadingScreen.Visibility = Visibility.Visible;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
             _audioSourceHelper.Dispose();
             audioController.Dispose();
         }
