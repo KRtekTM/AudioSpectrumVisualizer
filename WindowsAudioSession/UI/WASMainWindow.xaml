@@ -291,6 +291,7 @@
                     Text="XX%"
                     Margin="8,8,8,1"
                     Padding="0"
+                    MouseWheel="TextVolume_MouseWheel"
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="30"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
@@ -340,7 +341,18 @@
                    Margin="0,4,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
+
+            <TextBlock Foreground="{x:Static local:CustomBrushes.SubtitleText}"
+                       Background="{x:Static local:CustomBrushes.SubtitleBackground}"
+                       Text=""
+                       Name="TextSubtitle"
+                       Margin="248,44,248,0"
+                       Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="24"/>
         </Grid>
+
+        
 
         <StackPanel Visibility="Visible" Orientation="Vertical" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Name="LoadingScreen" Width="1280" Height="400" HorizontalAlignment="Left" Background="{x:Static local:CustomBrushes.LoadingScreen}" Margin="0">
             <Image Margin="168" Stretch="None" Source="/UI/posy-wait-64.png" />

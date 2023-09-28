@@ -55,9 +55,9 @@ namespace WindowsAudioSession.Helpers
 
                     Task.Run(currentMediaSession.ControlSession.TryGetMediaPropertiesAsync);
                 }
+            }
 
-                AudioSourceChanged?.Invoke(null, _audioSourceText);
-            }            
+            AudioSourceChanged?.Invoke(null, _audioSourceText);
         }
 
         private void MediaManager_OnAnyTimelinePropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)

@@ -141,6 +141,7 @@ namespace WindowsAudioSession.UI
             audioSource = e;
             audioSourceTextStartChar = 0;
             showAudioSourceText = true;
+            lastAudioSourceChangeTime = DateTime.MinValue;
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
@@ -473,6 +474,14 @@ namespace WindowsAudioSession.UI
             }
         }
 
+        private void TextVolume_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            TextVolume.Foreground = CustomBrushes.LabelChanging;
+            audioController.Volume = (e.Delta > 0) ? audioController.Volume + 2 : audioController.Volume - 2;
+
+            e.Handled = true;
+        }
+
         private static System.Windows.Forms.Screen GetRequiredDisplay()
         {
             var screens = System.Windows.Forms.Screen.AllScreens;
@@ -489,7 +498,7 @@ namespace WindowsAudioSession.UI
                 // If audio source changed, display it
                 if (!audioSource.Equals(new KeyValuePair<string, string>(null, null)))
                 {
-                    if (audioSource.Value != "" && audioSourceText != TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value))
+                    if (audioSource.Value != "" && !audioSourceText.Equals(TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value)))
                     {
                         audioSourceText = TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value);
                         audioSourceTextStartChar = 0;

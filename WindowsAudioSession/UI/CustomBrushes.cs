@@ -103,5 +103,21 @@ namespace WindowsAudioSession.UI
                 return new SolidColorBrush(Color.FromArgb(0xCC, 0x1D, 0x1D, 0x1D));
             }
         }
+
+        public static Brush SubtitleText
+        {
+            get
+            {
+                return new SolidColorBrush(Colors.Goldenrod);
+            }
+        }
+
+        public static Brush SubtitleBackground
+        {
+            get
+            {
+                return new SolidColorBrush(Color.FromArgb(0xCC, 0x00, 0x00, 0x00));
+            }
+        }
     }
 }
