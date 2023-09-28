@@ -12,6 +12,7 @@ namespace WindowsAudioSession.Helpers
         private KeyValuePair<string, string> _audioSourceText;
         public event EventHandler<KeyValuePair<string, string>> AudioSourceChanged;
         private MediaManager mediaManager;
+        private MediaSession currentMediaSession;
 
         public AudioSourceHelper()
         {
@@ -24,15 +25,39 @@ namespace WindowsAudioSession.Helpers
             mediaManager.OnAnyTimelinePropertyChanged += MediaManager_OnAnyTimelinePropertyChanged;
         }
 
+
+        private void MediaManager_OnAnyMediaPropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionMediaProperties mediaProperties)
+        {
+            var newAudioSource = new KeyValuePair<string, string>(mediaProperties.Artist, mediaProperties.Title);
+
+            // Porovnáme nový audioSource s aktuálním
+            if (!newAudioSource.Equals(_audioSourceText))
+            {
+                _audioSourceText = newAudioSource;
+                Handle(mediaSession);
+            }
+        }
+
         private void Handle(MediaManager.MediaSession mediaSession)
         {
-            Task.Run(mediaSession.ControlSession.TryGetMediaPropertiesAsync);
-            AudioSourceChanged?.Invoke(null, _audioSourceText);
+            Handle(mediaSession, null);
+        }
+
+        private void Handle(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties = null)
+        { 
+            if(mediaManager.IsStarted)
+            {
+                currentMediaSession = mediaSession;
+
+                Task.Run(mediaSession.ControlSession.TryGetMediaPropertiesAsync);
+
+                AudioSourceChanged?.Invoke(null, _audioSourceText);
+            }            
         }
 
         private void MediaManager_OnAnyTimelinePropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
         {
-            Handle(mediaSession);
+            Handle(mediaSession, timelineProperties);
         }
 
         private void MediaManager_OnAnyPlaybackStateChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionPlaybackInfo playbackInfo)
