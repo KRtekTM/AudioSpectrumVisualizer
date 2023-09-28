@@ -494,23 +494,26 @@ namespace WindowsAudioSession.UI
             if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
                 // If audio source changed, display it
-                if (audioSource.Value != "" && audioSourceText != TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value))
+                if (!audioSource.Equals(new KeyValuePair<string, string>(null, null)))
                 {
-                    audioSourceText = TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value);
-                    audioSourceTextStartChar = 0;
-                    showAudioSourceText = true;
-                    lastAudioSourceChangeTime = ActualTime;
-                }
-                else
-                {
-                    // Show again each spcified interval in seconds
-                    int secondsToShowWholeText = (audioSourceText.Length - maxCharsInText);
-                    int secondsOver = (secondsToShowWholeText > 28) ? secondsToShowWholeText - 28 : 0;
-                    bool isMoreThenSet = Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % (showEachSecondsCount + secondsOver) == 0;
-                    if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
+                    if (audioSource.Value != "" && audioSourceText != TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value))
                     {
+                        audioSourceText = TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value);
                         audioSourceTextStartChar = 0;
                         showAudioSourceText = true;
+                        lastAudioSourceChangeTime = ActualTime;
+                    }
+                    else
+                    {
+                        // Show again each spcified interval in seconds
+                        int secondsToShowWholeText = (audioSourceText.Length - maxCharsInText);
+                        int secondsOver = (secondsToShowWholeText > 28) ? secondsToShowWholeText - 28 : 0;
+                        bool isMoreThenSet = Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % (showEachSecondsCount + secondsOver) == 0;
+                        if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
+                        {
+                            audioSourceTextStartChar = 0;
+                            showAudioSourceText = true;
+                        }
                     }
                 }
 
@@ -554,7 +557,7 @@ namespace WindowsAudioSession.UI
                 FlashingText = ActualTime.ToString("HH:mm:ss");
             }
 
-            TextClockLabel.Text = levelMoreThenZero ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
+            TextClockLabel.Text = (levelMoreThenZero && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
         }
     }
