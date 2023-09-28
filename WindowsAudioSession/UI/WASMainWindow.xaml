@@ -25,57 +25,57 @@
             <RowDefinition Name="RowDef1" Height="96" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,0,0,-9" />
+
+        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,-96,240,-9" />
 
         <Border BorderBrush="{x:Static local:CustomBrushes.Borders}" BorderThickness="0,8" Grid.Row="0">
             <Grid Margin="0,0,0,0" Name="Panel_GridTop" Background="{x:Static local:CustomBrushes.Borders}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
                 <ListBox ItemsSource="{Binding ListenableDevices}" SelectedItem="{Binding SelectedDevice,Mode=TwoWay}" Background="White" Foreground="Black" Name="Panel_ListBoxSoundCards" Width="200" />
 
-            <StackPanel Orientation="Vertical" Grid.Column="1" Name="Panel_StartStop" >
+                <StackPanel Orientation="Vertical" Grid.Column="1" Name="Panel_StartStop" >
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8,0,8,6" Height="28">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8,0,8,6" Height="28">
 
-                    <Button Name="ButtonStart" Grid.Column="1" Margin="0,0,8,0" Content="Start" Command="{x:Static commands:Commands.Start}" Width="58"/>
+                        <Button Name="ButtonStart" Grid.Column="1" Margin="0,0,8,0" Content="Start" Command="{x:Static commands:Commands.Start}" Width="58"/>
 
-                    <Button Name="ButtonStop" Content="Stop" Margin="0,0,0,0" Command="{x:Static commands:Commands.Stop}" HorizontalAlignment="Left" Width="58" />
+                        <Button Name="ButtonStop" Content="Stop" Margin="0,0,0,0" Command="{x:Static commands:Commands.Stop}" HorizontalAlignment="Left" Width="58" />
 
+                    </StackPanel>
+
+                    <CheckBox Content="Always on top" IsChecked="{Binding IsTopmost}" Width="96" Height="17" Margin="0,0,0,6" />
                 </StackPanel>
 
-                <CheckBox Content="Always on top" IsChecked="{Binding IsTopmost}" Width="96" Height="17" Margin="0,0,0,6" />
-            </StackPanel>
-
-            <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0" Name="Panel_LengthSampleFrq" >
-                <StackPanel Orientation="Horizontal" Margin="0">
-                    <Label Content="spl length:" Width="68" Height="24" FontSize="10"/>
-                    <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
+                <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0" Name="Panel_LengthSampleFrq" >
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Label Content="spl length:" Width="68" Height="24" FontSize="10"/>
+                        <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding SampleLengths}"
                               SelectedValue="{Binding SampleLength,FallbackValue=2048}" Height="20" FontSize="10"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0">
-                    <Label Content="fft length:" Width="68" Height="24" FontSize="10"/>
-                    <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Label Content="fft length:" Width="68" Height="24" FontSize="10"/>
+                        <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding FFTResolutions}"
                               SelectedValue="{Binding FFTResolution,FallbackValue=1024}" Height="20" FontSize="10"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0">
-                    <Label Content="sample frq:" Width="68" Height="24" FontSize="10"/>
-                    <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Label Content="sample frq:" Width="68" Height="24" FontSize="10"/>
+                        <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding SampleFrequencies}"
                               SelectedValue="{Binding SampleFrequency,FallbackValue=44100}" Height="20" FontSize="10"/>
-                </StackPanel>
+                    </StackPanel>
 
-            </StackPanel>
+                </StackPanel>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
                 Background="{x:Static local:CustomBrushes.Background}"
@@ -99,7 +99,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                
+
                     <soundLevelControls:VuMeterStereoControl x:Name="vuMeterControl1" Height="79"/>
 
                     <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
@@ -125,9 +125,9 @@
                        HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Parsi" FontSize="10"/>
                 </Grid>
 
-        </Grid>
+            </Grid>
         </Border>
-        
+
         <Grid Grid.Row="1" Margin="0" Name="Panel_Grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="33*"/>
@@ -275,7 +275,7 @@
                        Name="TextSpectrumAnalyserLabel"
                        Text="AUDIO SPECTRUM ANALYSER"
                        Padding="8"
-                       Margin="240,0,16,0"
+                       Margin="240,0,240,0"
                        Grid.Row="2"
                        Grid.ColumnSpan="2"
                        TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
@@ -308,14 +308,34 @@
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="VERSION:"
                    Name="TextVersion"
-                   Margin="0,38,0,0"
+                   Margin="0,44,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="Contributors: Ondřej Kotas, Franck Gaspoz"
                    Margin="0,4,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Name="Panel_ControlButtons" Width="232" HorizontalAlignment="Right" Background="Black" Margin="0,0,8,8">
+                <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                   Text="SONG LENGTH"
+                   Margin="0,8,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
+                <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
+                    Name="TextRemainingTime"
+                    Text="00:00:00"
+                    Margin="8,8,8,1"
+                    Padding="0"
+                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
+                <Button Name="ButtonPrevious" Content="⏮" HorizontalAlignment="Left" Height="48" Margin="24,24,8,8" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48" />
+                <Button Name="ButtonPlayPause" Content="⏯️" HorizontalAlignment="Center" Height="48" Margin="8,-56,8,8" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
+                <Button Name="ButtonNext" Content="⏭" HorizontalAlignment="Right" Height="48" Margin="8,-56,24,8" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
+            </StackPanel>
         </Grid>
 
+        <StackPanel Visibility="Visible" Orientation="Vertical" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Name="LoadingScreen" Width="1280" Height="400" HorizontalAlignment="Left" Background="{x:Static local:CustomBrushes.LoadingScreen}" Margin="0">
+            <Image Margin="168" Stretch="None" Source="/UI/posy-wait-64.png" />
+        </StackPanel>
+        
     </Grid>
 </Window>

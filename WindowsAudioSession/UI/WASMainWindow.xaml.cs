@@ -1,4 +1,4 @@
-﻿using AudioSwitcher.AudioApi.CoreAudio;
+using AudioSwitcher.AudioApi.CoreAudio;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -55,11 +55,13 @@ namespace WindowsAudioSession.UI
             {
                 this.MaxHeight = targetScreen.WorkingArea.Height;
                 this.MaxWidth = targetScreen.WorkingArea.Width;
+                TextVersion.Margin = new Thickness(0, 44, 0, 0);
             }
             else
             {
                 this.MaxHeight = targetScreen.Bounds.Height;
                 this.MaxWidth = targetScreen.Bounds.Width;
+                TextVersion.Margin = new Thickness(0, 38, 0, 0);
             }
 
             if (targetScreen != null)
@@ -74,6 +76,9 @@ namespace WindowsAudioSession.UI
 
             ButtonStart.Click += ButtonStart_Click;
             ButtonStop.Click += ButtonStop_Click;
+            ButtonPlayPause.Click += ButtonPlayPause_Click;
+            ButtonNext.Click += ButtonNext_Click;
+            ButtonPrevious.Click += ButtonPrevious_Click;
 
             // Vytvoření a inicializace DispatcherTimeru
             timer = new DispatcherTimer();
@@ -127,6 +132,21 @@ namespace WindowsAudioSession.UI
             _audioSourceHelper = new AudioSourceHelper();
             Task.Run(_audioSourceHelper.RunManagerAsync);
             _audioSourceHelper.AudioSourceChanged += AudioSourceChangedHandler;
+        }
+
+        private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            _audioSourceHelper.TryPlayPrevious();
+        }
+
+        private void ButtonNext_Click(object sender, RoutedEventArgs e)
+        {
+            _audioSourceHelper.TryPlayNext();
+        }
+
+        private void ButtonPlayPause_Click(object sender, RoutedEventArgs e)
+        {
+            _audioSourceHelper.TryTogglePlayPause();
         }
 
         private void AudioSourceChangedHandler(object sender, KeyValuePair<string, string> e)
@@ -435,6 +455,7 @@ namespace WindowsAudioSession.UI
                 }
             }
                 
+            LoadingScreen.Visibility = Visibility.Collapsed;
         }
 
         private void CheckForUpdates()

@@ -95,5 +95,13 @@ namespace WindowsAudioSession.UI
                 return new SolidColorBrush(Color.FromArgb(0xFF, 0x1D, 0x1D, 0x1D));
             }
         }
+
+        public static Brush LoadingScreen
+        {
+            get
+            {
+                return new SolidColorBrush(Color.FromArgb(0xCC, 0x1D, 0x1D, 0x1D));
+            }
+        }
     }
 }
