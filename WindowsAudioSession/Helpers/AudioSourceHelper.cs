@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Media.Control;
@@ -56,18 +56,19 @@ namespace WindowsAudioSession.Helpers
             }
         }
 
-        private void MediaManager_OnAnyMediaPropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionMediaProperties mediaProperties)
+        public void TryTogglePlayPause()
         {
-            var newAudioSource = new KeyValuePair<string, string>(mediaProperties.Artist, mediaProperties.Title);
+            Task.Run(currentMediaSession.ControlSession.TryTogglePlayPauseAsync);
+        }
 
-            // Porovnáme nový audioSource s aktuálním
-            if (!newAudioSource.Equals(_audioSourceText))
-            {
-                _audioSourceText = newAudioSource;
+        public void TryPlayNext()
+        {
+            Task.Run(currentMediaSession.ControlSession.TrySkipNextAsync);
+        }
 
-                // Zavoláme událost AudioSourceChanged
-                AudioSourceChanged?.Invoke(null, _audioSourceText);
-            }
+        public void TryPlayPrevious()
+        {
+            Task.Run(currentMediaSession.ControlSession.TrySkipPreviousAsync);
         }
     }
 }
