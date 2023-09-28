@@ -1,9 +1,11 @@
 # Audio Spectrum Visualizer for Windows
 [![GH-release](https://img.shields.io/github/v/release/KRtekTM/AudioSpectrumVisualizer.svg)](https://github.com/KRtekTM/AudioSpectrumVisualizer/releases)
 
-A sample of usage of Windows Audio Session WASAPI using BASS.NET - WPF C# .NET Framework 4.8
+Implements Windows Audio Session WASAPI using BASS.NET - WPF C# .NET Framework 4.8
 
-- colored bars (vu-meters) showing captured device sound FFT , Sound Level and sound wave
+- Colored bars (vu-meters) showing captured device sound FFT , Sound Level and sound wave
+- Current playing audio source (song - as in Windows volume popup)
+- Touchscreen friendly
 
 <p align="center">
 <img src="https://github.com/KRtekTM/WindowsAudioSessionSample/blob/master/Doc/softronics.gif?raw=true" align="center" alt="a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level">
