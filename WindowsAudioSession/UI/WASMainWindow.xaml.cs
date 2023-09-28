@@ -53,19 +53,6 @@ namespace WindowsAudioSession.UI
 
             if (targetScreen != null)
             {
-                if (Settings.Default.SizeAsWorkingArea)
-                {
-                    this.MaxHeight = targetScreen.WorkingArea.Height;
-                    this.MaxWidth = targetScreen.WorkingArea.Width;
-                    TextVersion.Margin = new Thickness(0, 44, 0, 0);
-                }
-                else
-                {
-                    this.MaxHeight = targetScreen.Bounds.Height;
-                    this.MaxWidth = targetScreen.Bounds.Width;
-                    TextVersion.Margin = new Thickness(0, 38, 0, 0);
-                }
-
                 GoFullScreen();
             }
 
@@ -96,8 +83,8 @@ namespace WindowsAudioSession.UI
             // Tato událost se zavolá, když dojde ke změně nastavení monitoru
             SystemEvents.DisplaySettingsChanged += (sender, e) =>
             {
-                
-                if(App.WASMainViewModel.IsStarted)
+
+                if (App.WASMainViewModel.IsStarted)
                 {
                     ButtonStop.Command.Execute(sender);
                     Commands.Commands.Stop.Execute(sender);
@@ -168,7 +155,7 @@ namespace WindowsAudioSession.UI
             Settings.Default.LastAudioOut = Panel_ListBoxSoundCards.SelectedItem.ToString();
             Settings.Default.Save();
             TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
-            TextStereo.Foreground = CustomBrushes.VolumePeakBrush; 
+            TextStereo.Foreground = CustomBrushes.VolumePeakBrush;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -197,12 +184,12 @@ namespace WindowsAudioSession.UI
                     GoFullScreen();
                 }
             }
-            if(e.Key == Key.F9 && WindowStyle == WindowStyle.None)
+            if (e.Key == Key.F9 && WindowStyle == WindowStyle.None)
             {
                 if (this.Height == targetScreen.WorkingArea.Height)
                 {
                     Settings.Default.SizeAsWorkingArea = false;
-                    
+
                 }
                 else
                 {
@@ -218,15 +205,20 @@ namespace WindowsAudioSession.UI
 
         private void GoFullScreen()
         {
-            if (Settings.Default.SizeAsWorkingArea)
+            if (targetScreen != null)
             {
-                this.Width = targetScreen.WorkingArea.Width;
-                this.Height = targetScreen.WorkingArea.Height;
-            }
-            else
-            {
-                this.Width = targetScreen.Bounds.Width;
-                this.Height = targetScreen.Bounds.Height;
+                if (Settings.Default.SizeAsWorkingArea)
+                {
+                    this.MaxHeight = targetScreen.WorkingArea.Height;
+                    this.MaxWidth = targetScreen.WorkingArea.Width;
+                    TextVersion.Margin = new Thickness(0, 44, 0, 0);
+                }
+                else
+                {
+                    this.MaxHeight = targetScreen.Bounds.Height;
+                    this.MaxWidth = targetScreen.Bounds.Width;
+                    TextVersion.Margin = new Thickness(0, 38, 0, 0);
+                }
             }
 
             WindowState = WindowState.Normal;
@@ -374,7 +366,7 @@ namespace WindowsAudioSession.UI
                             break;
                         case 1:
                             // Handle tap and swipe gesture
-                            if(!_isMuting)
+                            if (!_isMuting)
                             {
                                 audioController.ToggleMute();
                             }
@@ -454,7 +446,7 @@ namespace WindowsAudioSession.UI
                     ButtonStart_Click(sender, null);
                 }
             }
-                
+
             LoadingScreen.Visibility = Visibility.Hidden;
         }
 
@@ -528,7 +520,7 @@ namespace WindowsAudioSession.UI
                     // Until we reach the end of text, increment the trim
                     if (audioSourceTextStartChar + maxCharsInText >= audioSourceText.Length)
                     {
-                        if(displayedValueShownSince == DateTime.MinValue)
+                        if (displayedValueShownSince == DateTime.MinValue)
                         {
                             displayedValueShownSince = ActualTime;
                         }

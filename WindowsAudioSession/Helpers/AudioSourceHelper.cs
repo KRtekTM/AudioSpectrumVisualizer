@@ -104,7 +104,11 @@ namespace WindowsAudioSession.Helpers
 
         public void Dispose()
         {
-            mediaManager.Dispose();
+            try
+            {
+                mediaManager.Dispose();
+            }
+            catch { }
         }
     }
 }
