@@ -551,14 +551,45 @@ namespace WindowsAudioSession.UI
                     showAudioSourceText = false;
                     FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
                 }
+
+                // Update other info shown whole song
+                TimeSpan songLenght = _audioSourceHelper.songLength;
+                if (levelMoreThenZero && !songLenght.Equals(TimeSpan.Zero))
+                {
+                    TextRemainingTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", (int)songLenght.TotalHours, songLenght.Minutes, songLenght.Seconds);
+
+                    if (!String.IsNullOrEmpty(_audioSourceHelper.sourceApp))
+                    {
+                        TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant()}";
+                    }
+                    else
+                    {
+                        TextSourceApp.Text = $"";
+                    }
+                }
+                else
+                {
+                    TextRemainingTime.Text = "00:00:00";
+                    TextSourceApp.Text = $"";
+                }
             }
             else
             {
                 FlashingText = ActualTime.ToString("HH:mm:ss");
+                TextRemainingTime.Text = "00:00:00";
+                TextSourceApp.Text = $"";
             }
 
             TextClockLabel.Text = (levelMoreThenZero && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
+        }
+
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            LoadingScreen.Visibility = Visibility.Visible;
+            _audioSourceHelper.Dispose();
+            audioController.Dispose();
         }
     }
 }

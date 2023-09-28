@@ -13,43 +13,48 @@ namespace WindowsAudioSession.Helpers
         public event EventHandler<KeyValuePair<string, string>> AudioSourceChanged;
         private MediaManager mediaManager;
         private MediaSession currentMediaSession;
+        public TimeSpan songLength;
+        public string sourceApp;
 
         public AudioSourceHelper()
         {
             mediaManager = new MediaManager();
-            mediaManager.OnAnySessionOpened += Handle;
-            mediaManager.OnAnySessionClosed += Handle;
-            mediaManager.OnFocusedSessionChanged += Handle;
+
+            mediaManager.OnFocusedSessionChanged += OnFocusedSessionChanged;
+
             mediaManager.OnAnyMediaPropertyChanged += MediaManager_OnAnyMediaPropertyChanged;
             mediaManager.OnAnyPlaybackStateChanged += MediaManager_OnAnyPlaybackStateChanged;
             mediaManager.OnAnyTimelinePropertyChanged += MediaManager_OnAnyTimelinePropertyChanged;
         }
 
-
         private void MediaManager_OnAnyMediaPropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionMediaProperties mediaProperties)
         {
             var newAudioSource = new KeyValuePair<string, string>(mediaProperties.Artist, mediaProperties.Title);
 
-            // Porovnáme nový audioSource s aktuálním
             if (!newAudioSource.Equals(_audioSourceText))
             {
                 _audioSourceText = newAudioSource;
-                Handle(mediaSession);
+                Handle();
             }
         }
 
-        private void Handle(MediaManager.MediaSession mediaSession)
+        private void OnFocusedSessionChanged(MediaManager.MediaSession mediaSession)
         {
-            Handle(mediaSession, null);
+            Handle();
         }
 
-        private void Handle(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties = null)
+        private void Handle()
         { 
             if(mediaManager.IsStarted)
             {
-                currentMediaSession = mediaSession;
+                currentMediaSession = mediaManager.GetFocusedSession();
 
-                Task.Run(mediaSession.ControlSession.TryGetMediaPropertiesAsync);
+                if (currentMediaSession != null)
+                {
+                    sourceApp = currentMediaSession != null ? currentMediaSession.ControlSession.SourceAppUserModelId : "";
+
+                    Task.Run(currentMediaSession.ControlSession.TryGetMediaPropertiesAsync);
+                }
 
                 AudioSourceChanged?.Invoke(null, _audioSourceText);
             }            
@@ -57,12 +62,13 @@ namespace WindowsAudioSession.Helpers
 
         private void MediaManager_OnAnyTimelinePropertyChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
         {
-            Handle(mediaSession, timelineProperties);
+            songLength = timelineProperties.EndTime;
+            Handle();
         }
 
         private void MediaManager_OnAnyPlaybackStateChanged(MediaManager.MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionPlaybackInfo playbackInfo)
         {
-            Handle(mediaSession);
+            Handle();
         }
 
         public void RunManager()
@@ -83,17 +89,22 @@ namespace WindowsAudioSession.Helpers
 
         public void TryTogglePlayPause()
         {
-            Task.Run(currentMediaSession.ControlSession.TryTogglePlayPauseAsync);
+            Task.Run(mediaManager.GetFocusedSession().ControlSession.TryTogglePlayPauseAsync);
         }
 
         public void TryPlayNext()
         {
-            Task.Run(currentMediaSession.ControlSession.TrySkipNextAsync);
+            Task.Run(mediaManager.GetFocusedSession().ControlSession.TrySkipNextAsync);
         }
 
         public void TryPlayPrevious()
         {
-            Task.Run(currentMediaSession.ControlSession.TrySkipPreviousAsync);
+            Task.Run(mediaManager.GetFocusedSession().ControlSession.TrySkipPreviousAsync);
+        }
+
+        public void Dispose()
+        {
+            mediaManager.Dispose();
         }
     }
 }
