@@ -15,6 +15,7 @@ namespace WindowsAudioSession.Helpers
         private MediaSession currentMediaSession;
         public TimeSpan songLength;
         public string sourceApp;
+        public bool CanNext, CanPrevious, CanPlayPauseToggle, CanRewind, CanFF = false;
 
         public AudioSourceHelper()
         {
@@ -51,7 +52,13 @@ namespace WindowsAudioSession.Helpers
 
                 if (currentMediaSession != null)
                 {
-                    sourceApp = currentMediaSession != null ? currentMediaSession.ControlSession.SourceAppUserModelId : "";
+                    sourceApp = currentMediaSession.ControlSession.SourceAppUserModelId;
+                    var playbackInfo = currentMediaSession.ControlSession.GetPlaybackInfo();
+                    CanNext = playbackInfo.Controls.IsNextEnabled;
+                    CanPrevious = playbackInfo.Controls.IsPreviousEnabled;
+                    CanPlayPauseToggle = playbackInfo.Controls.IsPlayPauseToggleEnabled;
+                    CanRewind = playbackInfo.Controls.IsRewindEnabled;
+                    CanFF = playbackInfo.Controls.IsFastForwardEnabled;
 
                     Task.Run(currentMediaSession.ControlSession.TryGetMediaPropertiesAsync);
                 }
@@ -124,6 +131,30 @@ namespace WindowsAudioSession.Helpers
                 if (session.ControlSession.GetPlaybackInfo().Controls.IsPreviousEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
                 {
                     Task.Run(session.ControlSession.TrySkipPreviousAsync);
+                }
+            }
+        }
+
+        public void TryRewind()
+        {
+            var session = mediaManager.GetFocusedSession();
+            if (session != null)
+            {
+                if (session.ControlSession.GetPlaybackInfo().Controls.IsPreviousEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
+                {
+                    Task.Run(session.ControlSession.TryRewindAsync);
+                }
+            }
+        }
+
+        public void TryFastForward()
+        {
+            var session = mediaManager.GetFocusedSession();
+            if (session != null)
+            {
+                if (session.ControlSession.GetPlaybackInfo().Controls.IsPreviousEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
+                {
+                    Task.Run(session.ControlSession.TryFastForwardAsync);
                 }
             }
         }

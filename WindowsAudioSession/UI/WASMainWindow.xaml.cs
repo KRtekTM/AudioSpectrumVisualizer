@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using WASApiBassNet;
 using WindowsAudioSession.Helpers;
@@ -199,8 +201,7 @@ namespace WindowsAudioSession.UI
                 Settings.Default.Save();
 
                 // Restart app
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
+                GoFullScreen();
             }
         }
 
@@ -212,11 +213,13 @@ namespace WindowsAudioSession.UI
                 {
                     this.MaxHeight = targetScreen.WorkingArea.Height;
                     this.MaxWidth = targetScreen.WorkingArea.Width;
+                    TextVersion.Margin = new Thickness(0, (targetScreen.Bounds.Height - targetScreen.WorkingArea.Height) + 6, 0, 0);
                 }
                 else
                 {
                     this.MaxHeight = targetScreen.Bounds.Height;
                     this.MaxWidth = targetScreen.Bounds.Width;
+                    TextVersion.Margin = new Thickness(0, 56, 0, 0);
                 }
             }
 
@@ -246,15 +249,6 @@ namespace WindowsAudioSession.UI
                 {
                     GoFullScreen();
                 }
-            }
-
-            if(WindowStyle == WindowStyle.None && Settings.Default.SizeAsWorkingArea)
-            {
-                TextVersion.Margin = new Thickness(0, 38, 0, 0);
-            }
-            else
-            {
-                TextVersion.Margin = new Thickness(0, 44, 0, 0);
             }
 
             // Values used through TICK
@@ -427,7 +421,6 @@ namespace WindowsAudioSession.UI
 
             CheckForUpdates();
 
-
             if (Settings.Default.LastAudioOut != null)
             {
                 int indexPolozky = -1;
@@ -501,7 +494,12 @@ namespace WindowsAudioSession.UI
             int maxCharsInText = 30;
 
             bool isAudioSourceAppSet = !String.IsNullOrEmpty(_audioSourceHelper.sourceApp);
-            if (isAudioSourceAppSet && levelMoreThenZero)
+            ButtonNext.IsEnabled = isAudioSourceAppSet && _audioSourceHelper.CanNext;
+            ButtonPrevious.IsEnabled = isAudioSourceAppSet && _audioSourceHelper.CanPrevious;
+            ButtonPlayPause.IsEnabled = isAudioSourceAppSet && _audioSourceHelper.CanPlayPauseToggle;
+            ButtonPlayPause.Content = levelMoreThenZero && ButtonPlayPause.IsEnabled ? "b" : "a";
+
+            if (isAudioSourceAppSet)// && levelMoreThenZero)
             {
                 TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant().Replace(".EXE", "")}";
             }
@@ -574,7 +572,7 @@ namespace WindowsAudioSession.UI
 
                 // Update other info shown whole song
                 TimeSpan songLenght = _audioSourceHelper.songLength;
-                if (levelMoreThenZero && !songLenght.Equals(TimeSpan.Zero) && isAudioSourceAppSet)
+                if (!songLenght.Equals(TimeSpan.Zero) && isAudioSourceAppSet)
                 {
                     if (songLenght.TotalHours > 0)
                     {
@@ -597,7 +595,7 @@ namespace WindowsAudioSession.UI
                 TextSourceApp.Text = $"";
             }
 
-            TextClockLabel.Text = (levelMoreThenZero && isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
+            TextClockLabel.Text = (isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
         }
 

@@ -18,6 +18,35 @@
         KeyDown="Window_KeyDown" Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed"
 		>
 
+    <Window.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="{x:Static local:CustomBrushes.Borders}" />
+            <Setter Property="Foreground" Value="{x:Static local:CustomBrushes.Labels}" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="Foreground" Value="{x:Static local:CustomBrushes.Background}"/>
+                    <Setter Property="Background" Value="{x:Static local:CustomBrushes.Borders}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid Background="{x:Static local:CustomBrushes.Borders}">
 
@@ -309,7 +338,7 @@
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="VERSION:"
                    Name="TextVersion"
-                   Margin="0,44,0,0"
+                   Margin="0,38,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="Contributors: Ondřej Kotas, Franck Gaspoz"
@@ -328,9 +357,16 @@
                     Margin="8,8,8,0"
                     Padding="0"
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
-                <Button Name="ButtonPrevious" Content="⏮" HorizontalAlignment="Left" Height="48" Margin="24,24,8,0" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48" />
-                <Button Name="ButtonPlayPause" Content="⏯️" HorizontalAlignment="Center" Height="48" Margin="8,-48,8,0" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
-                <Button Name="ButtonNext" Content="⏭" HorizontalAlignment="Right" Height="48" Margin="8,-48,24,0" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
+
+                <Button Content="f" Style="{StaticResource buttonStyle}" Name="ButtonPrevious" HorizontalAlignment="Left" Height="48" Margin="24,24,8,0" Padding="-25,4" Width="48" FontFamily="font bottons music" FontSize="36">
+                </Button>
+
+                <Button Content="a" Style="{StaticResource buttonStyle}" Name="ButtonPlayPause" HorizontalAlignment="Center" Height="48" Margin="8,-48,8,0" Padding="-25,4" Width="48" FontFamily="font bottons music" FontSize="24">
+                </Button>
+
+                <Button Content="e" Style="{StaticResource buttonStyle}" Name="ButtonNext" HorizontalAlignment="Right" Height="48" Margin="8,-48,24,0" Padding="-25,4" Width="48" FontFamily="font bottons music" FontSize="36">
+                </Button>
+
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Text="SOURCE APP"
                    Margin="0,24,0,0"
@@ -346,7 +382,7 @@
         
 
         <StackPanel Visibility="Visible" Orientation="Vertical" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Name="LoadingScreen" Width="1280" Height="400" HorizontalAlignment="Left" Background="{x:Static local:CustomBrushes.LoadingScreen}" Margin="0">
-            <Image Margin="168" Stretch="None" Source="/UI/posy-wait-64.png" />
+            <Image Name="LoadingImage" Margin="168" Width="64" Height="64" Stretch="None" Source="/UI/posy-wait-64.png" />
         </StackPanel>
         
     </Grid>
