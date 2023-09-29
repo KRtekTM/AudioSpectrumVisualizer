@@ -212,13 +212,11 @@ namespace WindowsAudioSession.UI
                 {
                     this.MaxHeight = targetScreen.WorkingArea.Height;
                     this.MaxWidth = targetScreen.WorkingArea.Width;
-                    TextVersion.Margin = new Thickness(0, 44, 0, 0);
                 }
                 else
                 {
                     this.MaxHeight = targetScreen.Bounds.Height;
                     this.MaxWidth = targetScreen.Bounds.Width;
-                    TextVersion.Margin = new Thickness(0, 38, 0, 0);
                 }
             }
 
@@ -248,6 +246,15 @@ namespace WindowsAudioSession.UI
                 {
                     GoFullScreen();
                 }
+            }
+
+            if(WindowStyle == WindowStyle.None && Settings.Default.SizeAsWorkingArea)
+            {
+                TextVersion.Margin = new Thickness(0, 38, 0, 0);
+            }
+            else
+            {
+                TextVersion.Margin = new Thickness(0, 44, 0, 0);
             }
 
             // Values used through TICK
@@ -495,6 +502,16 @@ namespace WindowsAudioSession.UI
 
             if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
+                bool isAudioSourceAppSet = !String.IsNullOrEmpty(_audioSourceHelper.sourceApp);
+                if (isAudioSourceAppSet)
+                {
+                    TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant()}";
+                }
+                else
+                {
+                    TextSourceApp.Text = $"";
+                }
+
                 // If audio source changed, display it
                 if (!audioSource.Equals(new KeyValuePair<string, string>(null, null)))
                 {
@@ -520,7 +537,7 @@ namespace WindowsAudioSession.UI
                 }
 
 
-                if (levelMoreThenZero && showAudioSourceText)
+                if (levelMoreThenZero && showAudioSourceText && isAudioSourceAppSet)
                 {
                     // Get substring which we are able to show on display
                     string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
@@ -556,23 +573,13 @@ namespace WindowsAudioSession.UI
 
                 // Update other info shown whole song
                 TimeSpan songLenght = _audioSourceHelper.songLength;
-                if (levelMoreThenZero && !songLenght.Equals(TimeSpan.Zero))
+                if (levelMoreThenZero && !songLenght.Equals(TimeSpan.Zero) && isAudioSourceAppSet)
                 {
                     TextRemainingTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", (int)songLenght.TotalHours, songLenght.Minutes, songLenght.Seconds);
-
-                    if (!String.IsNullOrEmpty(_audioSourceHelper.sourceApp))
-                    {
-                        TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant()}";
-                    }
-                    else
-                    {
-                        TextSourceApp.Text = $"";
-                    }
                 }
                 else
                 {
                     TextRemainingTime.Text = "00:00:00";
-                    TextSourceApp.Text = $"";
                 }
             }
             else

@@ -26,7 +26,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,0,240,-9" />
+        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,70,240,-9" />
 
         <Border BorderBrush="{x:Static local:CustomBrushes.Borders}" BorderThickness="0,8" Grid.Row="0">
             <Grid Margin="0,0,0,0" Name="Panel_GridTop" Background="{x:Static local:CustomBrushes.Borders}">
@@ -341,15 +341,6 @@
                    Margin="0,4,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
-
-            <TextBlock Foreground="{x:Static local:CustomBrushes.SubtitleText}"
-                       Background="{x:Static local:CustomBrushes.SubtitleBackground}"
-                       Text=""
-                       Name="TextSubtitle"
-                       Margin="248,44,248,0"
-                       Grid.Row="2"
-                       Grid.ColumnSpan="2"
-                       TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="24"/>
         </Grid>
 
         

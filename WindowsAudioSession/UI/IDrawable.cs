@@ -12,5 +12,6 @@ namespace WindowsAudioSession.UI
         /// </summary>
         /// <returns>canvas where to draw</returns>
         Canvas GetDrawingSurface();
+        double BarHeight();
     }
 }

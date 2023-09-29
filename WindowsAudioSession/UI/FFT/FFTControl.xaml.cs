@@ -165,5 +165,7 @@ namespace WindowsAudioSession.UI.FFT
         /// <inheritdoc/>
         public Canvas GetDrawingSurface()
             => BarGraph;
+
+        public double BarHeight() => this.ActualHeight;
     }
 }

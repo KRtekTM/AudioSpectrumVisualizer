@@ -90,7 +90,8 @@ namespace WindowsAudioSession.UI.FFT
                 }
 
 
-                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * ((showingBarRatio > 1) ? 2.15 : 1);
+                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * 1.75;
+                barHeight = Math.Min((showingBarCount < 512) ? 64 : (Drawable.BarHeight() - ((canvas.Margin.Top + canvas.Margin.Bottom) * 2)), barHeight);
                 var y_top = (y0 + height - 2 * Margin - barHeight);
 
                 var bar = _bars[i];

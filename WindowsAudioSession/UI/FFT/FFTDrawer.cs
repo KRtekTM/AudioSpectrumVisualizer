@@ -75,8 +75,6 @@ namespace WindowsAudioSession.UI.FFT
 
                 if (showingBarRatio > 1)
                 {
-                    // Pokud je rozsah více než 1 sloupec, provede se zprůměrování
-
                     // Určení začátku a konce rozsahu sloupců, které chcete zprůměrovat
                     int startIndex = i * showingBarRatio;
                     int endIndex = (i + 1) * showingBarRatio;
@@ -91,7 +89,8 @@ namespace WindowsAudioSession.UI.FFT
                 }
 
 
-                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * ((showingBarRatio > 1) ? 2 : 1);
+                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * ((showingBarCount < 512) ? 1.5 : 1);
+                barHeight = Math.Min((showingBarCount < 512) ? 64 : (Drawable.BarHeight() - ((canvas.Margin.Top + canvas.Margin.Bottom) * 2)), barHeight);
                 var y_top = y0 + height - 2 * Margin - barHeight;
 
                 var bar = _bars[i];

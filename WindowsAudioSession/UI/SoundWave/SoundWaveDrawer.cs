@@ -106,10 +106,11 @@ namespace WindowsAudioSession.UI.SoundWave
             {
                 var line = _lines[i];
                 var j1 = (int)Math.Floor(j);
-                line.Y1 = centery + (soundSampleData[j1] * scaleFactor);
+                line.Y1 = centery + (soundSampleData[j1] > 0 ? Math.Min(32, soundSampleData[j1] * scaleFactor) : Math.Max(-32, soundSampleData[j1] * scaleFactor));
                 line.X1 = x;
                 var j2 = (int)Math.Floor(j + sampleResolution);
-                line.Y2 = centery + (soundSampleData[j2] * scaleFactor);
+                line.Y2 = centery + (soundSampleData[j2] > 0 ? Math.Min(32, soundSampleData[j2] * scaleFactor) : Math.Max(-32, soundSampleData[j2] * scaleFactor));
+                //line.Y2 = centery + Math.Min(64, soundSampleData[j2] * scaleFactor);
                 line.X2 = x + Resolution;
                 x += Resolution;
                 j += sampleResolution;

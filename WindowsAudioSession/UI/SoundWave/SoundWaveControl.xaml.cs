@@ -44,5 +44,6 @@ namespace WindowsAudioSession.UI.SoundWave
 
         /// <inheritdoc/>
         public Canvas GetDrawingSurface() => WaveGraph;
+        public double BarHeight() => this.ActualHeight;
     }
 }
