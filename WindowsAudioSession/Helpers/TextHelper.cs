@@ -4,11 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
 
 namespace WindowsAudioSession.Helpers
 {
     public static class TextHelper
     {
+        public static string RemoveDiacritics(string input)
+        {
+            string accentsToReplace = "ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõöùúûüýÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĶķĸĹĺĻļĽľſŁłŃńŅņŇňŉŊŋŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž";
+            string accentsAscii =     "AAAAAACEEEEIIIINOOOOOUUUUYsaaaaaaceeeeiiiinooooouuuuyyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiKkkLlLlLllLlNnNnNnNnNOoOoOoRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZz";
+
+            for (int i = 0; i < accentsToReplace.Length; i++)
+            {
+                input = input.Replace(accentsToReplace[i], accentsAscii[i]);
+            }
+
+            input = RemoveDiacriticsAndConvertToAscii(input);
+            return input;
+        }
+
         public static string RemoveDiacriticsAndConvertToAscii(string input)
         {
             // Nahradí diakritiku za znaky bez diakritiky

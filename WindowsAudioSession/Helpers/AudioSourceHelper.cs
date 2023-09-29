@@ -55,6 +55,11 @@ namespace WindowsAudioSession.Helpers
 
                     Task.Run(currentMediaSession.ControlSession.TryGetMediaPropertiesAsync);
                 }
+                else
+                {
+                    sourceApp = "";
+                    _audioSourceText = new KeyValuePair<string, string>();
+                }
             }
 
             AudioSourceChanged?.Invoke(null, _audioSourceText);

@@ -332,14 +332,14 @@
                 <Button Name="ButtonPlayPause" Content="⏯️" HorizontalAlignment="Center" Height="48" Margin="8,-48,8,0" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
                 <Button Name="ButtonNext" Content="⏭" HorizontalAlignment="Right" Height="48" Margin="8,-48,24,0" Padding="-25,4" Width="48" FontFamily="Parsi" FontSize="48"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
-                   Text="SOURCE APP:"
+                   Text="SOURCE APP"
                    Margin="0,24,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Text=""
                    Name="TextSourceApp"
                    Margin="0,4,0,0"
-                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
             </StackPanel>
         </Grid>
 

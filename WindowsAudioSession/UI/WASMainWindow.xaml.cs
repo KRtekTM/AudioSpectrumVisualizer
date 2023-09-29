@@ -500,24 +500,25 @@ namespace WindowsAudioSession.UI
             string FlashingText;
             int maxCharsInText = 30;
 
+            bool isAudioSourceAppSet = !String.IsNullOrEmpty(_audioSourceHelper.sourceApp);
+            if (isAudioSourceAppSet && levelMoreThenZero)
+            {
+                TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant().Replace(".EXE", "")}";
+            }
+            else
+            {
+                TextSourceApp.Text = $"";
+            }
+
             if (WindowStyle == WindowStyle.None && App.WASMainViewModel.IsStarted)
             {
-                bool isAudioSourceAppSet = !String.IsNullOrEmpty(_audioSourceHelper.sourceApp);
-                if (isAudioSourceAppSet)
-                {
-                    TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant()}";
-                }
-                else
-                {
-                    TextSourceApp.Text = $"";
-                }
 
                 // If audio source changed, display it
                 if (!audioSource.Equals(new KeyValuePair<string, string>(null, null)))
                 {
-                    if (audioSource.Value != "" && !audioSourceText.Equals(TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value)))
+                    if (audioSource.Value != "" && !audioSourceText.Equals(TextHelper.RemoveDiacritics(audioSource.Value)))
                     {
-                        audioSourceText = TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value);
+                        audioSourceText = TextHelper.RemoveDiacritics(audioSource.Value);
                         audioSourceTextStartChar = 0;
                         showAudioSourceText = true;
                         lastAudioSourceChangeTime = ActualTime;
@@ -528,7 +529,7 @@ namespace WindowsAudioSession.UI
                         int secondsToShowWholeText = (audioSourceText.Length - maxCharsInText);
                         int secondsOver = (secondsToShowWholeText > 28) ? secondsToShowWholeText - 28 : 0;
                         bool isMoreThenSet = Math.Round((ActualTime - lastAudioSourceChangeTime).TotalSeconds) % (showEachSecondsCount + secondsOver) == 0;
-                        if (audioSourceText == TextHelper.RemoveDiacriticsAndConvertToAscii(audioSource.Value) && isMoreThenSet)
+                        if (audioSourceText == TextHelper.RemoveDiacritics(audioSource.Value) && isMoreThenSet)
                         {
                             audioSourceTextStartChar = 0;
                             showAudioSourceText = true;
@@ -575,21 +576,28 @@ namespace WindowsAudioSession.UI
                 TimeSpan songLenght = _audioSourceHelper.songLength;
                 if (levelMoreThenZero && !songLenght.Equals(TimeSpan.Zero) && isAudioSourceAppSet)
                 {
-                    TextRemainingTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", (int)songLenght.TotalHours, songLenght.Minutes, songLenght.Seconds);
+                    if (songLenght.TotalHours > 0)
+                    {
+                        TextRemainingTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", (int)songLenght.TotalHours, songLenght.Minutes, songLenght.Seconds);
+                    }
+                    else
+                    {
+                        TextRemainingTime.Text = string.Format("{0:D2}:{1:D2}", (int)songLenght.TotalMinutes, songLenght.Seconds);
+                    }
                 }
                 else
                 {
-                    TextRemainingTime.Text = "00:00:00";
+                    TextRemainingTime.Text = "";
                 }
             }
             else
             {
                 FlashingText = ActualTime.ToString("HH:mm:ss");
-                TextRemainingTime.Text = "00:00:00";
+                TextRemainingTime.Text = "";
                 TextSourceApp.Text = $"";
             }
 
-            TextClockLabel.Text = (levelMoreThenZero && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
+            TextClockLabel.Text = (levelMoreThenZero && isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
         }
 
