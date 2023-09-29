@@ -32,7 +32,7 @@ namespace WindowsAudioSession.UI
         private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
         private int touchCount = 0;
         private int _highVolumeThreshold = 70;
-        private bool _isTouching, _isMuting, _isTouchMoving = false;
+        private bool _isTouching, _isMuting, _isTouchMoving, audioSourceTextRollback = false;
         private int highVolumeThreshold;
         private DateTime _lastUpdateCheck;
         private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
@@ -543,22 +543,46 @@ namespace WindowsAudioSession.UI
                     FlashingText = displayedText;
 
                     // Until we reach the end of text, increment the trim
-                    if (audioSourceTextStartChar + maxCharsInText >= audioSourceText.Length)
+                    if (!audioSourceTextRollback)
+                    {
+                        if (audioSourceTextStartChar + maxCharsInText >= audioSourceText.Length)
+                        {
+                            if (displayedValueShownSince == DateTime.MinValue)
+                            {
+                                displayedValueShownSince = ActualTime;
+                            }
+
+                            if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(audioSourceText.Length > 28 ? 2 : 4))
+                            {
+                                audioSourceTextRollback = true;
+                                displayedValueShownSince = DateTime.MinValue;
+                            }
+                        }
+                        else
+                        {
+                            audioSourceTextStartChar++;
+                        }
+                    }
+                    else
                     {
                         if (displayedValueShownSince == DateTime.MinValue)
                         {
                             displayedValueShownSince = ActualTime;
                         }
 
-                        if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(audioSourceText.Length > 28 ? 2 : 4))
+                        if (audioSourceTextStartChar == 0 && (ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(2))
                         {
                             showAudioSourceText = false;
                             displayedValueShownSince = DateTime.MinValue;
+                            audioSourceTextRollback = false;
                         }
-                    }
-                    else
-                    {
-                        audioSourceTextStartChar++;
+                        else
+                        {
+                            if (audioSourceTextStartChar >= 1)
+                            {
+                                audioSourceTextStartChar--;
+                            }
+                        }
                     }
 
                     TextClockLabel.Text = audioSource.Key;
