@@ -89,17 +89,38 @@ namespace WindowsAudioSession.Helpers
 
         public void TryTogglePlayPause()
         {
-            Task.Run(mediaManager.GetFocusedSession().ControlSession.TryTogglePlayPauseAsync);
+            var session = mediaManager.GetFocusedSession();
+            if (session != null)
+            {
+                if (session.ControlSession.GetPlaybackInfo().Controls.IsPlayPauseToggleEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
+                {
+                    Task.Run(session.ControlSession.TryTogglePlayPauseAsync);
+                }
+            }
         }
 
         public void TryPlayNext()
         {
-            Task.Run(mediaManager.GetFocusedSession().ControlSession.TrySkipNextAsync);
+            var session = mediaManager.GetFocusedSession();
+            if (session != null)
+            {
+                if (session.ControlSession.GetPlaybackInfo().Controls.IsNextEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
+                {
+                    Task.Run(session.ControlSession.TrySkipNextAsync);
+                }
+            }
         }
 
         public void TryPlayPrevious()
         {
-            Task.Run(mediaManager.GetFocusedSession().ControlSession.TrySkipPreviousAsync);
+            var session = mediaManager.GetFocusedSession();
+            if (session != null)
+            {
+                if (session.ControlSession.GetPlaybackInfo().Controls.IsPreviousEnabled && !String.IsNullOrEmpty(session.ControlSession.SourceAppUserModelId))
+                {
+                    Task.Run(session.ControlSession.TrySkipPreviousAsync);
+                }
+            }
         }
 
         public void Dispose()
