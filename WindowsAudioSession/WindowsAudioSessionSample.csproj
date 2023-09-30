@@ -203,6 +203,9 @@
     <EmbeddedResource Include="UI\StyleSettings.resx">
       <DependentUpon>StyleSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="defaultTheme.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\DSEG14Classic-Regular.ttf" />
     <None Include="Resources\Parsi-Regular.ttf" />
     <None Include="Resources\PlaybackControls.ttf" />
@@ -303,7 +306,8 @@
     $(PostBuildEventDependsOn);
     PostBuildMacros;
   </PostBuildEventDependsOn>
-    <PostBuildEvent>7z.exe a -tzip "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip" "$(ProjectDir)\bin\$(PlatformName)\Debug\_configVolumeModifier.txt" "$(ProjectDir)\bin\$(PlatformName)\Debug\bass.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\basswasapi.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\LICENSE" "$(ProjectDir)\bin\$(PlatformName)\Debug\README.md" "$(ProjectDir)\bin\$(PlatformName)\Debug\WindowsAudioSession.exe"
+    <PostBuildEvent>del "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip"
+7z.exe a -tzip "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip" "$(ProjectDir)\bin\$(PlatformName)\Debug\_configVolumeModifier.txt" "$(ProjectDir)\bin\$(PlatformName)\Debug\bass.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\basswasapi.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\LICENSE" "$(ProjectDir)\bin\$(PlatformName)\Debug\README.md" "$(ProjectDir)\bin\$(PlatformName)\Debug\WindowsAudioSession.exe" "$(ProjectDir)\bin\$(PlatformName)\Debug\defaultTheme.json"
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
