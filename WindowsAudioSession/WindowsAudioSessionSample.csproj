@@ -30,29 +30,48 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bass.Net, Version=2.4.12.3, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
@@ -71,10 +90,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WASApiBassNet, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WASApiBassNet\bin\Debug\WASApiBassNet.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -245,6 +260,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WASApiBassNet\WASApiBassNet.csproj">
+      <Project>{501babf3-a832-4a3b-9d81-45afb9153e9f}</Project>
+      <Name>WASApiBassNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFUtilities\WPFUtilities.csproj">
       <Project>{c9664583-0898-4fed-a1a3-d6beb7f61036}</Project>
       <Name>WPFUtilities</Name>
@@ -272,7 +291,24 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
   <PropertyGroup>
-    <PostBuildEvent>call "$(ProjectDir)PostBuild.bat"</PostBuildEvent>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>7z.exe a -tzip "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip" "$(ProjectDir)\bin\$(PlatformName)\Debug\_configVolumeModifier.txt" "$(ProjectDir)\bin\$(PlatformName)\Debug\bass.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\basswasapi.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\LICENSE" "$(ProjectDir)\bin\$(PlatformName)\Debug\README.md" "$(ProjectDir)\bin\$(PlatformName)\Debug\WindowsAudioSession.exe"
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy $(ProjectDir)\bass_$(PlatformName).dll $(ProjectDir)\bass.dll /Y
+copy $(ProjectDir)\basswasapi_$(PlatformName).dll $(ProjectDir)\basswasapi.dll /Y</PreBuildEvent>
   </PropertyGroup>
 </Project>
