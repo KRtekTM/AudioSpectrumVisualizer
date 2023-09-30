@@ -152,7 +152,7 @@ namespace WindowsAudioSession.UI
         {
             Color temp;
             UserColorInput(BtnSoundWaveColor, out temp);
-            editingTheme.FreqPeakMeter = temp;
+            editingTheme.SoundWave = temp;
         }
 
         private void BtnFreqPeakMeterColor_Click(object sender, EventArgs e)

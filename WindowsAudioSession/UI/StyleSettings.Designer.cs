@@ -335,12 +335,13 @@
             this.groupBox3.Controls.Add(this.BtnResetBackgroundColor);
             this.groupBox3.Controls.Add(this.BtnResetBordersColor);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox3.Location = new System.Drawing.Point(4, 203);
+            this.groupBox3.Location = new System.Drawing.Point(4, 255);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(189, 69);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Window";
+            this.groupBox3.Visible = false;
             // 
             // BtnBackgroundColor
             // 
@@ -414,7 +415,7 @@
             // 
             this.BtnResultOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnResultOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.BtnResultOK.Location = new System.Drawing.Point(356, 234);
+            this.BtnResultOK.Location = new System.Drawing.Point(356, 219);
             this.BtnResultOK.Name = "BtnResultOK";
             this.BtnResultOK.Size = new System.Drawing.Size(83, 30);
             this.BtnResultOK.TabIndex = 1;
@@ -426,7 +427,7 @@
             // 
             this.BtnResultCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnResultCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnResultCancel.Location = new System.Drawing.Point(445, 234);
+            this.BtnResultCancel.Location = new System.Drawing.Point(445, 219);
             this.BtnResultCancel.Name = "BtnResultCancel";
             this.BtnResultCancel.Size = new System.Drawing.Size(83, 30);
             this.BtnResultCancel.TabIndex = 2;
@@ -564,7 +565,7 @@
             // 
             // BtnImport
             // 
-            this.BtnImport.Location = new System.Drawing.Point(8, 24);
+            this.BtnImport.Location = new System.Drawing.Point(36, 17);
             this.BtnImport.Name = "BtnImport";
             this.BtnImport.Size = new System.Drawing.Size(55, 23);
             this.BtnImport.TabIndex = 4;
@@ -574,7 +575,7 @@
             // 
             // BtnExport
             // 
-            this.BtnExport.Location = new System.Drawing.Point(8, 53);
+            this.BtnExport.Location = new System.Drawing.Point(97, 17);
             this.BtnExport.Name = "BtnExport";
             this.BtnExport.Size = new System.Drawing.Size(55, 23);
             this.BtnExport.TabIndex = 4;
@@ -598,9 +599,9 @@
             this.groupBox5.Controls.Add(this.BtnImport);
             this.groupBox5.Controls.Add(this.BtnExport);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox5.Location = new System.Drawing.Point(199, 180);
+            this.groupBox5.Location = new System.Drawing.Point(4, 203);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(71, 92);
+            this.groupBox5.Size = new System.Drawing.Size(189, 49);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Themes";
@@ -611,7 +612,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnResultCancel;
-            this.ClientSize = new System.Drawing.Size(540, 276);
+            this.ClientSize = new System.Drawing.Size(540, 261);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.BtnResultCancel);
