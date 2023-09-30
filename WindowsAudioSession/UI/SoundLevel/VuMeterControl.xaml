@@ -38,7 +38,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Foreground="White" 
+        <TextBlock Foreground="{x:Static custbrush:CustomBrushes.Labels}" 
                    Width="{Binding LabelWidth,FallbackValue=12}" 
                    Text="{Binding Label,FallbackValue=C}"
                    Margin="2,0,2,0" 

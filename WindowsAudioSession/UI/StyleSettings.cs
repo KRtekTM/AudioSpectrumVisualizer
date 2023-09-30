@@ -226,26 +226,29 @@ namespace WindowsAudioSession.UI
 
         private void BtnResultOK_Click(object sender, EventArgs e)
         {
-            Settings.Default.ColorLabelsActive = editingTheme.LabelsActive;
-            Settings.Default.ColorLabelsHeaders = editingTheme.LabelsHeaders;
-            Settings.Default.ColorLabelsChanging = editingTheme.LabelsChanging;
-            Settings.Default.ColorLabelsHigh = editingTheme.LabelsHigh;
+            if (System.Windows.Forms.MessageBox.Show("Applying theme changes will restart the application.", "Apply Theme", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
+            {
+                Settings.Default.ColorLabelsActive = editingTheme.LabelsActive;
+                Settings.Default.ColorLabelsHeaders = editingTheme.LabelsHeaders;
+                Settings.Default.ColorLabelsChanging = editingTheme.LabelsChanging;
+                Settings.Default.ColorLabelsHigh = editingTheme.LabelsHigh;
 
-            Settings.Default.ColorSoundWave = editingTheme.SoundWave;
-            Settings.Default.ColorFreqPeakMeter = editingTheme.FreqPeakMeter;
+                Settings.Default.ColorSoundWave = editingTheme.SoundWave;
+                Settings.Default.ColorFreqPeakMeter = editingTheme.FreqPeakMeter;
 
-            Settings.Default.ColorBorders = editingTheme.Borders;
-            Settings.Default.ColorBackground = editingTheme.Background;
+                Settings.Default.ColorBorders = editingTheme.Borders;
+                Settings.Default.ColorBackground = editingTheme.Background;
 
-            Settings.Default.FontVFD = editingTheme.FontVFD;
-            Settings.Default.FontHeaders = editingTheme.FontHeaders;
-            Settings.Default.FontNumeric = editingTheme.FontNumeric;
-            Settings.Default.FontHeadersSize = editingTheme.FontHeadersSize;
-            Settings.Default.FontVFDSize = editingTheme.FontVFDSize;
+                Settings.Default.FontVFD = editingTheme.FontVFD;
+                Settings.Default.FontHeaders = editingTheme.FontHeaders;
+                Settings.Default.FontNumeric = editingTheme.FontNumeric;
+                Settings.Default.FontHeadersSize = editingTheme.FontHeadersSize;
+                Settings.Default.FontVFDSize = editingTheme.FontVFDSize;
 
-            Settings.Default.Save();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+                Settings.Default.Save();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
 
         private void BtnResultCancel_Click(object sender, EventArgs e)

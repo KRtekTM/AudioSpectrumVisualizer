@@ -29,9 +29,8 @@ If display with 1280x400 pixels is connected and detected on application start, 
 - tap, release, tap and swipe - toggle mute
 - four taps - in normal view switches to fullscreen, in fullscreen closes application
 
-## Font dependencies
-- Parsi (can't provide link due to license)
-- VFD Display (can't provide link due to license)
+## Command line params:
+- --resetsettings
 
 ## Original text from franck-gaspoz
 Clean architecture approach: complete discoupling between data,data providers,data transformers,ui controls,drawers,view models,application logic. 
