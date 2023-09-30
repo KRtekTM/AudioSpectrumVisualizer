@@ -4,6 +4,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace WindowsAudioSession.Helpers
 {
@@ -15,12 +16,12 @@ namespace WindowsAudioSession.Helpers
         [DllImport("gdi32.dll")]
         private static extern int RemoveFontResource(string lpFileName);
 
-        [DllImport("gdi32.dll")]
+        [DllImport("user32.dll")]
         private static extern int SendMessage(int hWnd, int Msg, int wParam, int lParam);
 
         private const int WM_FONTCHANGE = 0x001D;
 
-        public static bool InstallFontFromResource(string resourceName)
+        public static bool InstallFontFromResource(string resourceName, byte[] fontInResources)
         {
             if (IsFontInstalled(resourceName)) return true;
 
@@ -28,7 +29,8 @@ namespace WindowsAudioSession.Helpers
             {
                 // Načtení bytů fontu z Resources
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+
+                using (Stream stream = new MemoryStream(fontInResources))
                 {
                     if (stream == null)
                     {
@@ -88,13 +90,8 @@ namespace WindowsAudioSession.Helpers
                 {
                     FontFamily[] fontFamilies = fontsCollection.Families;
 
-                    foreach (FontFamily fontFamily in fontFamilies)
-                    {
-                        if (string.Equals(fontFamily.Name, fontName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return true;
-                        }
-                    }
+                    var checkFont = fontFamilies.FirstOrDefault(x => x.Name.Equals(fontName, StringComparison.InvariantCultureIgnoreCase));
+                    return (checkFont != null);
                 }
             }
             catch (Exception ex)

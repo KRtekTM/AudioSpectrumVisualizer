@@ -526,10 +526,10 @@ namespace WindowsAudioSession.UI
             {
                 if (System.Windows.Forms.MessageBox.Show($"Do you want to install missing default fonts?", "Missing Font(s)", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                 {
-                    FontInstallerHelper.InstallFontFromResource("DSEG14 Classic");
-                    FontInstallerHelper.InstallFontFromResource("Parsi");
-                    FontInstallerHelper.InstallFontFromResource("font bottons music");
-                    FontInstallerHelper.InstallFontFromResource("VFD Display");
+                    FontInstallerHelper.InstallFontFromResource("DSEG14 Classic", Properties.Resources.DSEG14_Classic);
+                    FontInstallerHelper.InstallFontFromResource("Parsi", Properties.Resources.Parsi);
+                    FontInstallerHelper.InstallFontFromResource("font bottons music", Properties.Resources.font_bottons_music);
+                    FontInstallerHelper.InstallFontFromResource("VFD Display", Properties.Resources.VFD_Display);
                 }
             }
             Settings.Default.TriggerFontInstallation = false;
