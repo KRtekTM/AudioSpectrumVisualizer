@@ -697,6 +697,7 @@ namespace WindowsAudioSession.UI
                             if (audioSourceTextStartChar >= 1)
                             {
                                 audioSourceTextStartChar--;
+                                displayedValueShownSince = DateTime.MinValue;
                             }
                         }
                     }
