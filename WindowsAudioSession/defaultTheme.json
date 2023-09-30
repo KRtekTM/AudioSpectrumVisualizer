@@ -1,0 +1,15 @@
+{
+  "LabelsActive": "White",
+  "LabelsHeaders": "White",
+  "LabelsChanging": "YellowGreen",
+  "LabelsHigh": "Red",
+  "SoundWave": "Red",
+  "FreqPeakMeter": "Red",
+  "Borders": "29, 29, 29",
+  "Background": "Black",
+  "FontVFD": "VFD Display",
+  "FontVFDSize": 24.0,
+  "FontHeaders": "Parsi",
+  "FontHeadersSize": 10.0,
+  "FontNumeric": "DSEG14 Classic"
+}

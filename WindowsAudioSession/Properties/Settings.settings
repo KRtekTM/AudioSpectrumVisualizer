@@ -8,5 +8,50 @@
     <Setting Name="SizeAsWorkingArea" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ColorLabelsActive" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="ColorLabelsHeaders" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="ColorLabelsChanging" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">YellowGreen</Value>
+    </Setting>
+    <Setting Name="ColorLabelsHigh" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="ColorSoundWave" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="ColorFreqPeakMeter" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="ColorBorders" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">29, 29, 29</Value>
+    </Setting>
+    <Setting Name="ColorBackground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="TriggerFontInstallation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FontVFD" Type="System.String" Scope="User">
+      <Value Profile="(Default)">VFD Display</Value>
+    </Setting>
+    <Setting Name="FontNumeric" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DSEG14 Classic</Value>
+    </Setting>
+    <Setting Name="FontHeaders" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Parsi</Value>
+    </Setting>
+    <Setting Name="FontPlaybackControls" Type="System.String" Scope="User">
+      <Value Profile="(Default)">font bottons music</Value>
+    </Setting>
+    <Setting Name="FontVFDSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">24</Value>
+    </Setting>
+    <Setting Name="FontHeadersSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -90,6 +90,7 @@
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Helpers\AudioSourceHelper.cs" />
+    <Compile Include="Helpers\FontInstallerHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="IAppComponents.cs" />
@@ -132,6 +133,12 @@
     </Compile>
     <Compile Include="UI\SoundWave\SoundWaveViewModel.cs" />
     <Compile Include="UI\SoundWave\SoundWaveDrawer.cs" />
+    <Compile Include="UI\StyleSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\StyleSettings.Designer.cs">
+      <DependentUpon>StyleSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UIHelper.cs" />
     <Compile Include="AppComponents.cs" />
     <Compile Include="UI\FFT\FFTDrawer.cs" />
@@ -178,7 +185,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="UI\StyleSettings.resx">
+      <DependentUpon>StyleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Resources\DSEG14Classic-Regular.ttf" />
+    <None Include="Resources\Parsi-Regular.ttf" />
+    <None Include="Resources\PlaybackControls.ttf" />
+    <None Include="Resources\vfd-display.ttf" />
     <Resource Include="UI\posy-wait-64.png" />
+    <Resource Include="UI\undo.png" />
     <Content Include="_configVolumeModifier.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

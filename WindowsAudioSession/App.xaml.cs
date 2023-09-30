@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Globalization;
 using System.Windows;
+using System.Linq;
 
 using WindowsAudioSession.Commands;
 using WindowsAudioSession.UI;
+using WindowsAudioSession.Properties;
 
 namespace WindowsAudioSession
 {
@@ -32,10 +34,17 @@ namespace WindowsAudioSession
         /// <summary>
         /// create instance of the application
         /// </summary>
-        public App()
+        public App(string[] args)
         {
             try
             {
+
+                if (args.FirstOrDefault(x => x.ToLowerInvariant().Contains("--resetsettings")) != null)
+                {
+                    Settings.Default.Reset();
+                    Settings.Default.Save();
+                }
+
                 CultureInfo.DefaultThreadCurrentCulture =
                 CultureInfo.DefaultThreadCurrentUICulture =
                     new CultureInfo("en");
@@ -55,6 +64,7 @@ namespace WindowsAudioSession
                     };
 
                 _ = WASMainWindow.ShowDialog();
+
             }
             catch (Exception ex)
             {

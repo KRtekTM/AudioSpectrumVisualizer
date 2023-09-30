@@ -9,13 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="Black">
     <Grid>
-        <TextBlock Foreground="White"
-                   Name="TextPeakLevelMeter"
-                   Width="{Binding LabelWidth,FallbackValue=*}" 
-                   Text="{Binding Label,FallbackValue=SOUND WAVE VISUALIZER}"
-                   Margin="1,8,4,0" 
-                   Grid.Row="0"
-                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
         <Canvas Grid.Row="1"
             x:Name="WaveGraph"
             />

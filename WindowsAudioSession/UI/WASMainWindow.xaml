@@ -80,25 +80,26 @@
 
                     </StackPanel>
 
-                    <CheckBox Content="Always on top" IsChecked="{Binding IsTopmost}" Width="96" Height="17" Margin="0,0,0,6" />
+                    <CheckBox Foreground="{x:Static local:CustomBrushes.Labels}" Content="Always on top" IsChecked="{Binding IsTopmost}" Width="96" Height="17" Margin="0,0,0,6" />
+                    <Button Name="ButtonColorSettings" Content="Style Settings" Margin="0,0,0,0" HorizontalAlignment="Center" Width="120" />
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0" Name="Panel_LengthSampleFrq" >
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <Label Content="spl length:" Width="68" Height="24" FontSize="10"/>
+                        <Label Foreground="{x:Static local:CustomBrushes.Labels}" Content="spl length:" Width="68" Height="24" FontSize="10"/>
                         <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding SampleLengths}"
                               SelectedValue="{Binding SampleLength,FallbackValue=2048}" Height="20" FontSize="10"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <Label Content="fft length:" Width="68" Height="24" FontSize="10"/>
+                        <Label Foreground="{x:Static local:CustomBrushes.Labels}" Content="fft length:" Width="68" Height="24" FontSize="10"/>
                         <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding FFTResolutions}"
                               SelectedValue="{Binding FFTResolution,FallbackValue=1024}" Height="20" FontSize="10"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <Label Content="sample frq:" Width="68" Height="24" FontSize="10"/>
+                        <Label Foreground="{x:Static local:CustomBrushes.Labels}" Content="sample frq:" Width="68" Height="24" FontSize="10"/>
                         <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding SampleFrequencies}"
                               SelectedValue="{Binding SampleFrequency,FallbackValue=44100}" Height="20" FontSize="10"/>
@@ -181,6 +182,14 @@
                         DrawBackground="{x:Static local:CustomBrushes.Background}"
                         x:Name="soundWaveControl"/>
             </Border>
+            <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                   Name="TextSoundWave"
+                   Width="{Binding LabelWidth,FallbackValue=*}" 
+                   Text="{Binding Label,FallbackValue=SOUND WAVE VISUALIZER}"
+                   Margin="1,8,4,0" 
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
 
             <Border BorderBrush="{x:Static local:CustomBrushes.Borders}"
                     BorderThickness="5,0,8,8"
@@ -230,68 +239,84 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
+                   Name="lblFrq0"
                    Text="20"
                    Grid.Column="0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="30"
+                           Name="lblFrq1"
                    Grid.Column="1"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="50"
                    Grid.Column="2"
+                           Name="lblFrq2"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="70"
                    Grid.Column="3"
+                           Name="lblFrq3"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="100"
                    Grid.Column="4"
+                           Name="lblFrq4"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="200"
                    Grid.Column="5"
+                           Name="lblFrq5"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="300"
                    Grid.Column="6"
+                           Name="lblFrq6"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="500"
                    Grid.Column="7"
+                           Name="lblFrq7"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="700"
                    Grid.Column="8"
+                           Name="lblFrq8"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="1k"
                    Grid.Column="9"
+                           Name="lblFrq9"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="2k"
                    Grid.Column="10"
+                           Name="lblFrq10"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="3k"
                    Grid.Column="11"
+                           Name="lblFrq11"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="5k"
                    Grid.Column="12"
+                           Name="lblFrq12"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="7k"
                    Grid.Column="13"
+                           Name="lblFrq13"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="10k"
                    Grid.Column="14"
+                           Name="lblFrq14"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.VolumePeakTopBrush}"
                    Text="20k"
                    Grid.Column="15"
+                           Name="lblFrq15"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </Grid>
 
@@ -311,6 +336,7 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.RowSpan="3" Name="Panel_Knob" Width="232" HorizontalAlignment="Left" Background="Black" Margin="8,0,0,8">
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                           Name="TextVolumeControl"
                    Text="VOLUME CONTROL"
                    Margin="0,8,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
@@ -325,6 +351,7 @@
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Text="AUDIO OUTPUT"
+                           Name="TextAudioOutputLbl"
                    Margin="0,16,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
 
@@ -341,6 +368,7 @@
                    Margin="0,38,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
+                           Name="TextContributors"
                    Text="Contributors: Ondřej Kotas, Franck Gaspoz"
                    Margin="0,4,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
@@ -348,6 +376,7 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Name="Panel_ControlButtons" Width="232" HorizontalAlignment="Right" Background="Black" Margin="0,0,8,8">
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                           Name="TextSourceLength"
                    Text="SOURCE LENGTH"
                    Margin="0,8,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
@@ -368,6 +397,7 @@
                 </Button>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                   Name="TextSourceAppLbl"
                    Text="SOURCE APP"
                    Margin="0,24,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>

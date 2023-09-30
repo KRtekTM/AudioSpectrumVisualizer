@@ -2,6 +2,7 @@ using AudioSwitcher.AudioApi.CoreAudio;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using WASApiBassNet;
+using Windows.Graphics;
 using WindowsAudioSession.Helpers;
 using WindowsAudioSession.Properties;
 
@@ -45,6 +47,7 @@ namespace WindowsAudioSession.UI
         private DateTime lastAudioSourceChangeTime, displayedValueShownSince = DateTime.MinValue; // Pro sledování změn audioSource.Value
         private AudioSourceHelper _audioSourceHelper;
         private int showEachSecondsCount = 25;
+        private StyleSettings _styleSettingsDialog = new StyleSettings();
 
         /// <summary>
         /// creates a new instance
@@ -52,6 +55,9 @@ namespace WindowsAudioSession.UI
         public WASMainWindow()
         {
             InitializeComponent();
+
+            InitFonts();
+
 
             if (targetScreen != null)
             {
@@ -68,6 +74,8 @@ namespace WindowsAudioSession.UI
             ButtonPlayPause.Click += ButtonPlayPause_Click;
             ButtonNext.Click += ButtonNext_Click;
             ButtonPrevious.Click += ButtonPrevious_Click;
+
+            ButtonColorSettings.Click += ButtonColorSettings_Click;
 
             // Vytvoření a inicializace DispatcherTimeru
             timer = new DispatcherTimer();
@@ -123,6 +131,94 @@ namespace WindowsAudioSession.UI
             _audioSourceHelper.AudioSourceChanged += AudioSourceChangedHandler;
         }
 
+        private void InitFonts()
+        {
+            // Init fonts from settings
+            FontFamily fontFamilyVFD = new FontFamily(Settings.Default.FontVFD);
+            FontFamily fontFamilyNumeric = new FontFamily(Settings.Default.FontNumeric);
+            FontFamily fontFamilyHeaders = new FontFamily(Settings.Default.FontHeaders);
+            FontFamily fontFamilyPlaybackControls = new FontFamily(Settings.Default.FontPlaybackControls);
+
+            TextClock.FontFamily = fontFamilyVFD;
+            TextClock.FontSize = Settings.Default.FontVFDSize;
+
+            TextClockLabel.FontFamily = fontFamilyHeaders;
+            TextClockLabel.FontSize = Settings.Default.FontHeadersSize;
+            TextVolumePeak.FontFamily = fontFamilyHeaders;
+            TextVolumePeak.FontSize = Settings.Default.FontHeadersSize;
+            TextPlay.FontFamily = fontFamilyHeaders;
+            TextPlay.FontSize = Settings.Default.FontHeadersSize;
+            TextStereo.FontFamily = fontFamilyHeaders;
+            TextStereo.FontSize = Settings.Default.FontHeadersSize;
+            TextSoundWave.FontFamily = fontFamilyHeaders;
+            TextSoundWave.FontSize = Settings.Default.FontHeadersSize;
+            TextPeakLevelMeter.FontFamily = fontFamilyHeaders;
+            TextPeakLevelMeter.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq0.FontFamily = fontFamilyHeaders;
+            lblFrq0.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq1.FontFamily = fontFamilyHeaders;
+            lblFrq1.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq2.FontFamily = fontFamilyHeaders;
+            lblFrq2.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq3.FontFamily = fontFamilyHeaders;
+            lblFrq3.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq4.FontFamily = fontFamilyHeaders;
+            lblFrq4.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq5.FontFamily = fontFamilyHeaders;
+            lblFrq5.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq6.FontFamily = fontFamilyHeaders;
+            lblFrq6.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq7.FontFamily = fontFamilyHeaders;
+            lblFrq7.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq8.FontFamily = fontFamilyHeaders;
+            lblFrq8.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq9.FontFamily = fontFamilyHeaders;
+            lblFrq9.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq10.FontFamily = fontFamilyHeaders;
+            lblFrq10.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq11.FontFamily = fontFamilyHeaders;
+            lblFrq11.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq12.FontFamily = fontFamilyHeaders;
+            lblFrq12.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq13.FontFamily = fontFamilyHeaders;
+            lblFrq13.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq14.FontFamily = fontFamilyHeaders;
+            lblFrq14.FontSize = Settings.Default.FontHeadersSize;
+            lblFrq15.FontFamily = fontFamilyHeaders;
+            lblFrq15.FontSize = Settings.Default.FontHeadersSize;
+            TextSpectrumAnalyserLabel.FontFamily = fontFamilyHeaders;
+            TextSpectrumAnalyserLabel.FontSize = Settings.Default.FontHeadersSize;
+            TextVolumeControl.FontFamily = fontFamilyHeaders;
+            TextVolumeControl.FontSize = Settings.Default.FontHeadersSize;
+            TextAudioOutputLbl.FontFamily = fontFamilyHeaders;
+            TextAudioOutputLbl.FontSize = Settings.Default.FontHeadersSize;
+            TextVersion.FontFamily = fontFamilyHeaders;
+            TextVersion.FontSize = Settings.Default.FontHeadersSize;
+            TextContributors.FontFamily = fontFamilyHeaders;
+            TextSourceLength.FontFamily = fontFamilyHeaders;
+            TextSourceLength.FontSize = Settings.Default.FontHeadersSize;
+            TextSourceAppLbl.FontFamily = fontFamilyHeaders;
+            TextSourceAppLbl.FontSize = Settings.Default.FontHeadersSize;
+
+            TextVolume.FontFamily = fontFamilyNumeric;
+            TextAudioOut.FontFamily = fontFamilyNumeric;
+            TextRemainingTime.FontFamily = fontFamilyNumeric;
+            TextSourceApp.FontFamily = fontFamilyNumeric;
+
+            ButtonPrevious.FontFamily = fontFamilyPlaybackControls;
+            ButtonPlayPause.FontFamily = fontFamilyPlaybackControls;
+            ButtonNext.FontFamily = fontFamilyPlaybackControls;
+        }
+
+        private void ButtonColorSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if(_styleSettingsDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
+            }
+        }
+
         private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
         {
             _audioSourceHelper.TryPlayPrevious();
@@ -158,7 +254,7 @@ namespace WindowsAudioSession.UI
             Settings.Default.LastAudioOut = Panel_ListBoxSoundCards.SelectedItem.ToString();
             Settings.Default.Save();
             TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
-            TextStereo.Foreground = CustomBrushes.VolumePeakBrush;
+            TextStereo.Foreground = CustomBrushes.LabelsHigh;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -200,7 +296,6 @@ namespace WindowsAudioSession.UI
                 }
                 Settings.Default.Save();
 
-                // Restart app
                 GoFullScreen();
             }
         }
@@ -258,7 +353,7 @@ namespace WindowsAudioSession.UI
             UpdateTextToDisplay(ActualTime, levelMoreThenZero);
 
             // Aktualizace animovaného bloku "PLAY"
-            TextPlay.Foreground = (App.WASMainViewModel.IsStarted && levelMoreThenZero) ? Brushes.White : Brushes.Gray;
+            TextPlay.Foreground = (App.WASMainViewModel.IsStarted && levelMoreThenZero) ? CustomBrushes.Labels : CustomBrushes.InactiveLabels;
             TextPlay.Text = "PLAY ";
             if (App.WASMainViewModel.IsStarted && levelMoreThenZero)
             {
@@ -418,6 +513,27 @@ namespace WindowsAudioSession.UI
                 this.Top = targetScreen.WorkingArea.Top;
                 GoFullScreen();
             }
+
+            //DSEG14Classic-Regular.ttf DSEG14 Classic
+            //Parsi-Regular.ttf Parsi
+            //PlaybackControls.ttf font bottons music
+            //vfd-display.ttf  VFD Display
+            if (Settings.Default.TriggerFontInstallation && (
+                !FontInstallerHelper.IsFontInstalled("DSEG14 Classic")
+                || !FontInstallerHelper.IsFontInstalled("Parsi")
+                || !FontInstallerHelper.IsFontInstalled("font bottons music")
+                || !FontInstallerHelper.IsFontInstalled("VFD Display")))
+            {
+                if (System.Windows.Forms.MessageBox.Show($"Do you want to install missing default fonts?", "Missing Font(s)", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    FontInstallerHelper.InstallFontFromResource("DSEG14 Classic");
+                    FontInstallerHelper.InstallFontFromResource("Parsi");
+                    FontInstallerHelper.InstallFontFromResource("font bottons music");
+                    FontInstallerHelper.InstallFontFromResource("VFD Display");
+                }
+            }
+            Settings.Default.TriggerFontInstallation = false;
+            Settings.Default.Save();
 
             CheckForUpdates();
 

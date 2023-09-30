@@ -69,5 +69,45 @@ namespace WindowsAudioSession.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] DSEG14_Classic {
+            get {
+                object obj = ResourceManager.GetObject("DSEG14 Classic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] font_bottons_music {
+            get {
+                object obj = ResourceManager.GetObject("font bottons music", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Parsi {
+            get {
+                object obj = ResourceManager.GetObject("Parsi", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] VFD_Display {
+            get {
+                object obj = ResourceManager.GetObject("VFD Display", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

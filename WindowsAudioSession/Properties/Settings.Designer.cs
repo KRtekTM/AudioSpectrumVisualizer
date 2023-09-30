@@ -46,5 +46,185 @@ namespace WindowsAudioSession.Properties {
                 this["SizeAsWorkingArea"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color ColorLabelsActive {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorLabelsActive"]));
+            }
+            set {
+                this["ColorLabelsActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color ColorLabelsHeaders {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorLabelsHeaders"]));
+            }
+            set {
+                this["ColorLabelsHeaders"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("YellowGreen")]
+        public global::System.Drawing.Color ColorLabelsChanging {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorLabelsChanging"]));
+            }
+            set {
+                this["ColorLabelsChanging"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorLabelsHigh {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorLabelsHigh"]));
+            }
+            set {
+                this["ColorLabelsHigh"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorSoundWave {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorSoundWave"]));
+            }
+            set {
+                this["ColorSoundWave"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorFreqPeakMeter {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorFreqPeakMeter"]));
+            }
+            set {
+                this["ColorFreqPeakMeter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("29, 29, 29")]
+        public global::System.Drawing.Color ColorBorders {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorBorders"]));
+            }
+            set {
+                this["ColorBorders"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color ColorBackground {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorBackground"]));
+            }
+            set {
+                this["ColorBackground"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TriggerFontInstallation {
+            get {
+                return ((bool)(this["TriggerFontInstallation"]));
+            }
+            set {
+                this["TriggerFontInstallation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("VFD Display")]
+        public string FontVFD {
+            get {
+                return ((string)(this["FontVFD"]));
+            }
+            set {
+                this["FontVFD"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DSEG14 Classic")]
+        public string FontNumeric {
+            get {
+                return ((string)(this["FontNumeric"]));
+            }
+            set {
+                this["FontNumeric"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Parsi")]
+        public string FontHeaders {
+            get {
+                return ((string)(this["FontHeaders"]));
+            }
+            set {
+                this["FontHeaders"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("font bottons music")]
+        public string FontPlaybackControls {
+            get {
+                return ((string)(this["FontPlaybackControls"]));
+            }
+            set {
+                this["FontPlaybackControls"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        public double FontVFDSize {
+            get {
+                return ((double)(this["FontVFDSize"]));
+            }
+            set {
+                this["FontVFDSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double FontHeadersSize {
+            get {
+                return ((double)(this["FontHeadersSize"]));
+            }
+            set {
+                this["FontHeadersSize"] = value;
+            }
+        }
     }
 }
