@@ -55,7 +55,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,70,240,-9" />
+        <fftControls:FFTControl Grid.Row="1" x:Name="fftControl1" ShowScaleLines="False" Margin="240,70,240,-9" BarCount="512" ShowingBarCount="512" />
 
         <Border BorderBrush="{x:Static local:CustomBrushes.Borders}" BorderThickness="0,8" Grid.Row="0">
             <Grid Margin="0,0,0,0" Name="Panel_GridTop" Background="{x:Static local:CustomBrushes.Borders}">

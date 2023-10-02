@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -37,6 +38,10 @@ namespace WindowsAudioSession.UI.FFT
         /// <inheritdoc/>
         public bool IsStarted { get; protected set; }
 
+        private List<KeyValuePair<int, int>> FreqBarIDs;
+
+        public int ShowingBarsCount { get; set; }
+
         void Draw(
             double x0,
             double y0,
@@ -47,7 +52,7 @@ namespace WindowsAudioSession.UI.FFT
         {
             var canvas = Drawable.GetDrawingSurface();
             var barCount = barSizes.Length;
-            var showingBarCount = FFTAnalyser.ShowingBarsCount;
+            var showingBarCount = ShowingBarsCount;
             showingBarCount = (showingBarCount > 0 && (showingBarCount % 2) == 0) ? showingBarCount : barCount;
             var showingBarRatio = (showingBarCount > 0) ? barCount / showingBarCount : 1;
             var barMaxWidth = (width - (2d * Margin)) / showingBarCount;
@@ -73,13 +78,27 @@ namespace WindowsAudioSession.UI.FFT
             {
                 double maxValue;
 
-                if (showingBarRatio > 1)
+                if (showingBarCount == 16)
                 {
                     // Určení začátku a konce rozsahu sloupců, které chcete zprůměrovat
+                    //int startIndex = i * showingBarRatio;
+                    //int endIndex = (i + 1) * showingBarRatio;
+                    if (FreqBarIDs == null)
+                    {
+                        FreqBarIDs = FFTHelper.Frequencies(FFTAnalyser.BarsCount);
+                    }
+
+                    int startIndex = FreqBarIDs[i].Key;
+                    int endIndex = FreqBarIDs[i].Value;
+
+                    // Inicializace proměnné pro maximální hodnotu
+                    maxValue = barSizes.Skip(startIndex).Take(endIndex - startIndex).Max();
+                }
+                else if (showingBarRatio > 1)
+                {
                     int startIndex = i * showingBarRatio;
                     int endIndex = (i + 1) * showingBarRatio;
 
-                    // Inicializace proměnné pro maximální hodnotu
                     maxValue = barSizes.Skip(startIndex).Take(endIndex - startIndex).Max();
                 }
                 else
@@ -89,8 +108,8 @@ namespace WindowsAudioSession.UI.FFT
                 }
 
 
-                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * ((showingBarCount < 512) ? 1.5 : 1);
-                barHeight = Math.Min((showingBarCount < 512) ? 64 : (Drawable.BarHeight() - ((canvas.Margin.Top + canvas.Margin.Bottom) * 2)), barHeight);
+                var barHeight = Math.Max(0, maxValue * (height - 2 * Margin) / 255d) * ((showingBarCount <= 16) ? 1.5 : 1);
+                barHeight = Math.Min((showingBarCount <= 16) ? 64 : (Drawable.BarHeight() - ((canvas.Margin.Top + canvas.Margin.Bottom) * 2)), barHeight);
                 var y_top = y0 + height - 2 * Margin - barHeight;
 
                 var bar = _bars[i];

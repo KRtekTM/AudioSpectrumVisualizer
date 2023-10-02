@@ -10,7 +10,7 @@ namespace WindowsAudioSession.UI.FFT
     {
         public static List<KeyValuePair<int, int>> Frequencies(int BarsCount)
         {
-            int MaxHz = 24000;
+            int MaxHz = 20480;
             int[] PeakHz = { 0, 20, 30, 50, 70, 100, 200, 300, 500, 700, 1000, 2000, 3000, 5000, 7000, 10000, 20000 };
 
             List<int> PeakHzDiff = new List<int>();

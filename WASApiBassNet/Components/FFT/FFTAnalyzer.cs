@@ -20,7 +20,6 @@ namespace WASApiBassNet.Components.FFT
                 SpectrumData = new double[_barsCount];
             }
         }
-
         public int ShowingBarsCount { get; set; }
 
         /// <inheritdoc/>

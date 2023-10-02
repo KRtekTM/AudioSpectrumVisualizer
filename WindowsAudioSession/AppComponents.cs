@@ -133,19 +133,25 @@ namespace WindowsAudioSession
             // FFT component #1
 
             App.WASMainWindow.fftControl1.ViewModel = FFTViewModel1;
+            FFTViewModel1.BarCount = App.WASMainWindow.fftControl1.BarCount;
+            FFTViewModel1.ShowingBarCount = App.WASMainWindow.fftControl1.ShowingBarCount;
             FFTAnalyser1.FFTProvider = FFTProvider;
             FFTAnalyser1.BarsCount = FFTViewModel1.BarCount;
+            FFTAnalyser1.ShowingBarsCount = FFTViewModel1.ShowingBarCount;
+            FFTDrawer1.ShowingBarsCount = FFTViewModel1.ShowingBarCount;
             FFTDrawer1.Drawable = App.WASMainWindow.fftControl1;
             FFTDrawer1.FFTAnalyser = FFTAnalyser1;
-            FFTViewModelDrawerMediator.InitializeMediate(FFTViewModel1, FFTDrawer1);
+            //FFTViewModelDrawerMediator.InitializeMediate(FFTViewModel1, FFTDrawer1);
 
             // FFT component #2
 
             App.WASMainWindow.fftControl2.ViewModel = FFTViewModel2;
+            FFTViewModel2.BarCount = App.WASMainWindow.fftControl2.BarCount;
             FFTViewModel2.ShowingBarCount = App.WASMainWindow.fftControl2.ShowingBarCount;
             FFTAnalyser2.FFTProvider = FFTProvider;
             FFTAnalyser2.BarsCount = FFTViewModel2.BarCount;
             FFTAnalyser2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
+            FFTDrawer2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
             FFTDrawer2.BarBrush = CustomBrushes.VolumePeakBrush;//HatchRawBrush.Create(Brushes.LightGreen, 4, 3);
             FFTDrawer2.BarWidthPercent = FFTViewModel2.BarWidthPercent;
             FFTDrawer2.Drawable = App.WASMainWindow.fftControl2;

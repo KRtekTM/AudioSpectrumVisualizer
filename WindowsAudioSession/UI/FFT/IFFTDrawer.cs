@@ -39,5 +39,7 @@ namespace WindowsAudioSession.UI.FFT
         /// indicates if drawer is started or not
         /// </summary>
         bool IsStarted { get; }
+
+        int ShowingBarsCount { get; set; }
     }
 }

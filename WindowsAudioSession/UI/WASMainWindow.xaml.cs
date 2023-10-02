@@ -96,18 +96,19 @@ namespace WindowsAudioSession.UI
 
                 if (App.WASMainViewModel.IsStarted)
                 {
-                    ButtonStop.Command.Execute(sender);
-                    Commands.Commands.Stop.Execute(sender);
-                    ButtonStop_Click(sender, null);
+                    //ButtonStop.Command.Execute(sender);
+                    //Commands.Commands.Stop.Execute(sender);
+                    //ButtonStop_Click(sender, null);
 
-                    Panel_LengthSampleFrq.Visibility = Visibility.Visible;
-                    Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
-                    Panel_StartStop.Visibility = Visibility.Visible;
+                    //Panel_LengthSampleFrq.Visibility = Visibility.Visible;
+                    //Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
+                    //Panel_StartStop.Visibility = Visibility.Visible;
 
-                    fftControl1.Panel_StackPanelBars.Visibility = Visibility.Visible;
+                    //fftControl1.Panel_StackPanelBars.Visibility = Visibility.Visible;
 
-                    App.WASMainViewModel.IsStarted = false;
-                    App.WASMainViewModel.CanStart = true;
+                    //App.WASMainViewModel.IsStarted = false;
+                    //App.WASMainViewModel.CanStart = true;
+                    App.Current.Shutdown();
                 }
             };
 
@@ -668,7 +669,7 @@ namespace WindowsAudioSession.UI
                                 displayedValueShownSince = ActualTime;
                             }
 
-                            if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(audioSourceText.Length > 28 ? 2 : 4))
+                            if ((ActualTime - displayedValueShownSince) > TimeSpan.FromSeconds(2))
                             {
                                 audioSourceTextRollback = true;
                                 displayedValueShownSince = DateTime.MinValue;
