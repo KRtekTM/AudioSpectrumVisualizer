@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
@@ -106,7 +106,7 @@ namespace WindowsAudioSession.UI
             1024,2048,4096,8192,16384
         };
 
-        int _sampleFrequency = 41000;
+        int _sampleFrequency = 48000;
 
         /// <summary>
         /// sample frequency

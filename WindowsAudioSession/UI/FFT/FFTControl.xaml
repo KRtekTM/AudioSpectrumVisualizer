@@ -46,7 +46,7 @@
                         Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}" 
                              VerticalAlignment="Center"
-                             IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}" Background="#FF1D1D1D">
+                             IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}">
                         <Validation.ErrorTemplate>
                             <ControlTemplate>
                                 <StackPanel>

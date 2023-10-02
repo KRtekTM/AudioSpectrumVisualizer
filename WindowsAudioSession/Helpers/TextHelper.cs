@@ -24,7 +24,7 @@ namespace WindowsAudioSession.Helpers
             return input;
         }
 
-        public static string RemoveDiacriticsAndConvertToAscii(string input)
+        private static string RemoveDiacriticsAndConvertToAscii(string input)
         {
             // Nahradí diakritiku za znaky bez diakritiky
             string normalizedString = input.Normalize(NormalizationForm.FormD);

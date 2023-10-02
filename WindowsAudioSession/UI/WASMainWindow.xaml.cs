@@ -736,7 +736,7 @@ namespace WindowsAudioSession.UI
                 TextSourceApp.Text = $"";
             }
 
-            TextClockLabel.Text = (isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {audioSource.Key.ToUpperInvariant()}" : "WORLD CLOCK";
+            TextClockLabel.Text = (isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {TextHelper.RemoveDiacritics(audioSource.Key.ToUpperInvariant())}" : "WORLD CLOCK";
             TextClock.Text = FlashingText;
         }
 

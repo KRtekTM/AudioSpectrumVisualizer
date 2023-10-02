@@ -1,4 +1,4 @@
-﻿<Window x:Class="WindowsAudioSession.UI.WASMainWindow"
+<Window x:Class="WindowsAudioSession.UI.WASMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -102,7 +102,7 @@
                         <Label Foreground="{x:Static local:CustomBrushes.Labels}" Content="sample frq:" Width="68" Height="24" FontSize="10"/>
                         <ComboBox Width="64" IsEnabled="{Binding IsStarted,Converter={x:Static converters:NotBooleanConverter.Instance}}"
                               ItemsSource="{Binding SampleFrequencies}"
-                              SelectedValue="{Binding SampleFrequency,FallbackValue=44100}" Height="20" FontSize="10"/>
+                              SelectedValue="{Binding SampleFrequency,FallbackValue=48000}" Height="20" FontSize="10"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -199,7 +199,7 @@
                     Name="Panel_FTTControl2"
                     Margin="-1,0,0,0">
                 <fftControls:FFTControl 
-                        BarCount="512"
+                        BarCount="4096"
                         ShowingBarCount="16"
                         BarWidthPercent="80"
                         FFTDrawMargin="0"

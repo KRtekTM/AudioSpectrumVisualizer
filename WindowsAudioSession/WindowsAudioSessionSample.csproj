@@ -115,6 +115,7 @@
     <Compile Include="UI\FFT\FFTControl.xaml.cs">
       <DependentUpon>FFTControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\FFT\FFTHelper.cs" />
     <Compile Include="UI\FFT\FFTViewModel.cs" />
     <Compile Include="UI\FFT\FFTPeakDrawer.cs" />
     <Compile Include="UI\FFT\FFTScaleDrawer.cs" />

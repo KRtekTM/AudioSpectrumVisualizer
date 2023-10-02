@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -6,6 +7,7 @@ using System.Windows.Shapes;
 
 using WASApiBassNet.Components.AudioCapture;
 using WASApiBassNet.Components.FFT;
+using Windows.ApplicationModel.Activation;
 
 namespace WindowsAudioSession.UI.FFT
 {
@@ -38,19 +40,15 @@ namespace WindowsAudioSession.UI.FFT
         /// <inheritdoc/>
         public bool IsStarted { get; protected set; }
 
-        void Draw(
-            double x0,
-            double y0,
-            double width,
-            double height,
-            double[] barSizes
-            )
+        private List<KeyValuePair<int, int>> FreqBarIDs;
+
+        void Draw(double x0, double y0, double width, double height, double[] barSizes)
         {
             var canvas = Drawable.GetDrawingSurface();
-            var barCount = barSizes.Length;
+            var BarsCount = FFTPeakAnalyser.BarsCount;
             var showingBarCount = FFTPeakAnalyser.ShowingBarsCount;
-            showingBarCount = (showingBarCount > 0 && (showingBarCount % 2) == 0) ? showingBarCount : barCount;
-            var showingBarRatio = (showingBarCount > 0) ? barCount / showingBarCount : 1;
+            showingBarCount = (showingBarCount > 0 && (showingBarCount % 2) == 0) ? showingBarCount : BarsCount;
+            var showingBarRatio = (showingBarCount > 0) ? BarsCount / showingBarCount : 1;
             var barMaxWidth = (width - (2d * Margin)) / showingBarCount;
             var barWidth = barMaxWidth * WidthPercent / 100d;
 
@@ -77,8 +75,15 @@ namespace WindowsAudioSession.UI.FFT
                     // Pokud je rozsah více než 1 sloupec, provede se zprůměrování
 
                     // Určení začátku a konce rozsahu sloupců, které chcete zprůměrovat
-                    int startIndex = i * showingBarRatio;
-                    int endIndex = (i + 1) * showingBarRatio;
+                    //int startIndex = i * showingBarRatio;
+                    //int endIndex = (i + 1) * showingBarRatio;
+                    if (FreqBarIDs == null)
+                    {
+                        FreqBarIDs = FFTHelper.Frequencies(FFTPeakAnalyser.BarsCount);
+                    }
+
+                    int startIndex = FreqBarIDs[i].Key;
+                    int endIndex = FreqBarIDs[i].Value;
 
                     // Inicializace proměnné pro maximální hodnotu
                     maxValue = barSizes.Skip(startIndex).Take(endIndex - startIndex).Max();
