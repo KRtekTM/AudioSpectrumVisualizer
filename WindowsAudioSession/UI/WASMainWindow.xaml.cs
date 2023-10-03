@@ -96,19 +96,7 @@ namespace WindowsAudioSession.UI
 
                 if (App.WASMainViewModel.IsStarted)
                 {
-                    //ButtonStop.Command.Execute(sender);
-                    //Commands.Commands.Stop.Execute(sender);
-                    //ButtonStop_Click(sender, null);
-
-                    //Panel_LengthSampleFrq.Visibility = Visibility.Visible;
-                    //Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
-                    //Panel_StartStop.Visibility = Visibility.Visible;
-
-                    //fftControl1.Panel_StackPanelBars.Visibility = Visibility.Visible;
-
-                    //App.WASMainViewModel.IsStarted = false;
-                    //App.WASMainViewModel.CanStart = true;
-                    App.Current.Shutdown();
+                    RestartApplication();
                 }
             };
 
@@ -215,9 +203,14 @@ namespace WindowsAudioSession.UI
         {
             if(_styleSettingsDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
+                RestartApplication();
             }
+        }
+
+        private void RestartApplication()
+        {
+            Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
 
         private void ButtonPrevious_Click(object sender, RoutedEventArgs e)
@@ -594,6 +587,12 @@ namespace WindowsAudioSession.UI
         private void TextVolume_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             TextVolume.Foreground = CustomBrushes.LabelChanging;
+
+            if (audioController.IsMuted)
+            {
+                audioController.ToggleMute();
+            }
+
             audioController.Volume = (e.Delta > 0) ? audioController.Volume + 2 : audioController.Volume - 2;
 
             e.Handled = true;
