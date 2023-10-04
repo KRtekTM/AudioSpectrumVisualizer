@@ -93,11 +93,7 @@ namespace WindowsAudioSession.UI
             // Tato událost se zavolá, když dojde ke změně nastavení monitoru
             SystemEvents.DisplaySettingsChanged += (sender, e) =>
             {
-
-                if (App.WASMainViewModel.IsStarted)
-                {
                     RestartApplication();
-                }
             };
 
             // Subscribe on changes made in volume modifier config file (so the user can change it while the app is running)
