@@ -106,6 +106,7 @@
     <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Commands\StartCommand.cs" />
     <Compile Include="Helpers\AudioSourceHelper.cs" />
+    <Compile Include="Helpers\DecibelsHelper.cs" />
     <Compile Include="Helpers\FontInstallerHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />

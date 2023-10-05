@@ -12,10 +12,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Un4seen.Bass;
 using WASApiBassNet;
 using Windows.Graphics;
 using WindowsAudioSession.Helpers;
 using WindowsAudioSession.Properties;
+using static Un4seen.Bass.Misc.WaveForm.WaveBuffer;
 
 namespace WindowsAudioSession.UI
 {
@@ -28,6 +30,7 @@ namespace WindowsAudioSession.UI
         private const int requiredWidth = 1280;
         private const int requiredHeight = 400;
         private DispatcherTimer timer;
+        private const int timerIntervalMs = 200;
         private CoreAudioDevice audioController = new CoreAudioController().DefaultPlaybackDevice;
         private Point lastTouchPosition, startingTouchPosition;
         private DateTime touchStartTime;
@@ -35,19 +38,22 @@ namespace WindowsAudioSession.UI
         private int touchCount = 0;
         private int _highVolumeThreshold = 70;
         private bool _isTouching, _isMuting, _isTouchMoving, audioSourceTextRollback = false;
+        private bool _lastAudioLevelZero = true;
         private int highVolumeThreshold;
-        private DateTime _lastUpdateCheck;
+        private DateTime _lastUpdateCheck, _lastVolumeDown, _playArrowTimeOffset;
         private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
         private KeyValuePair<bool, Version> checkedVersion;
         private System.Windows.Forms.Screen targetScreen = GetRequiredDisplay();
         private bool showAudioSourceText = false;
         private KeyValuePair<string, string> audioSource;
         private string audioSourceText = ""; // Přidáme proměnnou pro uchování audioSourceText
-        private int audioSourceTextStartChar = 0;
+        private int audioSourceTextStartChar, _playArrowCount = 0;
         private DateTime lastAudioSourceChangeTime, displayedValueShownSince = DateTime.MinValue; // Pro sledování změn audioSource.Value
         private AudioSourceHelper _audioSourceHelper;
         private int showEachSecondsCount = 25;
         private StyleSettings _styleSettingsDialog = new StyleSettings();
+
+
 
         /// <summary>
         /// creates a new instance
@@ -79,7 +85,7 @@ namespace WindowsAudioSession.UI
 
             // Vytvoření a inicializace DispatcherTimeru
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(200);
+            timer.Interval = TimeSpan.FromMilliseconds(timerIntervalMs);
             timer.Tick += Timer_Tick;
 
             // Spuštění timeru
@@ -180,15 +186,19 @@ namespace WindowsAudioSession.UI
             TextVersion.FontFamily = fontFamilyHeaders;
             TextVersion.FontSize = Settings.Default.FontHeadersSize;
             TextContributors.FontFamily = fontFamilyHeaders;
+            TextContributors.FontSize = Settings.Default.FontHeadersSize;
             TextSourceLength.FontFamily = fontFamilyHeaders;
             TextSourceLength.FontSize = Settings.Default.FontHeadersSize;
             TextSourceAppLbl.FontFamily = fontFamilyHeaders;
             TextSourceAppLbl.FontSize = Settings.Default.FontHeadersSize;
+            TextDecibelsLbl.FontFamily = fontFamilyHeaders;
+            TextDecibelsLbl.FontSize = Settings.Default.FontHeadersSize;
 
             TextVolume.FontFamily = fontFamilyNumeric;
             TextAudioOut.FontFamily = fontFamilyNumeric;
             TextRemainingTime.FontFamily = fontFamilyNumeric;
             TextSourceApp.FontFamily = fontFamilyNumeric;
+            TextDecibels.FontFamily = fontFamilyNumeric;
 
             ButtonPrevious.FontFamily = fontFamilyPlaybackControls;
             ButtonPlayPause.FontFamily = fontFamilyPlaybackControls;
@@ -298,13 +308,16 @@ namespace WindowsAudioSession.UI
                 {
                     this.MaxHeight = targetScreen.WorkingArea.Height;
                     this.MaxWidth = targetScreen.WorkingArea.Width;
-                    TextVersion.Margin = new Thickness(0, (targetScreen.Bounds.Height - targetScreen.WorkingArea.Height) + 6, 0, 0);
+                    //var taskbarHeight = targetScreen.Bounds.Height - targetScreen.WorkingArea.Height;
+                    TextVersion.Margin = new Thickness(0, 6, 0, 0);
+                    TextContributors.Margin = new Thickness(0, 4, 0, 0);
                 }
                 else
                 {
                     this.MaxHeight = targetScreen.Bounds.Height;
                     this.MaxWidth = targetScreen.Bounds.Width;
-                    TextVersion.Margin = new Thickness(0, 56, 0, 0);
+                    TextVersion.Margin = new Thickness(0, 24, 0, 0);
+                    TextContributors.Margin = new Thickness(0, 22, 0, 0);
                 }
             }
 
@@ -338,20 +351,59 @@ namespace WindowsAudioSession.UI
 
             // Values used through TICK
             var ActualTime = DateTime.Now;
-            bool levelMoreThenZero = App.AppComponents.AudioPluginEngine.GetLevel() > 0;
+            int currentLevel = App.AppComponents.AudioPluginEngine.GetLevel();
+            bool levelMoreThenZero = currentLevel > 0;
+            if (levelMoreThenZero)
+            {
+                _lastVolumeDown = DateTime.MinValue;
+                _lastAudioLevelZero = false;
+            }
+            else
+            {
+                if (!_lastAudioLevelZero)
+                {
+                    if (_lastVolumeDown.Equals(DateTime.MinValue))
+                    {
+                        _lastVolumeDown = ActualTime;
+                    }
+                    else
+                    {
+                        levelMoreThenZero = ((ActualTime - _lastVolumeDown) < timer.Interval);
+                    }
+                }            
+            }
+            if (!levelMoreThenZero)
+            {
+                _lastAudioLevelZero = true;
+                _playArrowCount = 0;
+                TextPlay.Text = "PLAY ";
+            }
 
             UpdateTextToDisplay(ActualTime, levelMoreThenZero);
 
             // Aktualizace animovaného bloku "PLAY"
             TextPlay.Foreground = (App.WASMainViewModel.IsStarted && levelMoreThenZero) ? CustomBrushes.Labels : CustomBrushes.InactiveLabels;
-            TextPlay.Text = "PLAY ";
             if (App.WASMainViewModel.IsStarted && levelMoreThenZero)
             {
-                if ((ActualTime.Second % 4) == 0) TextPlay.Text = "PLAY ";
-                if ((ActualTime.Second % 4) == 1) TextPlay.Text = "PLAY ▶";
-                if ((ActualTime.Second % 4) == 2) TextPlay.Text = "PLAY ▶▶";
-                if ((ActualTime.Second % 4) == 3) TextPlay.Text = "PLAY ▶▶▶";
+                if ((ActualTime - _playArrowTimeOffset) > TimeSpan.FromSeconds(1))
+                {
+                    _playArrowTimeOffset = ActualTime;
+
+                    if (_playArrowCount == 0)
+                    {
+                        TextPlay.Text = "PLAY ";
+                    }
+                    else if (_playArrowCount > 0 && _playArrowCount < 5)
+                    {
+                        TextPlay.Text += "▶";
+                        
+                    }
+                    _playArrowCount++;
+
+                    if (_playArrowCount == 5) _playArrowCount = 0;
+                }
             }
+            
 
             // Aktualizace bloku s hlasitostí
             if (App.WASMainViewModel.IsStarted)
@@ -376,6 +428,11 @@ namespace WindowsAudioSession.UI
                 {
                     _isMuting = false;
                 }
+
+                // Check audio level decibels
+                KeyValuePair<string, Brush> decibels = DecibelsHelper.GetDecibelsForAudioLevel(currentLevel, ActualTime);
+                TextDecibels.Text = decibels.Key;
+                TextDecibels.Foreground = decibels.Value;
             }
 
             // Check for updates

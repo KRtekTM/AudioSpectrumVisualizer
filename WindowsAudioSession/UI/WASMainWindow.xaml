@@ -350,6 +350,19 @@
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="30"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                   Text="AVG DECIBELS / LAST 5 SEC"
+                   Name="TextDecibelsLbl"
+                   Margin="0,16,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
+
+                <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
+                    Name="TextDecibels"
+                    Text="0"
+                    Margin="8,8,8,1"
+                    Padding="0"
+                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
+
+                <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
                    Text="AUDIO OUTPUT"
                            Name="TextAudioOutputLbl"
                    Margin="0,16,0,0"
@@ -360,17 +373,12 @@
                     Text="NONE"
                     Margin="8,8,8,1"
                     Padding="0"
-                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
+                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="10"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
                    Text="VERSION:"
                    Name="TextVersion"
-                   Margin="0,38,0,0"
-                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
-                <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
-                           Name="TextContributors"
-                   Text="Contributors: Ondřej Kotas, Franck Gaspoz"
-                   Margin="0,4,0,0"
+                   Margin="0,24,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
 
@@ -385,7 +393,7 @@
                     Text="00:00:00"
                     Margin="8,8,8,0"
                     Padding="0"
-                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
+                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="10"/>
 
                 <Button Content="f" Style="{StaticResource buttonStyle}" Name="ButtonPrevious" HorizontalAlignment="Left" Height="48" Margin="24,24,8,0" Padding="-25,4" Width="48" FontFamily="font bottons music" FontSize="36">
                 </Button>
@@ -401,11 +409,17 @@
                    Text="SOURCE APP"
                    Margin="0,24,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
-                <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
+                <TextBlock Foreground="{x:Static local:CustomBrushes.Labels}"
                    Text=""
                    Name="TextSourceApp"
-                   Margin="0,4,0,0"
-                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="18"/>
+                   Margin="0,8,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="10"/>
+                <TextBlock Foreground="{x:Static local:CustomBrushes.InactiveLabels}"
+                           
+                   Text="Contributors: Ondrej Kotas, Franck Gaspoz"
+                   Name="TextContributors"
+                   Margin="0,22,0,0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>
             </StackPanel>
         </Grid>
 
