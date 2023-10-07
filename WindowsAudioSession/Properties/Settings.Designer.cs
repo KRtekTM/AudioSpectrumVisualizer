@@ -226,5 +226,125 @@ namespace WindowsAudioSession.Properties {
                 this["FontHeadersSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public decimal MorningHour {
+            get {
+                return ((decimal)(this["MorningHour"]));
+            }
+            set {
+                this["MorningHour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("22")]
+        public decimal NightHour {
+            get {
+                return ((decimal)(this["NightHour"]));
+            }
+            set {
+                this["NightHour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("75")]
+        public decimal DayDecibelThreshold {
+            get {
+                return ((decimal)(this["DayDecibelThreshold"]));
+            }
+            set {
+                this["DayDecibelThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        public decimal NightDecibelThreshold {
+            get {
+                return ((decimal)(this["NightDecibelThreshold"]));
+            }
+            set {
+                this["NightDecibelThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public decimal VolumeStep {
+            get {
+                return ((decimal)(this["VolumeStep"]));
+            }
+            set {
+                this["VolumeStep"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SourceTitleAsChanging {
+            get {
+                return ((bool)(this["SourceTitleAsChanging"]));
+            }
+            set {
+                this["SourceTitleAsChanging"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color ColorVolumePeakMeterLow {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorVolumePeakMeterLow"]));
+            }
+            set {
+                this["ColorVolumePeakMeterLow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("YellowGreen")]
+        public global::System.Drawing.Color ColorSpectrumAnalyser {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorSpectrumAnalyser"]));
+            }
+            set {
+                this["ColorSpectrumAnalyser"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorSpectrumAnalyserHighPeaks {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorSpectrumAnalyserHighPeaks"]));
+            }
+            set {
+                this["ColorSpectrumAnalyserHighPeaks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color ColorVolumePeakMeterHigh {
+            get {
+                return ((global::System.Drawing.Color)(this["ColorVolumePeakMeterHigh"]));
+            }
+            set {
+                this["ColorVolumePeakMeterHigh"] = value;
+            }
+        }
     }
 }

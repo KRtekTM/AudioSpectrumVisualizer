@@ -108,6 +108,7 @@
     <Compile Include="Helpers\AudioSourceHelper.cs" />
     <Compile Include="Helpers\DecibelsHelper.cs" />
     <Compile Include="Helpers\FontInstallerHelper.cs" />
+    <Compile Include="Helpers\MonitorHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="IAppComponents.cs" />
@@ -206,13 +207,16 @@
     <EmbeddedResource Include="UI\StyleSettings.resx">
       <DependentUpon>StyleSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="defaultTheme.json">
+    <Content Include="Themes\defaultTheme.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\DSEG14Classic-Regular.ttf" />
     <None Include="Resources\Parsi-Regular.ttf" />
     <None Include="Resources\PlaybackControls.ttf" />
     <None Include="Resources\vfd-display.ttf" />
+    <Content Include="Themes\roentgenTheme.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="UI\posy-wait-64.png" />
     <Resource Include="UI\undo.png" />
     <Content Include="_configVolumeModifier.txt">
@@ -310,11 +314,11 @@
     PostBuildMacros;
   </PostBuildEventDependsOn>
     <PostBuildEvent>del "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip"
-7z.exe a -tzip "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip" "$(ProjectDir)\bin\$(PlatformName)\Debug\_configVolumeModifier.txt" "$(ProjectDir)\bin\$(PlatformName)\Debug\bass.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\basswasapi.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\LICENSE" "$(ProjectDir)\bin\$(PlatformName)\Debug\README.md" "$(ProjectDir)\bin\$(PlatformName)\Debug\WindowsAudioSession.exe" "$(ProjectDir)\bin\$(PlatformName)\Debug\defaultTheme.json"
-</PostBuildEvent>
+7z.exe a -tzip "$(ProjectDir)\output\AudioSpectrumVisualizer_win-$(PlatformName)_@(VersionNumber).zip" "$(ProjectDir)\bin\$(PlatformName)\Debug\_configVolumeModifier.txt" "$(ProjectDir)\bin\$(PlatformName)\Debug\bass.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\basswasapi.dll" "$(ProjectDir)\bin\$(PlatformName)\Debug\LICENSE" "$(ProjectDir)\bin\$(PlatformName)\Debug\README.md" "$(ProjectDir)\bin\$(PlatformName)\Debug\WindowsAudioSession.exe" "$(ProjectDir)\bin\$(PlatformName)\Debug\Themes"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>copy $(ProjectDir)\bass_$(PlatformName).dll $(ProjectDir)\bass.dll /Y
-copy $(ProjectDir)\basswasapi_$(PlatformName).dll $(ProjectDir)\basswasapi.dll /Y</PreBuildEvent>
+copy $(ProjectDir)\basswasapi_$(PlatformName).dll $(ProjectDir)\basswasapi.dll /Y
+copy $(ProjectDir)\..\README.md $(ProjectDir)\README.md /Y</PreBuildEvent>
   </PropertyGroup>
 </Project>

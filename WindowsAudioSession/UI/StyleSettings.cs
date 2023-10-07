@@ -7,6 +7,10 @@ using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using System.Runtime.Remoting.Contexts;
 using System.Windows;
+using System.Windows.Controls;
+using Button = System.Windows.Forms.Button;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 
 namespace WindowsAudioSession.UI
 {
@@ -15,6 +19,13 @@ namespace WindowsAudioSession.UI
         public StyleSettings()
         {
             InitializeComponent();
+
+            BoxDayDb.Value = Settings.Default.DayDecibelThreshold;
+            BoxNightDb.Value = Settings.Default.NightDecibelThreshold;
+            BoxMorningHour.Value = Settings.Default.MorningHour;
+            BoxNightHour.Value = Settings.Default.NightHour;
+            BoxVolumeStep.Value = Settings.Default.VolumeStep;
+            ChckBoxSourceTitleAsChanging.Checked = Settings.Default.SourceTitleAsChanging;
         }
 
         StyleJson currentTheme = new StyleJson()
@@ -24,8 +35,12 @@ namespace WindowsAudioSession.UI
             LabelsChanging = Settings.Default.ColorLabelsChanging,
             LabelsHigh = Settings.Default.ColorLabelsHigh,
 
+            VolumePeakMeterLow = Settings.Default.ColorVolumePeakMeterLow,
+            VolumePeakMeterHigh = Settings.Default.ColorVolumePeakMeterHigh,
             SoundWave = Settings.Default.ColorSoundWave,
             FreqPeakMeter = Settings.Default.ColorFreqPeakMeter,
+            SpectrumAnalyser = Settings.Default.ColorSpectrumAnalyser,
+            SpectrumAnalyserHighPeak = Settings.Default.ColorSpectrumAnalyserHighPeaks,
 
             Borders = Settings.Default.ColorBorders,
             Background = Settings.Default.ColorBackground,
@@ -35,6 +50,8 @@ namespace WindowsAudioSession.UI
             FontNumeric = Settings.Default.FontNumeric,
             FontHeadersSize = Settings.Default.FontHeadersSize,
             FontVFDSize = Settings.Default.FontVFDSize
+
+
         };
 
         StyleJson editingTheme = new StyleJson()
@@ -44,8 +61,12 @@ namespace WindowsAudioSession.UI
             LabelsChanging = Settings.Default.ColorLabelsChanging,
             LabelsHigh = Settings.Default.ColorLabelsHigh,
 
+            VolumePeakMeterLow = Settings.Default.ColorVolumePeakMeterLow,
+            VolumePeakMeterHigh = Settings.Default.ColorVolumePeakMeterHigh,
             SoundWave = Settings.Default.ColorSoundWave,
             FreqPeakMeter = Settings.Default.ColorFreqPeakMeter,
+            SpectrumAnalyser = Settings.Default.ColorSpectrumAnalyser,
+            SpectrumAnalyserHighPeak = Settings.Default.ColorSpectrumAnalyserHighPeaks,
 
             Borders = Settings.Default.ColorBorders,
             Background = Settings.Default.ColorBackground,
@@ -64,8 +85,12 @@ namespace WindowsAudioSession.UI
             BtnLabelsChangingColor.BackColor = currentTheme.LabelsChanging;
             BtnLabelsHighColor.BackColor = currentTheme.LabelsHigh;
 
+            BtnColorVolPeakLow.BackColor = currentTheme.VolumePeakMeterLow;
+            BtnColorVolPeakHigh.BackColor = currentTheme.VolumePeakMeterHigh;
             BtnSoundWaveColor.BackColor = currentTheme.SoundWave;
             BtnFreqPeakMeterColor.BackColor = currentTheme.FreqPeakMeter;
+            BtnColorSpectrumAnalyser.BackColor = currentTheme.SpectrumAnalyser;
+            BtnColorSpectrumAnalyserHighPeaks.BackColor = currentTheme.SpectrumAnalyserHighPeak;
 
             BtnBordersColor.BackColor = currentTheme.Borders;
             BtnBackgroundColor.BackColor = currentTheme.Background;
@@ -176,6 +201,57 @@ namespace WindowsAudioSession.UI
             editingTheme.Background = temp;
         }
 
+        private void BtnColorVolPeakLow_Click(object sender, EventArgs e)
+        {
+            Color temp;
+            UserColorInput(BtnColorVolPeakLow, out temp);
+            editingTheme.VolumePeakMeterLow = temp;
+        }
+
+        private void BtnColorSpectrumAnalyser_Click(object sender, EventArgs e)
+        {
+            Color temp;
+            UserColorInput(BtnColorSpectrumAnalyser, out temp);
+            editingTheme.SpectrumAnalyser = temp;
+        }
+
+        private void BtnColorVolPeakHigh_Click(object sender, EventArgs e)
+        {
+            Color temp;
+            UserColorInput(BtnColorVolPeakHigh, out temp);
+            editingTheme.VolumePeakMeterHigh = temp;
+        }
+
+        private void BtnColorSpectrumAnalyserHighPeaks_Click(object sender, EventArgs e)
+        {
+            Color temp;
+            UserColorInput(BtnColorSpectrumAnalyserHighPeaks, out temp);
+            editingTheme.SpectrumAnalyserHighPeak = temp;
+        }
+
+        private void BtnResetColorVolPeakHigh_Click(object sender, EventArgs e)
+        {
+            UserResetColor(BtnColorVolPeakHigh, currentTheme.VolumePeakMeterHigh);
+            editingTheme.VolumePeakMeterHigh = currentTheme.VolumePeakMeterHigh;
+        }
+        private void BtnResetColorAnalyserHighPeaks_Click(object sender, EventArgs e)
+        {
+            UserResetColor(BtnColorSpectrumAnalyserHighPeaks, currentTheme.SpectrumAnalyserHighPeak);
+            editingTheme.SpectrumAnalyserHighPeak = currentTheme.SpectrumAnalyserHighPeak;
+        }
+
+        private void BtnResetColorSpectrumAnalyser_Click(object sender, EventArgs e)
+        {
+            UserResetColor(BtnColorSpectrumAnalyser, currentTheme.SpectrumAnalyser);
+            editingTheme.SpectrumAnalyser = currentTheme.SpectrumAnalyser;
+        }
+
+        private void BtnResetColorVolPeakLow_Click(object sender, EventArgs e)
+        {
+            UserResetColor(BtnColorVolPeakLow, currentTheme.VolumePeakMeterLow);
+            editingTheme.VolumePeakMeterLow = currentTheme.VolumePeakMeterLow;
+        }
+
         private void BtnResetLabelsActiveColor_Click(object sender, EventArgs e)
         {
             UserResetColor(BtnLabelsActiveColor, currentTheme.LabelsActive);
@@ -233,8 +309,12 @@ namespace WindowsAudioSession.UI
                 Settings.Default.ColorLabelsChanging = editingTheme.LabelsChanging;
                 Settings.Default.ColorLabelsHigh = editingTheme.LabelsHigh;
 
+                Settings.Default.ColorVolumePeakMeterLow = editingTheme.VolumePeakMeterLow;
+                Settings.Default.ColorVolumePeakMeterHigh = editingTheme.VolumePeakMeterHigh;
                 Settings.Default.ColorSoundWave = editingTheme.SoundWave;
                 Settings.Default.ColorFreqPeakMeter = editingTheme.FreqPeakMeter;
+                Settings.Default.ColorSpectrumAnalyser = editingTheme.SpectrumAnalyser;
+                Settings.Default.ColorSpectrumAnalyserHighPeaks = editingTheme.SpectrumAnalyserHighPeak;
 
                 Settings.Default.ColorBorders = editingTheme.Borders;
                 Settings.Default.ColorBackground = editingTheme.Background;
@@ -301,8 +381,12 @@ namespace WindowsAudioSession.UI
             public Color LabelsChanging { get; set; }
             public Color LabelsHigh { get; set; }
 
+            public Color VolumePeakMeterLow { get; set; }
+            public Color VolumePeakMeterHigh { get; set; }
             public Color SoundWave { get; set; }
             public Color FreqPeakMeter { get; set; }
+            public Color SpectrumAnalyser { get; set; }
+            public Color SpectrumAnalyserHighPeak { get; set; }
 
             public Color Borders { get; set; }
             public Color Background { get; set; }
@@ -343,10 +427,18 @@ namespace WindowsAudioSession.UI
                     editingTheme.LabelsHigh = style.LabelsHigh;
                     BtnLabelsHighColor.BackColor = style.LabelsHigh;
 
+                    editingTheme.VolumePeakMeterLow = style.VolumePeakMeterLow;
+                    BtnColorVolPeakLow.BackColor = style.VolumePeakMeterLow;
+                    editingTheme.VolumePeakMeterHigh = style.VolumePeakMeterHigh;
+                    BtnColorVolPeakHigh.BackColor = style.VolumePeakMeterHigh;
                     editingTheme.SoundWave = style.SoundWave;
                     BtnSoundWaveColor.BackColor = style.SoundWave;
                     editingTheme.FreqPeakMeter = style.FreqPeakMeter;
                     BtnFreqPeakMeterColor.BackColor = style.FreqPeakMeter;
+                    editingTheme.SpectrumAnalyser = style.SpectrumAnalyser;
+                    BtnColorSpectrumAnalyser.BackColor = style.SpectrumAnalyser;
+                    editingTheme.SpectrumAnalyserHighPeak = style.SpectrumAnalyserHighPeak;
+                    BtnColorSpectrumAnalyserHighPeaks.BackColor = style.SpectrumAnalyserHighPeak;
 
                     editingTheme.Borders = style.Borders;
                     BtnBordersColor.BackColor = style.Borders;
@@ -368,6 +460,56 @@ namespace WindowsAudioSession.UI
                     System.Windows.Forms.MessageBox.Show($"Theme file was loaded partially or not at all.{Environment.NewLine}Please check the file syntax.", "Theme file corrupted", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (sender.Equals(BtnResetDayDb)) BoxDayDb.Value = 75;
+            if (sender.Equals(BtnResetNightDb)) BoxNightDb.Value = 45;
+            if (sender.Equals(BtnResetMorningHour)) BoxMorningHour.Value = 6;
+            if (sender.Equals(BtnResetNightHour)) BoxNightHour.Value = 22;
+            if (sender.Equals(BtnResetVolumeStep)) BoxVolumeStep.Value = 2;
+        }
+
+        private void BtnApplyThresholds_Click(object sender, EventArgs e)
+        {
+            Settings.Default.DayDecibelThreshold = BoxDayDb.Value;
+            Settings.Default.NightDecibelThreshold = BoxNightDb.Value;
+            Settings.Default.MorningHour = BoxMorningHour.Value;
+            Settings.Default.NightHour = BoxNightHour.Value;
+            Settings.Default.VolumeStep = BoxVolumeStep.Value;
+            Settings.Default.SourceTitleAsChanging = ChckBoxSourceTitleAsChanging.Checked;
+
+            Settings.Default.Save();
+        }
+
+        private void BtnSetAccentColor_Click(object sender, EventArgs e)
+        {
+            var uiSettings = new UISettings();
+            var accentColor = uiSettings.GetColorValue(UIColorType.Accent);
+            var drawingColor = Color.FromArgb(accentColor.A, accentColor.R, accentColor.G, accentColor.B);
+
+            editingTheme.LabelsActive = drawingColor;
+            BtnLabelsActiveColor.BackColor = drawingColor;
+            editingTheme.LabelsHeaders = drawingColor;
+            BtnLabelsHeadersColor.BackColor = drawingColor;
+            editingTheme.LabelsChanging = drawingColor;
+            BtnLabelsChangingColor.BackColor = drawingColor;
+            editingTheme.LabelsHigh = drawingColor;
+            BtnLabelsHighColor.BackColor = drawingColor;
+
+            editingTheme.VolumePeakMeterLow = drawingColor;
+            BtnColorVolPeakLow.BackColor = drawingColor;
+            editingTheme.VolumePeakMeterHigh = drawingColor;
+            BtnColorVolPeakHigh.BackColor = drawingColor;
+            editingTheme.SoundWave = drawingColor;
+            BtnSoundWaveColor.BackColor = drawingColor;
+            editingTheme.FreqPeakMeter = drawingColor;
+            BtnFreqPeakMeterColor.BackColor = drawingColor;
+            editingTheme.SpectrumAnalyser = drawingColor;
+            BtnColorSpectrumAnalyser.BackColor = drawingColor;
+            editingTheme.SpectrumAnalyserHighPeak = drawingColor;
+            BtnColorSpectrumAnalyserHighPeaks.BackColor = drawingColor;
         }
 
     }

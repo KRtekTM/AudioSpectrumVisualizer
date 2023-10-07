@@ -8,7 +8,7 @@ namespace WindowsAudioSession.UI
 {
     public static class CustomBrushes
     {
-        public static Brush VolumePeakBrush
+        public static Brush FrequencyPeakBrush
         {
             get
             {
@@ -18,7 +18,7 @@ namespace WindowsAudioSession.UI
             }
         }
 
-        public static Brush VolumePeakTopBrush
+        public static Brush FrequencyPeakTopBrush
         {
             get
             {
@@ -36,11 +36,25 @@ namespace WindowsAudioSession.UI
                 brush.StartPoint = new Point(0, 0);
                 brush.EndPoint = new Point(0, 1);
 
-                brush.GradientStops.Add(new GradientStop(Colors.DarkRed, 0));
-                brush.GradientStops.Add(new GradientStop(Colors.DarkRed, 0.1));
-                brush.GradientStops.Add(new GradientStop(Colors.YellowGreen, 0.1));
-                brush.GradientStops.Add(new GradientStop(Colors.DarkGreen, 0.8));
-                brush.GradientStops.Add(new GradientStop(Colors.Black, 1));
+                //brush.GradientStops.Add(new GradientStop(Colors.DarkRed, 0));
+                //brush.GradientStops.Add(new GradientStop(Colors.DarkRed, 0.1));
+                //brush.GradientStops.Add(new GradientStop(Colors.YellowGreen, 0.1));
+                //brush.GradientStops.Add(new GradientStop(Colors.DarkGreen, 0.8));
+                //brush.GradientStops.Add(new GradientStop(Colors.Black, 1));
+                
+                System.Drawing.Color highPeakColorSettings = (Settings.Default.ColorSpectrumAnalyserHighPeaks.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorSpectrumAnalyserHighPeaks;
+                Color highPeakColor = Color.FromArgb(highPeakColorSettings.A, highPeakColorSettings.R, highPeakColorSettings.G, highPeakColorSettings.B);
+                brush.GradientStops.Add(new GradientStop(ChangeColorBrightness(highPeakColor, (float)-0.25), 0));
+                brush.GradientStops.Add(new GradientStop(ChangeColorBrightness(highPeakColor, (float)-0.25), 0.1));
+
+                System.Drawing.Color colorSpectrumAnalyserSettings = (Settings.Default.ColorSpectrumAnalyser.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorSpectrumAnalyser;
+                Color colorSpectrumAnalyser = Color.FromArgb(colorSpectrumAnalyserSettings.A, colorSpectrumAnalyserSettings.R, colorSpectrumAnalyserSettings.G, colorSpectrumAnalyserSettings.B);
+                brush.GradientStops.Add(new GradientStop(ChangeColorBrightness(colorSpectrumAnalyser, (float)-0.15), 0.1));
+                brush.GradientStops.Add(new GradientStop(ChangeColorBrightness(colorSpectrumAnalyser, (float)-0.35), 0.8));
+
+                System.Drawing.Color bgColorSettings = (Settings.Default.ColorBackground.IsEmpty) ? System.Drawing.Color.Black : Settings.Default.ColorBackground;
+                Color bgColor = Color.FromArgb(bgColorSettings.A, bgColorSettings.R, bgColorSettings.G, bgColorSettings.B);
+                brush.GradientStops.Add(new GradientStop(bgColor, 1));
 
                 return brush;
             }
@@ -140,17 +154,40 @@ namespace WindowsAudioSession.UI
         {
             get
             {
-                System.Drawing.Color labelsActiveDrawingColor = (Settings.Default.ColorLabelsActive.IsEmpty) ? System.Drawing.Color.White : Settings.Default.ColorLabelsActive;
-                Color labelsActiveColor = Color.FromArgb(labelsActiveDrawingColor.A, labelsActiveDrawingColor.R, labelsActiveDrawingColor.G, labelsActiveDrawingColor.B);
-                System.Drawing.Color labelsHighDrawingColor = (Settings.Default.ColorLabelsHigh.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorLabelsHigh;
-                Color labelsHighColor = Color.FromArgb(labelsHighDrawingColor.A, labelsHighDrawingColor.R, labelsHighDrawingColor.G, labelsHighDrawingColor.B);
+                System.Drawing.Color volumePeakMeterLow = (Settings.Default.ColorVolumePeakMeterLow.IsEmpty) ? System.Drawing.Color.White : Settings.Default.ColorVolumePeakMeterLow;
+                Color volumePeakMeterLowColor = Color.FromArgb(volumePeakMeterLow.A, volumePeakMeterLow.R, volumePeakMeterLow.G, volumePeakMeterLow.B);
+                
                 LinearGradientBrush brush = new LinearGradientBrush();
-                brush.GradientStops.Add(new GradientStop(labelsActiveColor, 0));
-                brush.GradientStops.Add(new GradientStop(labelsActiveColor, 0.8));
-                brush.GradientStops.Add(new GradientStop(labelsHighColor, 0.8));
-                brush.GradientStops.Add(new GradientStop(labelsHighColor, 1));
+                brush.GradientStops.Add(new GradientStop(volumePeakMeterLowColor, 0));
+                brush.GradientStops.Add(new GradientStop(volumePeakMeterLowColor, 0.8));
+
+                System.Drawing.Color highPeakColorSettings = (Settings.Default.ColorVolumePeakMeterHigh.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorVolumePeakMeterHigh;
+                Color highPeakColor = Color.FromArgb(highPeakColorSettings.A, highPeakColorSettings.R, highPeakColorSettings.G, highPeakColorSettings.B);
+
+                brush.GradientStops.Add(new GradientStop(highPeakColor, 0.8));
+                brush.GradientStops.Add(new GradientStop(highPeakColor, 1));
 
                 return brush;
+            }
+        }
+
+        public static Brush VuMeterLowColor
+        {
+            get
+            {
+                System.Drawing.Color lowPeakColorSettings = (Settings.Default.ColorVolumePeakMeterLow.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorVolumePeakMeterLow;
+                Color lowPeakColor = Color.FromArgb(lowPeakColorSettings.A, lowPeakColorSettings.R, lowPeakColorSettings.G, lowPeakColorSettings.B);
+                return new SolidColorBrush(lowPeakColor);
+            }
+        }
+
+        public static Brush VuMeterHighColor
+        {
+            get
+            {
+                System.Drawing.Color highPeakColorSettings = (Settings.Default.ColorVolumePeakMeterHigh.IsEmpty) ? System.Drawing.Color.Red : Settings.Default.ColorVolumePeakMeterHigh;
+                Color highPeakColor = Color.FromArgb(highPeakColorSettings.A, highPeakColorSettings.R, highPeakColorSettings.G, highPeakColorSettings.B);
+                return new SolidColorBrush(highPeakColor);
             }
         }
 

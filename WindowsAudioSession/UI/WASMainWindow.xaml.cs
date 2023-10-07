@@ -7,17 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Un4seen.Bass;
 using WASApiBassNet;
-using Windows.Graphics;
 using WindowsAudioSession.Helpers;
 using WindowsAudioSession.Properties;
-using static Un4seen.Bass.Misc.WaveForm.WaveBuffer;
 
 namespace WindowsAudioSession.UI
 {
@@ -43,7 +38,7 @@ namespace WindowsAudioSession.UI
         private DateTime _lastUpdateCheck, _lastVolumeDown, _playArrowTimeOffset;
         private TimeSpan durationBetweenUpdateCheck = TimeSpan.FromHours(1);
         private KeyValuePair<bool, Version> checkedVersion;
-        private System.Windows.Forms.Screen targetScreen = GetRequiredDisplay();
+        private System.Windows.Forms.Screen targetScreen = MonitorHelper.GetRequiredDisplay(requiredWidth, requiredHeight);
         private bool showAudioSourceText = false;
         private KeyValuePair<string, string> audioSource;
         private string audioSourceText = ""; // Přidáme proměnnou pro uchování audioSourceText
@@ -53,8 +48,6 @@ namespace WindowsAudioSession.UI
         private int showEachSecondsCount = 25;
         private StyleSettings _styleSettingsDialog = new StyleSettings();
 
-
-
         /// <summary>
         /// creates a new instance
         /// </summary>
@@ -63,7 +56,6 @@ namespace WindowsAudioSession.UI
             InitializeComponent();
 
             InitFonts();
-
 
             if (targetScreen != null)
             {
@@ -103,13 +95,13 @@ namespace WindowsAudioSession.UI
             };
 
             // Subscribe on changes made in volume modifier config file (so the user can change it while the app is running)
-            string highVolumeThresholdFilePath = Environment.CurrentDirectory + "\\_configVolumeModifier.txt";
-            highVolumeThreshold = File.Exists(highVolumeThresholdFilePath) ? Convert.ToInt32(File.ReadAllText(highVolumeThresholdFilePath)) : _highVolumeThreshold;
-            FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(highVolumeThresholdFilePath));
-            watcher.Filter = Path.GetFileName(highVolumeThresholdFilePath);
+            
+            highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
+            FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(AppHelper.highVolumeThresholdFilePath));
+            watcher.Filter = Path.GetFileName(AppHelper.highVolumeThresholdFilePath);
             watcher.Changed += (sender, e) =>
             {
-                if (e.FullPath == highVolumeThresholdFilePath)
+                if (e.FullPath == AppHelper.highVolumeThresholdFilePath)
                 {
                     highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
                 }
@@ -120,6 +112,8 @@ namespace WindowsAudioSession.UI
             _audioSourceHelper = new AudioSourceHelper();
             Task.Run(_audioSourceHelper.RunManagerAsync);
             _audioSourceHelper.AudioSourceChanged += AudioSourceChangedHandler;
+
+            
         }
 
         private void InitFonts()
@@ -246,7 +240,7 @@ namespace WindowsAudioSession.UI
         {
             TextVolume.Text = "---";
             TextAudioOut.Text = "NONE";
-            TextStereo.Foreground = CustomBrushes.VolumePeakTopBrush;
+            TextStereo.Foreground = CustomBrushes.InactiveLabels;
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
@@ -254,7 +248,7 @@ namespace WindowsAudioSession.UI
             Settings.Default.LastAudioOut = Panel_ListBoxSoundCards.SelectedItem.ToString();
             Settings.Default.Save();
             TextAudioOut.Text = Panel_ListBoxSoundCards.SelectedItem.ToString().Split(' ').FirstOrDefault();
-            TextStereo.Foreground = CustomBrushes.LabelsHigh;
+            TextStereo.Foreground = CustomBrushes.VuMeterHighColor;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -267,7 +261,7 @@ namespace WindowsAudioSession.UI
                     WindowStyle = WindowStyle.SingleBorderWindow;
                     ResizeMode = ResizeMode.CanMinimize;
 
-                    Panel_LengthSampleFrq.Visibility = Visibility.Visible;
+                    //Panel_LengthSampleFrq.Visibility = Visibility.Visible;
                     Panel_ListBoxSoundCards.Visibility = Visibility.Visible;
                     Panel_StartStop.Visibility = Visibility.Visible;
                     Panel_Grid.Visibility = Visibility.Visible;
@@ -283,6 +277,7 @@ namespace WindowsAudioSession.UI
                     GoFullScreen();
                 }
             }
+            
             if (e.Key == Key.F9 && WindowStyle == WindowStyle.None)
             {
                 if (this.Height == targetScreen.WorkingArea.Height)
@@ -298,6 +293,14 @@ namespace WindowsAudioSession.UI
 
                 GoFullScreen();
             }
+
+            if (e.Key == Key.F12 && WindowStyle == WindowStyle.None)
+            {
+                //MonitorHelper.ToggleMonitorOnOff(targetScreen);
+                LoadingImage.Visibility = Visibility.Collapsed;
+                LoadingScreen.Background = Brushes.Black;
+                LoadingScreen.Visibility = (LoadingScreen.Visibility == Visibility.Collapsed) ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
 
         private void GoFullScreen()
@@ -309,15 +312,15 @@ namespace WindowsAudioSession.UI
                     this.MaxHeight = targetScreen.WorkingArea.Height;
                     this.MaxWidth = targetScreen.WorkingArea.Width;
                     //var taskbarHeight = targetScreen.Bounds.Height - targetScreen.WorkingArea.Height;
-                    TextVersion.Margin = new Thickness(0, 6, 0, 0);
-                    TextContributors.Margin = new Thickness(0, 4, 0, 0);
+                    TextVersion.Visibility = Visibility.Collapsed;
+                    TextContributors.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     this.MaxHeight = targetScreen.Bounds.Height;
                     this.MaxWidth = targetScreen.Bounds.Width;
-                    TextVersion.Margin = new Thickness(0, 24, 0, 0);
-                    TextContributors.Margin = new Thickness(0, 22, 0, 0);
+                    TextVersion.Visibility = Visibility.Visible;
+                    TextContributors.Visibility = Visibility.Visible;
                 }
             }
 
@@ -330,7 +333,7 @@ namespace WindowsAudioSession.UI
 
             if (App.WASMainViewModel.IsStarted)
             {
-                Panel_LengthSampleFrq.Visibility = Visibility.Collapsed;
+                //Panel_LengthSampleFrq.Visibility = Visibility.Collapsed;
                 Panel_ListBoxSoundCards.Visibility = Visibility.Collapsed;
                 Panel_StartStop.Visibility = Visibility.Collapsed;
 
@@ -413,7 +416,7 @@ namespace WindowsAudioSession.UI
 
                 if (currentVolume >= highVolumeThreshold || (audioController.IsMuted && (!_isTouching || _isMuting)) || TextVolume.Text == "MUTED")
                 {
-                    TextVolume.Foreground = CustomBrushes.VolumePeakTopBrush;
+                    TextVolume.Foreground = CustomBrushes.LabelsHigh;
                 }
                 else if (_isTouching)
                 {
@@ -430,7 +433,7 @@ namespace WindowsAudioSession.UI
                 }
 
                 // Check audio level decibels
-                KeyValuePair<string, Brush> decibels = DecibelsHelper.GetDecibelsForAudioLevel(currentLevel, ActualTime);
+                KeyValuePair<string, Brush> decibels = DecibelsHelper.GetDecibelsForAudioLevel(currentLevel, ActualTime, Settings.Default.DayDecibelThreshold, Settings.Default.NightDecibelThreshold, Settings.Default.MorningHour, Settings.Default.NightHour);
                 TextDecibels.Text = decibels.Key;
                 TextDecibels.Foreground = decibels.Value;
             }
@@ -506,7 +509,7 @@ namespace WindowsAudioSession.UI
                             }
 
                             // Sniž/zvyš hlasitost o 2 procenta
-                            audioController.Volume = (delta > 0) ? audioController.Volume + 2 : audioController.Volume - 2;
+                            audioController.Volume = (delta > 0) ? audioController.Volume + Convert.ToDouble(Settings.Default.VolumeStep) : audioController.Volume - Convert.ToDouble(Settings.Default.VolumeStep);
                             break;
                         case 1:
                             // Handle tap and swipe gesture
@@ -611,7 +614,7 @@ namespace WindowsAudioSession.UI
                 }
             }
 
-            LoadingScreen.Visibility = Visibility.Hidden;
+            LoadingScreen.Visibility = Visibility.Collapsed;
         }
 
 
@@ -646,15 +649,9 @@ namespace WindowsAudioSession.UI
                 audioController.ToggleMute();
             }
 
-            audioController.Volume = (e.Delta > 0) ? audioController.Volume + 2 : audioController.Volume - 2;
+            audioController.Volume = (e.Delta > 0) ? audioController.Volume + Convert.ToDouble(Settings.Default.VolumeStep) : audioController.Volume - Convert.ToDouble(Settings.Default.VolumeStep);
 
             e.Handled = true;
-        }
-
-        private static System.Windows.Forms.Screen GetRequiredDisplay()
-        {
-            var screens = System.Windows.Forms.Screen.AllScreens;
-            return screens.FirstOrDefault(screen => screen.Bounds.Width == requiredWidth && screen.Bounds.Height == requiredHeight);
         }
 
         private void UpdateTextToDisplay(DateTime ActualTime, bool levelMoreThenZero)
@@ -711,6 +708,8 @@ namespace WindowsAudioSession.UI
                     string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
                     FlashingText = displayedText;
 
+                    TextClock.Foreground = (Settings.Default.SourceTitleAsChanging) ? CustomBrushes.LabelChanging : CustomBrushes.Labels;
+
                     // Until we reach the end of text, increment the trim
                     if (!audioSourceTextRollback)
                     {
@@ -762,6 +761,7 @@ namespace WindowsAudioSession.UI
                     audioSourceTextStartChar = 0;
                     showAudioSourceText = false;
                     FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
+                    TextClock.Foreground = CustomBrushes.Labels;
                 }
 
                 // Update other info shown whole song
@@ -787,6 +787,7 @@ namespace WindowsAudioSession.UI
                 FlashingText = ActualTime.ToString("HH:mm:ss");
                 TextRemainingTime.Text = "";
                 TextSourceApp.Text = $"";
+                TextClock.Foreground = CustomBrushes.Labels;
             }
 
             TextClockLabel.Text = (isAudioSourceAppSet && !audioSource.Equals(new KeyValuePair<string, string>(null, null))) ? $"ARTIST: {TextHelper.RemoveDiacritics(audioSource.Key.ToUpperInvariant())}" : "WORLD CLOCK";

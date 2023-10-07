@@ -1,0 +1,19 @@
+{
+  "LabelsActive": "0, 166, 0",
+  "LabelsHeaders": "0, 166, 0",
+  "LabelsChanging": "Green",
+  "LabelsHigh": "Red",
+  "VolumePeakMeterLow": "0, 166, 0",
+  "VolumePeakMeterHigh": "Red",
+  "SoundWave": "0, 166, 0",
+  "FreqPeakMeter": "0, 166, 0",
+  "SpectrumAnalyser": "0, 166, 0",
+  "SpectrumAnalyserHighPeak": "0, 166, 0",
+  "Borders": "29, 29, 29",
+  "Background": "Black",
+  "FontVFD": "VFD Display",
+  "FontVFDSize": 24.0,
+  "FontHeaders": "Parsi",
+  "FontHeadersSize": 10.0,
+  "FontNumeric": "DSEG14 Classic"
+}

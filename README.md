@@ -6,9 +6,10 @@ Implements Windows Audio Session WASAPI using BASS.NET - WPF C# .NET Framework 4
 - Colored bars (vu-meters) showing captured device sound FFT , Sound Level and sound wave
 - Current playing audio source (song - as in Windows volume popup)
 - Touchscreen friendly
+- Supports themes (json format import/export, see [Themes-Gallery](https://github.com/KRtekTM/AudioSpectrumVisualizer/tree/master/ThemesGallery))
 
 <p align="center">
-<img src="https://github.com/KRtekTM/WindowsAudioSessionSample/blob/master/Doc/softronics.gif?raw=true" align="center" alt="a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level">
+<img src="https://github.com/KRtekTM/AudioSpectrumVisualizer/blob/master/Doc/softronics.gif?raw=true" align="center" alt="a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level">
 <br>
 <i>a FFT having 512 bars + FFT with 16 bars and peak bars + stereo sound level + sound wave</i>
 </p>
@@ -20,8 +21,9 @@ Currently made for 1280x400 pixels: <a href="https://www.waveshare.com/7.9inch-h
 If display with 1280x400 pixels is connected and detected on application start, it automatically switches to fullscreen on this display.
 
 ## Key bindings:
+- F9 - in full screen change between working area and monitor bounds (it restarts application automatically between change)
 - F11 - toggle fullscreen
-- F9 - change between working area and monitor bounds (it restarts application automatically between change)
+- F12 - in fullscreen toggles black screen overlay (hides all)
   
 ## Touch gestures:
 - swipe left - volume down

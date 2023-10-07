@@ -32,7 +32,7 @@ namespace WindowsAudioSession.UI.FFT
 
         /// <inheritdoc/>
         public Brush BarBrush { get; set; }
-            = CustomBrushes.VolumePeakTopBrush;
+            = CustomBrushes.FrequencyPeakTopBrush;
 
         /// <inheritdoc/>
         public double PeakBarHeight { get; set; } = 1d;

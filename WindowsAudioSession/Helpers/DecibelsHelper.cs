@@ -1,9 +1,12 @@
-﻿using System;
+﻿using AudioSwitcher.AudioApi;
+using AudioSwitcher.AudioApi.CoreAudio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 using System.Windows.Media;
 using Un4seen.Bass;
 using Windows.ApplicationModel.Background;
@@ -16,7 +19,7 @@ namespace WindowsAudioSession.Helpers
         private static Queue<double> decibelQueue = new Queue<double>();
         private static Queue<double> audioLevelsQueue = new Queue<double>();
         private const int shortQueueSize = 5;// 5 is 1 second because timer interval is 200ms
-        private const int longQueueSize = 25;
+        private const int longQueueSize = 10;
 
         private static double lastDecibels = 0;
         static DateTime lastChangeTime = DateTime.MinValue; // Čas poslední změny
@@ -47,10 +50,10 @@ namespace WindowsAudioSession.Helpers
         public static KeyValuePair<string, Brush> GetDecibelsForAudioLevel(
             int CurrentAudioLevel,
             DateTime ActualTime,
-            int DayHighDecibelsThreshold = 75,
-            int NightHighDecibelsThreshold = 45,
-            int MorningHour = 6,
-            int NightHour = 22)
+            decimal DayHighDecibelsThreshold = 75,
+            decimal NightHighDecibelsThreshold = 45,
+            decimal MorningHour = 6,
+            decimal NightHour = 22)
         {
             // Decibels calculation
             double decibelsLeft = LevelTOdB(Utils.LowWord32(CurrentAudioLevel));
@@ -77,7 +80,7 @@ namespace WindowsAudioSession.Helpers
 
             // Change colors of dB display
             bool nightTime = (ActualTime.Hour < MorningHour || ActualTime.Hour >= NightHour);
-            bool decibelsHighCondition = averageDecibels > (nightTime ? NightHighDecibelsThreshold : DayHighDecibelsThreshold);
+            bool decibelsHighCondition = averageDecibels > Convert.ToDouble(nightTime ? NightHighDecibelsThreshold : DayHighDecibelsThreshold);
 
             Brush changingColor;
             if (AreDecibelsChanging(averageDecibels, decibelsChangeThreshold)) changingColor = CustomBrushes.LabelChanging;
@@ -95,7 +98,7 @@ namespace WindowsAudioSession.Helpers
         }
 
 
-        private static double LevelTOdB(double audioLevel)
+        public static double LevelTOdB(double audioLevel)
         {
             return 20 * Math.Log10(audioLevel);
         }
@@ -114,5 +117,6 @@ namespace WindowsAudioSession.Helpers
             lastDecibels = decibels;
             return result;
         }
+
     }
 }

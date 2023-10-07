@@ -152,7 +152,7 @@ namespace WindowsAudioSession
             FFTAnalyser2.BarsCount = FFTViewModel2.BarCount;
             FFTAnalyser2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
             FFTDrawer2.ShowingBarsCount = FFTViewModel2.ShowingBarCount;
-            FFTDrawer2.BarBrush = CustomBrushes.VolumePeakBrush;//HatchRawBrush.Create(Brushes.LightGreen, 4, 3);
+            FFTDrawer2.BarBrush = CustomBrushes.FrequencyPeakBrush;
             FFTDrawer2.BarWidthPercent = FFTViewModel2.BarWidthPercent;
             FFTDrawer2.Drawable = App.WASMainWindow.fftControl2;
             FFTDrawer2.FFTAnalyser = FFTAnalyser2;
