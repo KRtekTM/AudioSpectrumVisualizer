@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using WindowsAudioSession.Properties;
@@ -76,6 +77,7 @@ namespace WindowsAudioSession.UI
             {
                 System.Drawing.Color drawingColor = (Settings.Default.ColorLabelsActive.IsEmpty) ? System.Drawing.Color.Gray : Settings.Default.ColorLabelsActive;
                 Color brushColor = ChangeColorBrightness(Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B), (float)-0.455);
+
                 return new SolidColorBrush(brushColor);
             }
         }
@@ -86,7 +88,7 @@ namespace WindowsAudioSession.UI
             {
                 System.Drawing.Color drawingColor = (Settings.Default.ColorLabelsActive.IsEmpty) ? System.Drawing.Color.White : Settings.Default.ColorLabelsActive;
                 Color brushColor = Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
-                return new SolidColorBrush(brushColor);
+                return IsRickAstley ? LastRickAstleyBrush : new SolidColorBrush(brushColor);
             }
         }
 
@@ -212,6 +214,31 @@ namespace WindowsAudioSession.UI
             }
 
             return Color.FromArgb(color.A, Convert.ToByte(red), Convert.ToByte(green), Convert.ToByte(blue));
+        }
+
+        private static Brush LastRickAstleyBrush;
+        internal static bool IsRickAstley = false;
+        public static Brush RickAstley
+        {
+            get
+            {
+                List<Color> colors = new List<Color>() {
+                    Color.FromRgb(189, 168, 235),
+                    Color.FromRgb(232, 197, 237),
+                    Color.FromRgb(216, 179, 165),
+                    Color.FromRgb(85, 118, 174),
+                    Color.FromRgb(208, 149, 178),
+                    Color.FromRgb(159, 222, 213),
+                    Color.FromRgb(213, 200, 184),
+                    Color.FromRgb(178, 218, 237)
+                };
+
+                Random random = new Random();
+                int randomIndex = random.Next(colors.Count); // Generuje náhodný index v rozsahu 0 až (počet barev - 1)
+
+                LastRickAstleyBrush = new SolidColorBrush(colors[randomIndex]);
+                return LastRickAstleyBrush;
+            }
         }
     }
 }

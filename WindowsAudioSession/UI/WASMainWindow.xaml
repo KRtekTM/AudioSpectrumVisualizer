@@ -350,7 +350,7 @@
                     TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontFamily="DSEG14 Classic" FontSize="30"/>
 
                 <TextBlock Foreground="{x:Static local:CustomBrushes.HeaderLabels}"
-                   Text="DECIBELS"
+                   Text="OUTPUT LEVEL"
                    Name="TextDecibelsLbl"
                    Margin="0,16,0,0"
                    TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontFamily="Parsi" FontSize="10"/>

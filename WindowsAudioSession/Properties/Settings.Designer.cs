@@ -313,7 +313,7 @@ namespace WindowsAudioSession.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("YellowGreen")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 168, 0")]
         public global::System.Drawing.Color ColorSpectrumAnalyser {
             get {
                 return ((global::System.Drawing.Color)(this["ColorSpectrumAnalyser"]));

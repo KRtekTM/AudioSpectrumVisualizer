@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AnyAscii;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Foundation.Metadata;
 
 namespace WindowsAudioSession.Helpers
@@ -12,18 +10,29 @@ namespace WindowsAudioSession.Helpers
     {
         public static string RemoveDiacritics(string input)
         {
+            string result = TryTrimNotesInSongTitle(input.Transliterate());
+            if (result.Length > 28)
+            {
+                result = $" {result} ";
+            }
+            return result;
+        }
+
+        [Deprecated("We are using AnyAscii .Transliterate() function now.", DeprecationType.Remove, 0)]
+        public static string RemoveDiacriticsDeprecated(string input)
+        {
             string accentsToReplace = "ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõöùúûüýÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĶķĸĹĺĻļĽľſŁłŃńŅņŇňŉŊŋŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž";
-            string accentsAscii =     "AAAAAACEEEEIIIINOOOOOUUUUYsaaaaaaceeeeiiiinooooouuuuyyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiKkkLlLlLllLlNnNnNnNnNOoOoOoRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZz";
+            string accentsAscii = "AAAAAACEEEEIIIINOOOOOUUUUYsaaaaaaceeeeiiiinooooouuuuyyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiKkkLlLlLllLlNnNnNnNnNOoOoOoRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZz";
 
             for (int i = 0; i < accentsToReplace.Length; i++)
             {
                 input = input.Replace(accentsToReplace[i], accentsAscii[i]);
             }
 
-            input = RemoveDiacriticsAndConvertToAscii(input);
-            return input;
+            return RemoveDiacriticsAndConvertToAscii(input);
         }
 
+        [Deprecated("We are using AnyAscii .Transliterate() function now.", DeprecationType.Deprecate, 0)]
         private static string RemoveDiacriticsAndConvertToAscii(string input)
         {
             // Nahradí diakritiku za znaky bez diakritiky
@@ -46,14 +55,11 @@ namespace WindowsAudioSession.Helpers
 
 
             string result;
-            result = TryTrimNotesInSongTitle(stringBuilder.ToString());
-            if (stringBuilder.Length > 28)
-            {
-                result = $" {result} ";
-            }
+            result = stringBuilder.ToString();
             return result;
         }
 
+        [Deprecated("We are using AnyAscii .Transliterate() function now.", DeprecationType.Deprecate, 0)]
         private static string ConvertToAscii(char c)
         {
             try
@@ -76,6 +82,21 @@ namespace WindowsAudioSession.Helpers
             string pattern = @"\s*\[[^\]]*(?:video|official|remastered|remaster|hd|original)[^\]]*\]|\s*\([^)]*(?:video|official|remastered|remaster|hd|original)[^)]*\)";
             
             return Regex.Replace(inputText, pattern, "", RegexOptions.IgnoreCase);
+        }
+
+        internal static bool DetectRickAstley(string audioSource)
+        {
+            audioSource = audioSource.ToLowerInvariant();
+
+            bool result = audioSource.Contains("rick");
+            result &= audioSource.Contains("astley");
+            result &= audioSource.Contains("never");
+            result &= audioSource.Contains("gonna");
+            result &= audioSource.Contains("give");
+            result &= audioSource.Contains("you");
+            result &= audioSource.Contains("up");
+
+            return result;
         }
     }
 }

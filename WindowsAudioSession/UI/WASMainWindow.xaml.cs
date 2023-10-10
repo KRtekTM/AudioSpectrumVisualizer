@@ -47,6 +47,7 @@ namespace WindowsAudioSession.UI
         private AudioSourceHelper _audioSourceHelper;
         private int showEachSecondsCount = 25;
         private StyleSettings _styleSettingsDialog = new StyleSettings();
+        private Brush RickAstleyBrush;
 
         /// <summary>
         /// creates a new instance
@@ -434,7 +435,7 @@ namespace WindowsAudioSession.UI
 
                 // Check audio level decibels
                 KeyValuePair<string, Brush> decibels = DecibelsHelper.GetDecibelsForAudioLevel(currentLevel, ActualTime, Settings.Default.DayDecibelThreshold, Settings.Default.NightDecibelThreshold, Settings.Default.MorningHour, Settings.Default.NightHour);
-                TextDecibels.Text = decibels.Key;
+                TextDecibels.Text = decibels.Key + "  dB";
                 TextDecibels.Foreground = decibels.Value;
             }
 
@@ -665,6 +666,8 @@ namespace WindowsAudioSession.UI
             ButtonPlayPause.IsEnabled = isAudioSourceAppSet && _audioSourceHelper.CanPlayPauseToggle;
             ButtonPlayPause.Content = levelMoreThenZero && ButtonPlayPause.IsEnabled ? "b" : "a";
 
+            bool isRickAstleyPlaying = TextHelper.DetectRickAstley(audioSourceText);
+
             if (isAudioSourceAppSet)// && levelMoreThenZero)
             {
                 TextSourceApp.Text = $"{_audioSourceHelper.sourceApp.ToUpperInvariant().Replace(".EXE", "")}";
@@ -708,7 +711,20 @@ namespace WindowsAudioSession.UI
                     string displayedText = audioSourceText.Substring(audioSourceTextStartChar, Math.Min(maxCharsInText, audioSourceText.Length - audioSourceTextStartChar));
                     FlashingText = displayedText;
 
-                    TextClock.Foreground = (Settings.Default.SourceTitleAsChanging) ? CustomBrushes.LabelChanging : CustomBrushes.Labels;
+                    if (levelMoreThenZero && isRickAstleyPlaying)
+                    {
+                        RickAstleyBrush = CustomBrushes.RickAstley;
+                        TextClock.Foreground = RickAstleyBrush;
+                        HeadersColor(RickAstleyBrush);
+                        LabelsColor(RickAstleyBrush);
+                        CustomBrushes.IsRickAstley = true;
+                    }
+                    else {
+                        TextClock.Foreground = (Settings.Default.SourceTitleAsChanging) ? CustomBrushes.LabelChanging : CustomBrushes.Labels;
+                        HeadersColor(CustomBrushes.HeaderLabels);
+                        LabelsColor(CustomBrushes.Labels);
+                        CustomBrushes.IsRickAstley = false;
+                    }
 
                     // Until we reach the end of text, increment the trim
                     if (!audioSourceTextRollback)
@@ -760,8 +776,23 @@ namespace WindowsAudioSession.UI
                 {
                     audioSourceTextStartChar = 0;
                     showAudioSourceText = false;
-                    FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
-                    TextClock.Foreground = CustomBrushes.Labels;
+
+                    if (levelMoreThenZero && isRickAstleyPlaying)
+                    {
+                        Brush RickAstleyBrush = CustomBrushes.RickAstley;
+                        TextClock.Foreground = RickAstleyBrush;
+                        HeadersColor(RickAstleyBrush);
+                        LabelsColor(RickAstleyBrush);
+                        CustomBrushes.IsRickAstley = true;
+                        FlashingText = new DateTime(1987, 07, 27, ActualTime.Hour, ActualTime.Minute, ActualTime.Second).ToString("HH:mm:ss - ddd MM/dd/yyyy");
+                    }
+                    else {
+                        TextClock.Foreground = CustomBrushes.Labels;
+                        HeadersColor(CustomBrushes.HeaderLabels);
+                        LabelsColor(CustomBrushes.Labels);
+                        CustomBrushes.IsRickAstley = false;
+                        FlashingText = ActualTime.ToString("HH:mm:ss - ddd MM/dd/yyyy");
+                    }
                 }
 
                 // Update other info shown whole song
@@ -804,6 +835,27 @@ namespace WindowsAudioSession.UI
         {
             _audioSourceHelper.Dispose();
             audioController.Dispose();
+        }
+
+        private void HeadersColor(Brush color)
+        {
+            TextClockLabel.Foreground = color;
+            TextVolumePeak.Foreground = color;
+            TextSoundWave.Foreground = color;
+            TextPeakLevelMeter.Foreground = color;
+            TextSpectrumAnalyserLabel.Foreground = color;
+            TextVolumeControl.Foreground = color;
+            TextDecibelsLbl.Foreground = color;
+            TextAudioOutputLbl.Foreground = color;
+            TextSourceLength.Foreground = color;
+            TextSourceAppLbl.Foreground = color;
+        }
+
+        private void LabelsColor(Brush color)
+        {
+            TextAudioOut.Foreground = color;
+            TextRemainingTime.Foreground = color;
+            TextSourceApp.Foreground = color;
         }
     }
 }
