@@ -35,8 +35,8 @@ If display with 1280x400 pixels is connected and detected on application start, 
 - --resetsettings
 
 ## Style Settings button:
-- Applying style restarts application automatically (at this time the only way to redraw correctly all elements)
-- You can set different thresholds as the maximum output level in decibels in day/night, when the night starts/ends
+- Applying style restarts application automatically (at this time the only way to redraw all elements correctly)
+- You can set different thresholds as the maximum output level in decibels in day/night, when the night starts/ends etc.
 
 ## Original text from franck-gaspoz
 Clean architecture approach: complete discoupling between data,data providers,data transformers,ui controls,drawers,view models,application logic. 
