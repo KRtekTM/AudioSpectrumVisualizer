@@ -21,7 +21,7 @@ Currently made for 1280x400 pixels: <a href="https://www.waveshare.com/7.9inch-h
 If display with 1280x400 pixels is connected and detected on application start, it automatically switches to fullscreen on this display.
 
 ## Key bindings:
-- F9 - in full screen change between working area and monitor bounds (it restarts application automatically between change)
+- F9 - in full screen change between working area and monitor bounds
 - F11 - toggle fullscreen
 - F12 - in fullscreen toggles black screen overlay (hides all)
   
@@ -33,6 +33,10 @@ If display with 1280x400 pixels is connected and detected on application start, 
 
 ## Command line params:
 - --resetsettings
+
+## Style Settings button:
+- Applying style restarts application automatically (at this time the only way to redraw correctly all elements)
+- You can set different thresholds as the maximum output level in decibels in day/night, when the night starts/ends
 
 ## Original text from franck-gaspoz
 Clean architecture approach: complete discoupling between data,data providers,data transformers,ui controls,drawers,view models,application logic. 

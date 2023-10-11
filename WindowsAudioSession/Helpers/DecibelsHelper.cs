@@ -76,7 +76,7 @@ namespace WindowsAudioSession.Helpers
 
             // React immediatelly on start if was silence in queue
             if (averageDecibels < 1 && decibels > 0) averageDecibels = decibels;
-            else if (averageDecibels > 1) averageDecibels = Math.Round(LevelTOdB(audioLevelsQueue.Average()));
+            else if (averageDecibels > 1) averageDecibels = Math.Round(LevelTOdB(audioLevelsQueue.Max()));
 
             // Change colors of dB display
             bool nightTime = (ActualTime.Hour < MorningHour || ActualTime.Hour >= NightHour);

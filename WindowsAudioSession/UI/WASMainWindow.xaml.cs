@@ -31,7 +31,6 @@ namespace WindowsAudioSession.UI
         private DateTime touchStartTime;
         private TimeSpan requiredTouchDuration = TimeSpan.FromSeconds(2);
         private int touchCount = 0;
-        private int _highVolumeThreshold = 70;
         private bool _isTouching, _isMuting, _isTouchMoving, audioSourceTextRollback = false;
         private bool _lastAudioLevelZero = true;
         private int highVolumeThreshold;
@@ -97,17 +96,17 @@ namespace WindowsAudioSession.UI
 
             // Subscribe on changes made in volume modifier config file (so the user can change it while the app is running)
             
-            highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
-            FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(AppHelper.highVolumeThresholdFilePath));
-            watcher.Filter = Path.GetFileName(AppHelper.highVolumeThresholdFilePath);
-            watcher.Changed += (sender, e) =>
-            {
-                if (e.FullPath == AppHelper.highVolumeThresholdFilePath)
-                {
-                    highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
-                }
-            };
-            watcher.EnableRaisingEvents = true;
+            highVolumeThreshold = AppHelper.GetHighVolumeThreshold();
+            //FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(AppHelper.highVolumeThresholdFilePath));
+            //watcher.Filter = Path.GetFileName(AppHelper.highVolumeThresholdFilePath);
+            //watcher.Changed += (sender, e) =>
+            //{
+            //    if (e.FullPath == AppHelper.highVolumeThresholdFilePath)
+            //    {
+            //        highVolumeThreshold = AppHelper.GetHighVolumeThreshold(_highVolumeThreshold);
+            //    }
+            //};
+            //watcher.EnableRaisingEvents = true;
 
             // Subscribe on changes of Audio source (meaning song or program as shown in Windows volume popup)
             _audioSourceHelper = new AudioSourceHelper();

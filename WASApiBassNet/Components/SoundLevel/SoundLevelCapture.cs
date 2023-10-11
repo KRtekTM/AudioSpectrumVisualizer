@@ -49,40 +49,46 @@ namespace WASApiBassNet.Components.SoundLevel
 
         int MapPercentToNumber(double percent)
         {
-            int highVolumeThreshold = AppHelper.GetHighVolumeThreshold(26);
+            int highVolumeThreshold = AppHelper.GetHighVolumeThreshold();
 
             if (percent > highVolumeThreshold)
             {
                 // Pokud je hlasitost vyšší než highVolumeThreshold, použijeme násobič 1
                 return 1;
             }
-            else if (percent > 16)
+            else if (percent > 24 && percent <= 36)
             {
-                // Procenta mezi 16% a highVolumeThreshold se mapují plynule z 10 na 2
-                double x1 = 16; // počáteční procento
-                double y1 = 10; // počáteční násobič
-                double x2 = highVolumeThreshold; // koncové procento
-                double y2 = 2; // koncový násobič
+                //// Procenta mezi 16% a highVolumeThreshold se mapují plynule z 10 na 2
+                //double x1 = 16; // počáteční procento
+                //double y1 = 10; // počáteční násobič
+                //double x2 = highVolumeThreshold; // koncové procento
+                //double y2 = 2; // koncový násobič
 
-                double newValue = (percent - x1) * (y2 - y1) / (x2 - x1) + y1;
-                return (int)newValue;
+                //double newValue = (percent - x1) * (y2 - y1) / (x2 - x1) + y1;
+                //return (int)newValue;
+                return 2;
             }
-            else if (percent > 8)
+            else if (percent > 16 && percent <= 24)
+            {
+                // Procenta mezi 16% a 8% použijeme násobič 10
+                return 5;
+            }
+            else if (percent > 8 && percent <= 16)
             {
                 // Procenta mezi 16% a 8% použijeme násobič 10
                 return 10;
             }
-            else if (percent > 6)
+            else if (percent > 6 && percent <= 8)
             {
                 // Procenta mezi 8% a 6% použijeme násobič 30
                 return 30;
             }
-            else if (percent > 4)
+            else if (percent > 4 && percent <= 6)
             {
                 // Procenta mezi 6% a 4% použijeme násobič 50
                 return 50;
             }
-            else if (percent > 0)
+            else if (percent > 0 && percent <= 4)
             {
                 // Procenta mezi 4% a 0% použijeme násobič 100
                 return 100;
